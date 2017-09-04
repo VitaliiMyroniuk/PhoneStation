@@ -1,9 +1,15 @@
 package ua.company.myroniuk.model.service.impl;
 
+import ua.company.myroniuk.dao.ServiceDao;
+import ua.company.myroniuk.dao.impl.ServiceDaoImpl;
+
 /**
  * @author Vitalii Myroniuk
  */
 public class ServiceServiceImpl {
+
+    private ServiceDao serviceDao = ServiceDaoImpl.getInstance();
+
     private ServiceServiceImpl() {
     }
 
@@ -12,6 +18,6 @@ public class ServiceServiceImpl {
     }
 
     public static ServiceServiceImpl getInstance() {
-        return ServiceServiceImpl.SingletonHolder.INSTANCE;
+        return SingletonHolder.INSTANCE;
     }
 }

@@ -5,9 +5,11 @@ package ua.company.myroniuk.model.entity;
  */
 public class User {
     private Long id;
+    private Long simCardId;
     private String name;
     private String surname;
     private String passport;
+    private SimCard simCard;
     private String login;
     private String password;
     private boolean isAdmin;
@@ -18,6 +20,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getSimCardId() {
+        return simCardId;
+    }
+
+    public void setSimCardId(Long simCardId) {
+        this.simCardId = simCardId;
     }
 
     public String getName() {
@@ -42,6 +52,14 @@ public class User {
 
     public void setPassport(String passport) {
         this.passport = passport;
+    }
+
+    public SimCard getSimCard() {
+        return simCard;
+    }
+
+    public void setSimCard(SimCard simCard) {
+        this.simCard = simCard;
     }
 
     public String getLogin() {

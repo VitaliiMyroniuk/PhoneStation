@@ -4,12 +4,12 @@
             name = "jdbc/phone_station"
             author = "Container"
             type = "javax.sql.DataSource"
-            maxActive = "32"
+            maxTotal = "32"
             maxIdle = "8"
-            maxWait = "10000"
+            maxWaitMillis = "10000"
             username = "root"
             password = "root"
             driverClassName = "com.mysql.jdbc.Driver"
-            url = "jdbc:mysql://localhost:3306/phone_station"
+            url = "jdbc:mysql://localhost:3306/phone_station?useSSL=false"
     />
 </Context>

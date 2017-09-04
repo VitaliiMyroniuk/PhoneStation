@@ -11,7 +11,7 @@ import java.io.IOException;
  * @author Vitalii Myroniuk
  */
 //@WebFilter(urlPatterns = {"/jsp/*"}, initParams = {@WebInitParam(name = "INDEX_PATH", value = "/index.jsp")})
-public class PageRedirectSecurityFilter implements Filter {
+public class PageSecurityFilter implements Filter {
 
     /**
      *

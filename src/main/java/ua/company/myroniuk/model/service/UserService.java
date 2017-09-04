@@ -7,12 +7,20 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public interface UserService {
-    void addUser(User user);
-    User getUser(Long id);
+
+    /**
+     *
+     * @param user
+     * @return
+     */
+    Long addUser(User user);
+
+    /**
+     *
+     * @param login
+     * @return
+     */
     User getUser(String login);
-    List<User> getAllUsers();
-    void updateUser(User user);
-    void deleteUser(Long id);
 
     /**
      * The method checks the given login and password.
@@ -22,5 +30,13 @@ public interface UserService {
      *         0 if the given login and password correspond with user; <br>
      *         -1 if there is no such login and password in the data base.
      */
-    byte checkLogin(String login, String password);
+    byte checkLoginAndPassword(String login, String password);
+
+    /**
+     * The method checks if the given login is in the data base.
+     * @param login the login entered by the user.
+     * @return true if the given login is in the data base; <br>
+     *         false otherwise.
+     */
+    boolean checkLogin(String login);
 }

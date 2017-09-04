@@ -2,6 +2,7 @@ package ua.company.myroniuk.model.service.impl;
 
 import ua.company.myroniuk.dao.UserDao;
 import ua.company.myroniuk.dao.impl.UserDaoImpl;
+import ua.company.myroniuk.model.entity.SimCard;
 import ua.company.myroniuk.model.entity.User;
 import ua.company.myroniuk.model.service.UserService;
 import java.util.List;
@@ -24,35 +25,14 @@ public class UserServiceImpl implements UserService {
         return SingletonHolder.INSTANCE;
     }
 
-
     @Override
-    public void addUser(User user) {
-        userDao.addUser(user);
-    }
-
-    @Override
-    public User getUser(Long id) {
-        return userDao.getUser(id);
+    public Long addUser(User user) {
+        return userDao.addUser(user);
     }
 
     @Override
     public User getUser(String login) {
         return userDao.getUser(login);
-    }
-
-    @Override
-    public List<User> getAllUsers() {
-        return userDao.getAllUsers();
-    }
-
-    @Override
-    public void updateUser(User user) {
-        userDao.updateUser(user);
-    }
-
-    @Override
-    public void deleteUser(Long id) {
-        userDao.deleteUser(id);
     }
 
     /**
@@ -64,7 +44,7 @@ public class UserServiceImpl implements UserService {
      *         -1 if there is no such login and password in the data base.
      */
     @Override
-    public byte checkLogin(String login, String password) {
+    public byte checkLoginAndPassword(String login, String password) {
         User user = userDao.getUser(login);
         if (user != null && user.getPassword().equals(password)) {
             if (user.isAdmin()) {
@@ -74,5 +54,17 @@ public class UserServiceImpl implements UserService {
             }
         }
         return -1;
+    }
+
+    /**
+     * The method checks if the given login is in the data base.
+     * @param login the login entered by the user.
+     * @return true if the given login is in the data base; <br>
+     *         false otherwise.
+     */
+    @Override
+    public boolean checkLogin(String login) {
+        User user = userDao.getUser(login);
+        return user != null;
     }
 }

@@ -7,10 +7,30 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public interface UserDao {
-    void addUser(User user);
-    User getUser(Long id);
+
+    /**
+     *
+     * @param user
+     * @return
+     */
+    Long addUser(User user);
+
+    /**
+     *
+     * @param login
+     * @return
+     */
     User getUser(String login);
-    List<User> getAllUsers();
-    void updateUser(User user);
-    void deleteUser(Long id);
+
+    /**
+     *
+     * @return
+     */
+    List<User> getUnregisteredUsers();
+
+    /**
+     *
+     * @return
+     */
+    List<User> getDebtors();
 }

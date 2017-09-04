@@ -8,13 +8,17 @@ public class CommandFactory {
 
     public static Command createCommand(String query) {
         switch (query) {
-            case "authentication" :
-                command = new AuthenticationCommand();
+            case "login" :
+                command = new LoginCommand();
+                break;
+            case "logout" :
+                command = new LogoutCommand();
                 break;
             case "registration" :
                 command = new RegistrationCommand();
                 break;
             default:
+                command = null;
                 break;
         }
         return command;

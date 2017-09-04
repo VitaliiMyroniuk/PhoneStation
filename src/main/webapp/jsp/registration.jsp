@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%--<fmt:setLocale value="${sessionScope.locale}" scope="session"/>--%>
+<fmt:setLocale value="uk_UA" scope="session"/>
+<fmt:setBundle basename="locale" var="rb"/>
 
 <html>
 <head>
@@ -16,29 +19,35 @@
 
     <div class="content-block">
         <form action="/controller" method="POST">
-            <h3>Registration</h3>
+            <h3><fmt:message key="registration" bundle="${rb}"/></h3>
             <input type="hidden" name="query" value="registration"/>
             <table>
                 <tr>
-                    <td><input type="text" name="phoneNumber" placeholder="phone number"></td>
+                    <td><fmt:message key="registration.sim.card.number" bundle="${rb}"/></td>
+                    <td><input type="text" name="number"></td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="name" placeholder="name"></td>
+                    <td><fmt:message key="registration.name" bundle="${rb}"/></td>
+                    <td><input type="text" name="name"></td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="surname" placeholder="surname"></td>
+                    <td><fmt:message key="registration.surname" bundle="${rb}"/></td>
+                    <td><input type="text" name="surname"></td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="passport" placeholder="passport"></td>
+                    <td><fmt:message key="registration.passport" bundle="${rb}"/></td>
+                    <td><input type="text" name="passport"></td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="login" placeholder="login"></td>
+                    <td><fmt:message key="registration.login" bundle="${rb}"/></td>
+                    <td><input type="text" name="login"></td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="password" placeholder="password"></td>
+                    <td><fmt:message key="registration.password" bundle="${rb}"/></td>
+                    <td><input type="text" name="password"></td>
                 </tr>
                 <tr>
-                    <td><input type="submit" value="Send"></td>
+                    <td><input type="submit" value=<fmt:message key="registration.send" bundle="${rb}"/>></td>
                 </tr>
             </table>
         </form>
