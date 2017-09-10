@@ -1,8 +1,9 @@
 package ua.company.myroniuk.controller.filter;
 
+import ua.company.myroniuk.model.entity.User;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -10,25 +11,19 @@ import java.io.IOException;
 /**
  * @author Vitalii Myroniuk
  */
-//@WebFilter(urlPatterns = {"/jsp/*"}, initParams = {@WebInitParam(name = "INDEX_PATH", value = "/index.jsp")})
+@WebFilter(urlPatterns = {"/jsp/*"})
 public class PageSecurityFilter implements Filter {
-
-    /**
-     *
-     */
-    private String indexPath;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        indexPath = filterConfig.getInitParameter("INDEX_PATH");
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
-        HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
-        httpResponse.sendRedirect(httpRequest.getContextPath() + indexPath);
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

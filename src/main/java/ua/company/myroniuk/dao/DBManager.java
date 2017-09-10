@@ -10,12 +10,27 @@ import java.sql.Statement;
 /**
  * @author Vitalii Myroniuk
  */
-public class DBConnector {
+public class DBManager {
 
-    public static Connection getConnection() throws SQLException, NamingException {
-        InitialContext initialContext = new InitialContext();
-        DataSource dataSource = (DataSource) initialContext.lookup("java:comp/env/jdbc/phone_station");
-        return dataSource.getConnection();
+    public static Connection getConnection() throws SQLException {
+        try {
+            InitialContext initialContext = new InitialContext();
+            DataSource dataSource = (DataSource) initialContext.lookup("java:comp/env/jdbc/phone_station");
+            return dataSource.getConnection();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void rollback(Connection connection) {
+        if (connection != null) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     public static void closeConnection(Connection connection) {

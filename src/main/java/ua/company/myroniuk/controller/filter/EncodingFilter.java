@@ -12,9 +12,6 @@ import java.io.IOException;
 //           initParams = {@WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding parameter")})
 public class EncodingFilter implements Filter {
 
-    /**
-     *
-     */
     private String encoding;
 
     @Override

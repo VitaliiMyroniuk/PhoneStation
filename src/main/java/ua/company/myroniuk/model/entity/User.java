@@ -1,33 +1,37 @@
 package ua.company.myroniuk.model.entity;
 
+import java.util.List;
+
 /**
  * @author Vitalii Myroniuk
  */
 public class User {
-    private Long id;
-    private Long simCardId;
+    private long id;
+    private Account account;
     private String name;
+    private String middleName;
     private String surname;
-    private String passport;
-    private SimCard simCard;
-    private String login;
-    private String password;
-    private boolean isAdmin;
+    private String phoneNumber;
+    private int balance;
+    private List<Service> services;
+    private List<Invoice> invoices;
+    private boolean isRegistered;
+    private boolean isBlocked;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Long getSimCardId() {
-        return simCardId;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setSimCardId(Long simCardId) {
-        this.simCardId = simCardId;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public String getName() {
@@ -38,6 +42,14 @@ public class User {
         this.name = name;
     }
 
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
     public String getSurname() {
         return surname;
     }
@@ -46,43 +58,51 @@ public class User {
         this.surname = surname;
     }
 
-    public String getPassport() {
-        return passport;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPassport(String passport) {
-        this.passport = passport;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public SimCard getSimCard() {
-        return simCard;
+    public int getBalance() {
+        return balance;
     }
 
-    public void setSimCard(SimCard simCard) {
-        this.simCard = simCard;
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 
-    public String getLogin() {
-        return login;
+    public List<Service> getServices() {
+        return services;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setServices(List<Service> services) {
+        this.services = services;
     }
 
-    public String getPassword() {
-        return password;
+    public List<Invoice> getInvoices() {
+        return invoices;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public boolean isRegistered() {
+        return isRegistered;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setRegistered(boolean registered) {
+        isRegistered = registered;
+    }
+
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
     }
 }

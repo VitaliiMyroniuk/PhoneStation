@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Successful registration page</title>
+    <title>Error page</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -18,7 +18,7 @@
     </div>
 
     <div class="content-block">
-        <h3>Successful registration</h3>
+        <h3>Error page</h3>
     </div>
 
     <div class="footer">

@@ -8,29 +8,15 @@ import java.util.List;
  */
 public interface UserDao {
 
-    /**
-     *
-     * @param user
-     * @return
-     */
-    Long addUser(User user);
+    long addUser(User user);
 
-    /**
-     *
-     * @param login
-     * @return
-     */
     User getUser(String login);
 
-    /**
-     *
-     * @return
-     */
-    List<User> getUnregisteredUsers();
+    List<User> getAllUsers();
 
-    /**
-     *
-     * @return
-     */
+    List<User> getUnregisteredUsers();
+    
     List<User> getDebtors();
+
+    boolean checkPhoneNumber(String phoneNumber);
 }

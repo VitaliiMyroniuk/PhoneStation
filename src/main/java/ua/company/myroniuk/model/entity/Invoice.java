@@ -6,34 +6,18 @@ import java.time.LocalDate;
  * @author Vitalii Myroniuk
  */
 public class Invoice {
-    private Long id;
-    private Long simCardId;
-    private String description;
+    private long id;
     private LocalDate date;
-    private Integer price;
+    private String description;
+    private int price;
+    private boolean isPaid;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
-    }
-
-    public Long getSimCardId() {
-        return simCardId;
-    }
-
-    public void setSimCardId(Long simCardId) {
-        this.simCardId = simCardId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public LocalDate getDate() {
@@ -44,11 +28,27 @@ public class Invoice {
         this.date = date;
     }
 
-    public Integer getPrice() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(int price) {
         this.price = price;
+    }
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean paid) {
+        isPaid = paid;
     }
 }

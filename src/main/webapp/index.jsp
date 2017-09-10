@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%--<fmt:setLocale value="${sessionScope.locale}" scope="session"/>--%>
-<fmt:setLocale value="uk_UA" scope="session"/>
+<c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'uk_UA'}" scope="session"/>
+<c:set var="page" value="${pageContext.request.requestURI}" scope="session"/>
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
 <html>
@@ -13,7 +14,7 @@
 </head>
 <body>
 <div class="site-block">
-    <div class="header" align="right">
+    <div class="header">
         <jsp:include page="/jsp/header.jsp"/>
     </div>
 
@@ -35,7 +36,9 @@
                         <input type="submit" value=<fmt:message key="login.enter" bundle="${rb}"/>>
                     </td>
                     <td>
-                        <a href="/jsp/registration.jsp"><fmt:message key="login.registration" bundle="${rb}"/></a>
+                        <a href="/controller?query=registration">
+                            <fmt:message key="login.registration" bundle="${rb}"/>
+                        </a>
                     </td>
                 </tr>
             </table>

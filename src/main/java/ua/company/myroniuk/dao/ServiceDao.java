@@ -10,21 +10,4 @@ import java.util.List;
  */
 public interface ServiceDao {
 
-    /**
-     *
-     * @param connection
-     * @param service
-     * @param simCardId
-     * @return
-     * @throws SQLException
-     */
-    Long addService(Connection connection, Service service, Long simCardId) throws SQLException;
-
-    /**
-     *
-     * @param connection
-     * @param simCardId
-     * @return
-     */
-    List<Service> getServices(Connection connection, Long simCardId) throws SQLException;
 }

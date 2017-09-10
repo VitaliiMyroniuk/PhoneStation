@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%--<fmt:setLocale value="${sessionScope.locale}" scope="session"/>--%>
-<fmt:setLocale value="uk_UA" scope="session"/>
+<c:set var="page" value="${pageContext.request.requestURI}" scope="session"/>
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
 <html>
@@ -13,7 +13,7 @@
 </head>
 <body>
 <div class="site-block">
-    <div class="header" align="right">
+    <div class="header">
         <jsp:include page="/jsp/header.jsp"/>
     </div>
 
@@ -23,20 +23,20 @@
             <input type="hidden" name="query" value="registration"/>
             <table>
                 <tr>
-                    <td><fmt:message key="registration.sim.card.number" bundle="${rb}"/></td>
-                    <td><input type="text" name="number"></td>
-                </tr>
-                <tr>
                     <td><fmt:message key="registration.name" bundle="${rb}"/></td>
                     <td><input type="text" name="name"></td>
+                </tr>
+                <tr>
+                    <td><fmt:message key="registration.middle_name" bundle="${rb}"/></td>
+                    <td><input type="text" name="middle_name"></td>
                 </tr>
                 <tr>
                     <td><fmt:message key="registration.surname" bundle="${rb}"/></td>
                     <td><input type="text" name="surname"></td>
                 </tr>
                 <tr>
-                    <td><fmt:message key="registration.passport" bundle="${rb}"/></td>
-                    <td><input type="text" name="passport"></td>
+                    <td><fmt:message key="registration.phone_number" bundle="${rb}"/></td>
+                    <td><input type="text" name="phone_number"></td>
                 </tr>
                 <tr>
                     <td><fmt:message key="registration.login" bundle="${rb}"/></td>
