@@ -2,11 +2,15 @@ package ua.company.myroniuk.model.service.impl;
 
 import ua.company.myroniuk.dao.ServiceDao;
 import ua.company.myroniuk.dao.impl.ServiceDaoImpl;
+import ua.company.myroniuk.model.entity.Service;
+import ua.company.myroniuk.model.service.ServiceService;
+
+import java.util.List;
 
 /**
  * @author Vitalii Myroniuk
  */
-public class ServiceServiceImpl {
+public class ServiceServiceImpl implements ServiceService {
 
     private ServiceDao serviceDao = ServiceDaoImpl.getInstance();
 
@@ -19,5 +23,10 @@ public class ServiceServiceImpl {
 
     public static ServiceServiceImpl getInstance() {
         return SingletonHolder.INSTANCE;
+    }
+
+    @Override
+    public List<Service> getAllServices() {
+        return serviceDao.getAllServices();
     }
 }

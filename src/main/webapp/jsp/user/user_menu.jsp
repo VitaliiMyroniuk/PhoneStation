@@ -16,7 +16,12 @@
         </a>
     </li>
     <li>
-        <a href="/controller?query=accountRefill">
+        <a href="/controller?query=invoices">
+            <fmt:message key="menu.invoices" bundle="${rb}"/>
+        </a>
+    </li>
+    <li>
+        <a href="/controller?query=account_refill">
             <fmt:message key="menu.account.refill" bundle="${rb}"/>
         </a>
     </li>

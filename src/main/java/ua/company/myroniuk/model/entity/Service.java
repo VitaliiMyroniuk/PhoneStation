@@ -1,7 +1,5 @@
 package ua.company.myroniuk.model.entity;
 
-import java.time.LocalDate;
-
 /**
  * @author Vitalii Myroniuk
  */
@@ -41,5 +39,37 @@ public class Service {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) this.id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Service service = (Service) obj;
+        if (this.id != service.id) {
+            return false;
+        }
+        if ((this.name == null) ? (service.name != null) : !this.name.equals(service.name)) {
+            return false;
+        }
+        if ((this.description == null) ? (service.description != null) : !this.description.equals(service.description)) {
+            return false;
+        }
+        if (this.price != service.price) {
+            return false;
+        }
+        return true;
     }
 }

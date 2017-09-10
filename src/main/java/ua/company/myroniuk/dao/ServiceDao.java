@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface ServiceDao {
 
+    List<Service> getAllServices();
 }

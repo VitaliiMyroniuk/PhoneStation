@@ -4,6 +4,7 @@ import ua.company.myroniuk.dao.AccountDao;
 import ua.company.myroniuk.dao.DBManager;
 import ua.company.myroniuk.dao.UserDao;
 import ua.company.myroniuk.model.entity.Account;
+import ua.company.myroniuk.model.entity.Service;
 import ua.company.myroniuk.model.entity.User;
 import java.sql.*;
 import java.util.ArrayList;
@@ -31,6 +32,11 @@ public class UserDaoImpl implements UserDao {
             "INNER JOIN accounts ON account_id = accounts.id WHERE balance < 0";
     private final String GET_PHONE_NUMBER =
             "SELECT phone_number FROM users WHERE phone_number = ? ";
+    private final String GET_SERVICES =
+            "SELECT * FROM users " +
+            "INNER JOIN users_services ON users.id = user_id " +
+            "INNER JOIN services ON service_id = services.id";
+
 
     private UserDaoImpl() {
     }
@@ -140,6 +146,23 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public List<Service> getServices(long id) {
+        List<Service> services = new ArrayList<>();
+        try (Connection connection = DBManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_SERVICES);
+        ) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                Service user = createService(resultSet);
+                services.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return services;
+    }
+
+    @Override
     public boolean checkPhoneNumber(String phoneNumber) {
         try (Connection connection = DBManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_PHONE_NUMBER);
@@ -155,8 +178,19 @@ public class UserDaoImpl implements UserDao {
         return false;
     }
 
+    private Account createAccount(ResultSet resultSet) throws SQLException {
+        Account account = new Account();
+        account.setId(resultSet.getLong("accounts.id"));
+        account.setLogin(resultSet.getString("accounts.login"));
+        account.setPassword(resultSet.getString("accounts.password"));
+        account.setAdmin(resultSet.getBoolean("accounts.is_admin"));
+        return account;
+    }
+
     private User createUser(ResultSet resultSet) throws SQLException {
+        Account account = createAccount(resultSet);
         User user = new User();
+        user.setAccount(account);
         user.setId(resultSet.getLong("users.id"));
         user.setName(resultSet.getString("users.name"));
         user.setMiddleName(resultSet.getString("users.middle_name"));
@@ -165,13 +199,16 @@ public class UserDaoImpl implements UserDao {
         user.setBalance(resultSet.getInt("users.balance"));
         user.setRegistered(resultSet.getBoolean("users.is_registered"));
         user.setBlocked(resultSet.getBoolean("users.is_blocked"));
-        Account account = new Account();
-        account.setId(resultSet.getLong("accounts.id"));
-        account.setLogin(resultSet.getString("accounts.login"));
-        account.setPassword(resultSet.getString("accounts.password"));
-        account.setAdmin(resultSet.getBoolean("accounts.is_admin"));
-        user.setAccount(account);
         return user;
+    }
+
+    private Service createService(ResultSet resultSet) throws SQLException {
+        Service service = new Service();
+        service.setId(resultSet.getLong("services.id"));
+        service.setName(resultSet.getString("services.name"));
+        service.setDescription(resultSet.getString("services.description"));
+        service.setPrice(resultSet.getInt("services.price"));
+        return service;
     }
 
     private void setStatementParameters(PreparedStatement preparedStatement, User user) throws SQLException {

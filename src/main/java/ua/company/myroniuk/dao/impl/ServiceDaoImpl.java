@@ -11,15 +11,13 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class ServiceDaoImpl implements ServiceDao {
-    private final String ADD_SERVICE = "INSERT INTO services " +
-            "(id, sim_card_id, name, price, start_date, end_date, is_active) " +
-            "VALUES (null, ?, ?, ?, ?, ?, ?)";
-    private final String GET_SERVICE_BY_ID = "SELECT * FROM services WHERE id = ?";
-    private final String GET_SERVICES_BY_SIM_CARD_ID = "SELECT * FROM services WHERE sim_card_id = ?";
-    private final String GET_ALL_SERVICES = "SELECT * FROM services";
-    private final String UPDATE_SERVICE = "UPDATE services SET name = ?, price = ?, start_date = ?, " +
-                                          "end_date = ?, is_active = ? WHERE id = ?";
-    private final String DELETE_SERVICE = "DELETE FROM services WHERE id = ?";
+    private final String GET_ALL_SERVICES =
+            "SELECT * FROM services";
+    private final String UPDATE_SERVICE =
+            "UPDATE services SET name = ?, price = ?, start_date = ?, " +
+            "end_date = ?, is_active = ? WHERE id = ?";
+    private final String DELETE_SERVICE =
+            "DELETE FROM services WHERE id = ?";
 
     private ServiceDaoImpl() {
     }
@@ -32,50 +30,29 @@ public class ServiceDaoImpl implements ServiceDao {
         return SingletonHolder.INSTANCE;
     }
 
-//    @Override
-//    public long addService(Connection connection, long simCardId, Service service) throws SQLException {
-//        long serviceId = 0;
-//        PreparedStatement preparedStatement = null;
-//        try {
-//            preparedStatement = connection.prepareStatement(ADD_SERVICE, Statement.RETURN_GENERATED_KEYS);
-//            preparedStatement.setLong(1, simCardId);
-//            preparedStatement.setString(2, service.getName());
-//            preparedStatement.setInt(3, service.getPrice());
-//            preparedStatement.setDate(4, Date.valueOf(service.getStartDate()));
-//            preparedStatement.setDate(5, Date.valueOf(service.getEndDate()));
-//            preparedStatement.setBoolean(6, service.isActive());
-//            preparedStatement.executeUpdate();
-//            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-//            if (resultSet != null && resultSet.next()) {
-//                serviceId = resultSet.getLong(1);
-//            }
-//        } finally {
-//            DBManager.closeStatement(preparedStatement);
-//        }
-//        return serviceId;
-//    }
-//
-//    @Override
-//    public List<Service> getServices(Connection connection, long simCardId) throws SQLException {
-//        List<Service> services = new ArrayList<>();
-//        PreparedStatement preparedStatement = null;
-//        try {
-//            preparedStatement = connection.prepareStatement(GET_SERVICES_BY_SIM_CARD_ID);
-//            preparedStatement.setLong(1, simCardId);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            while(resultSet != null && resultSet.next()) {
-//                Service service = new Service();
-//                service.setId(resultSet.getLong("id"));
-//                service.setName(resultSet.getString("name"));
-//                service.setPrice(resultSet.getInt("price"));
-//                service.setStartDate(resultSet.getDate("start_date").toLocalDate());
-//                service.setEndDate(resultSet.getDate("end_date").toLocalDate());
-//                service.setActive(resultSet.getBoolean("is_active"));
-//                services.add(service);
-//            }
-//        } finally {
-//            DBManager.closeStatement(preparedStatement);
-//        }
-//        return services;
-//    }
+    @Override
+    public List<Service> getAllServices() {
+        List<Service> services = new ArrayList<>();
+        try (Connection connection = DBManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_SERVICES);
+        ) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                Service user = createService(resultSet);
+                services.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return services;
+    }
+
+    private Service createService(ResultSet resultSet) throws SQLException {
+        Service service = new Service();
+        service.setId(resultSet.getLong("services.id"));
+        service.setName(resultSet.getString("services.name"));
+        service.setDescription(resultSet.getString("services.description"));
+        service.setPrice(resultSet.getInt("services.price"));
+        return service;
+    }
 }

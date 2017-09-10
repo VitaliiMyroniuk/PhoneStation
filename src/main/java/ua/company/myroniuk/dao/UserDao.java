@@ -1,5 +1,6 @@
 package ua.company.myroniuk.dao;
 
+import ua.company.myroniuk.model.entity.Service;
 import ua.company.myroniuk.model.entity.User;
 import java.util.List;
 
@@ -17,6 +18,8 @@ public interface UserDao {
     List<User> getUnregisteredUsers();
     
     List<User> getDebtors();
+
+    List<Service> getServices(long id);
 
     boolean checkPhoneNumber(String phoneNumber);
 }

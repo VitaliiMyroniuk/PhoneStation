@@ -2,6 +2,7 @@ package ua.company.myroniuk.model.service.impl;
 
 import ua.company.myroniuk.dao.UserDao;
 import ua.company.myroniuk.dao.impl.UserDaoImpl;
+import ua.company.myroniuk.model.entity.Service;
 import ua.company.myroniuk.model.entity.User;
 import ua.company.myroniuk.model.service.UserService;
 import java.util.List;
@@ -47,6 +48,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getDebtors() {
         return userDao.getDebtors();
+    }
+
+    @Override
+    public List<Service> getServices(long id) {
+        return userDao.getServices(id);
     }
 
     @Override

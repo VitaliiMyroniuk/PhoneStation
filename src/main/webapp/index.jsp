@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'uk_UA'}" scope="session"/>
-<c:set var="page" value="${pageContext.request.requestURI}" scope="session"/>
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
@@ -15,7 +14,7 @@
 <body>
 <div class="site-block">
     <div class="header">
-        <jsp:include page="/jsp/header.jsp"/>
+        <jsp:include page="/jsp/general/header.jsp"/>
     </div>
 
     <div class="content-block">
@@ -46,7 +45,7 @@
     </div>
 
     <div class="footer">
-        <jsp:include page="/jsp/footer.jsp"/>
+        <jsp:include page="/jsp/general/footer.jsp"/>
     </div>
 </div>
 </body>

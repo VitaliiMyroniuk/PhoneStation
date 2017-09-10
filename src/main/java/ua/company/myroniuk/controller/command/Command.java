@@ -7,15 +7,18 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public interface Command {
-    String INDEX_JSP = "/index.jsp";    //TODO find out if it is better to transfer paths into the property file.
-    String USER_JSP = "/jsp/user.jsp";
-    String ADMIN_JSP = "/jsp/admin.jsp";
-    String REGISTRATION_JSP = "/jsp/registration.jsp";
-    String SUCCESSFUL_REGISTRATION_JSP = "/jsp/successful_registration.jsp";
-    String ALL_USERS_JSP = "/jsp/all_users.jsp";
-    String NEW_USERS_JSP = "/jsp/new_users.jsp";
-    String DEBTORS_JSP = "/jsp/debtors.jsp";
-    String ERROR_JSP = "/jsp/error.jsp";
+
+    //TODO find out if it is better to transfer paths into the property file.
+    String ADMIN_JSP = "/jsp/admin/admin.jsp";
+    String ALL_USERS_JSP = "/jsp/admin/all_users.jsp";
+    String DEBTORS_JSP = "/jsp/admin/debtors.jsp";
+    String ERROR_JSP = "/jsp/general/error.jsp";
+    String INDEX_JSP = "/index.jsp";
+    String NEW_USERS_JSP = "/jsp/admin/new_users.jsp";
+    String REGISTRATION_JSP = "/jsp/general/registration.jsp";
+    String SERVICES_JSP = "/jsp/user/services.jsp";
+    String SUCCESSFUL_REGISTRATION_JSP = "/jsp/general/successful_registration.jsp";
+    String USER_JSP = "/jsp/user/user.jsp";
 
     /**
      *

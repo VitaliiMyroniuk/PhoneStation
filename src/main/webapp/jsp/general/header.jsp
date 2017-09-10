@@ -17,6 +17,7 @@
                     <option value="en_GB" ${sessionScope.locale == 'en_GB' ? 'selected' : ''}>Eng</option>
                     <option value="uk_UA" ${sessionScope.locale == 'uk_UA' ? 'selected' : ''}>Укр</option>
                 </select>
+                <input type="hidden" name="page" value="${pageContext.request.requestURI}">
             </form>
         </td>
         <td width="5%" align="right">

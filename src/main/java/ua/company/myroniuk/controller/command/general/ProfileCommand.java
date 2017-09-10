@@ -1,5 +1,6 @@
-package ua.company.myroniuk.controller.command;
+package ua.company.myroniuk.controller.command.general;
 
+import ua.company.myroniuk.controller.command.Command;
 import ua.company.myroniuk.model.entity.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

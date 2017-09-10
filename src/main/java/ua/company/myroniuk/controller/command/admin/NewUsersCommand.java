@@ -1,5 +1,6 @@
-package ua.company.myroniuk.controller.command;
+package ua.company.myroniuk.controller.command.admin;
 
+import ua.company.myroniuk.controller.command.Command;
 import ua.company.myroniuk.model.entity.User;
 import ua.company.myroniuk.model.service.UserService;
 import ua.company.myroniuk.model.service.impl.UserServiceImpl;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * @author Vitalii Myroniuk
  */
-public class AllUsersCommand implements Command {
+public class NewUsersCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         User user = (User) request.getSession().getAttribute("user");
@@ -18,9 +19,9 @@ public class AllUsersCommand implements Command {
             return ERROR_JSP;
         } else {
             UserService userService = UserServiceImpl.getInstance();
-            List<User> users = userService.getAllUsers();
-            request.getSession().setAttribute("all_users", users);
-            return ALL_USERS_JSP;
+            List<User> users = userService.getUnregisteredUsers();
+            request.getSession().setAttribute("new_users", users);
+            return NEW_USERS_JSP;
         }
     }
 }
