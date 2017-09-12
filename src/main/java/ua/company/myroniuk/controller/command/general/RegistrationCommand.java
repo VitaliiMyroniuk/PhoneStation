@@ -33,13 +33,13 @@ public class RegistrationCommand implements Command {
             return REGISTRATION_JSP;
         }
 
-        // 4) create account
+        // 3) create account
         Account account = new Account();
         account.setLogin(login);
         account.setPassword(password);
         account.setAdmin(false);
 
-        // 5) create user
+        // 4) create user
         User user = new User();
         user.setAccount(account);
         user.setName(name);
@@ -50,7 +50,7 @@ public class RegistrationCommand implements Command {
         user.setRegistered(false);
         user.setBlocked(false);
 
-        // 6) add the user into the data base
+        // 5) add the user into the data base
         userService.addUser(user);
         return SUCCESSFUL_REGISTRATION_JSP;
     }

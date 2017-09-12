@@ -2,6 +2,7 @@ package ua.company.myroniuk.model.service.impl;
 
 import ua.company.myroniuk.dao.UserDao;
 import ua.company.myroniuk.dao.impl.UserDaoImpl;
+import ua.company.myroniuk.model.entity.Invoice;
 import ua.company.myroniuk.model.entity.Service;
 import ua.company.myroniuk.model.entity.User;
 import ua.company.myroniuk.model.service.UserService;
@@ -31,8 +32,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String login) {
-        return userDao.getUser(login);
+    public User getUserById(long id) {
+        return userDao.getUserById(id);
+    }
+
+    @Override
+    public User getUserByLogin(String login) {
+        return userDao.getUserByLogin(login);
+    }
+
+    @Override
+    public User getUserByPhoneNumber(String phoneNumber) {
+        return userDao.getUserByPhoneNumber(phoneNumber);
     }
 
     @Override
@@ -56,7 +67,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<Invoice> getInvoices(long id) {
+        return userDao.getInvoices(id);
+    }
+
+    @Override
+    public boolean updateBalance(long userId, int sum) {
+        return userDao.updateBalance(userId, sum);
+    }
+
+    @Override
     public boolean checkPhoneNumber(String phoneNumber) {
-        return userDao.checkPhoneNumber(phoneNumber);
+        return userDao.getUserByPhoneNumber(phoneNumber) != null;
     }
 }

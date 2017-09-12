@@ -23,6 +23,7 @@
 
         <div class="main">
             <h3>Debtors</h3>
+            <br>
             <table border="1" cellspacing="0" cellpadding="2">
                 <thead>
                 <tr>

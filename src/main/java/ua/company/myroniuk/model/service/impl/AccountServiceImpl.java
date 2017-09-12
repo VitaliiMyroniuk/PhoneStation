@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public boolean checkLogin(String login) {
-        Account account = accountDao.getAccount(login);
+        Account account = accountDao.getAccountByLogin(login);
         return account != null;
     }
 }

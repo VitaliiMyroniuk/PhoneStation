@@ -12,7 +12,7 @@ public interface AccountDao {
 
     long addAccount(Connection connection, Account account) throws SQLException;
 
-    Account getAccount(String login);
+    Account getAccountByLogin(String login);
 
     /**
      * The method checks the given login and password.

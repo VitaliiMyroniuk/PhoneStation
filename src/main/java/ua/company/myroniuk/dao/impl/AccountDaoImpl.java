@@ -48,7 +48,7 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public Account getAccount(String login) {
+    public Account getAccountByLogin(String login) {
         try (Connection connection = DBManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_ACCOUNT_BY_LOGIN);
         ) {

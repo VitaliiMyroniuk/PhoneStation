@@ -51,4 +51,39 @@ public class Invoice {
     public void setPaid(boolean paid) {
         isPaid = paid;
     }
+
+    @Override
+    public int hashCode() {
+        return (int) this.id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Invoice invoice = (Invoice) obj;
+        if (this.id != invoice.id) {
+            return false;
+        }
+        if ((this.date == null) ? (invoice.date != null) : !this.date.equals(invoice.date)) {
+            return false;
+        }
+        if ((this.description == null) ? (invoice.description != null) : !this.description.equals(invoice.description)) {
+            return false;
+        }
+        if (this.price != invoice.price) {
+            return false;
+        }
+        if (this.isPaid != invoice.isPaid) {
+            return false;
+        }
+        return true;
+    }
 }

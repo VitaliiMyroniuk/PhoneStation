@@ -1,5 +1,6 @@
 package ua.company.myroniuk.dao;
 
+import ua.company.myroniuk.model.entity.Invoice;
 import ua.company.myroniuk.model.entity.Service;
 import ua.company.myroniuk.model.entity.User;
 import java.util.List;
@@ -11,7 +12,11 @@ public interface UserDao {
 
     long addUser(User user);
 
-    User getUser(String login);
+    User getUserById(long id);
+
+    User getUserByLogin(String login);
+
+    User getUserByPhoneNumber(String phoneNumber);
 
     List<User> getAllUsers();
 
@@ -21,5 +26,7 @@ public interface UserDao {
 
     List<Service> getServices(long id);
 
-    boolean checkPhoneNumber(String phoneNumber);
+    List<Invoice> getInvoices(long id);
+
+    boolean updateBalance(long userId, int sum);
 }

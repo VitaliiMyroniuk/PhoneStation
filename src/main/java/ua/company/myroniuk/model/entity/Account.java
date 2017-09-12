@@ -40,4 +40,36 @@ public class Account {
     public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
+
+    @Override
+    public int hashCode() {
+        return (int) this.id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Account account = (Account) obj;
+        if (this.id != account.id) {
+            return false;
+        }
+        if ((this.login == null) ? (account.login != null) : !this.login.equals(account.login)) {
+            return false;
+        }
+        if ((this.password == null) ? (account.password != null) : !this.password.equals(account.password)) {
+            return false;
+        }
+        if (this.isAdmin != account.isAdmin) {
+            return false;
+        }
+        return true;
+    }
 }

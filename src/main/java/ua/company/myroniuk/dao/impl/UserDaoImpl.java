@@ -4,6 +4,7 @@ import ua.company.myroniuk.dao.AccountDao;
 import ua.company.myroniuk.dao.DBManager;
 import ua.company.myroniuk.dao.UserDao;
 import ua.company.myroniuk.model.entity.Account;
+import ua.company.myroniuk.model.entity.Invoice;
 import ua.company.myroniuk.model.entity.Service;
 import ua.company.myroniuk.model.entity.User;
 import java.sql.*;
@@ -18,9 +19,15 @@ public class UserDaoImpl implements UserDao {
             "INSERT INTO users " +
             "(id, account_id, name, middle_name, surname, phone_number, balance, is_registered, is_blocked) " +
             "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String GET_USER_BY_ID =
+            "SELECT * FROM users " +
+            "INNER JOIN accounts ON account_id = accounts.id WHERE users.id = ?";
     private final String GET_USER_BY_LOGIN =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE login = ?";
+    private final String GET_USER_BY_PHONE_NUMBER =
+            "SELECT * FROM users " +
+            "INNER JOIN accounts ON account_id = accounts.id WHERE phone_number = ?";
     private final String GET_ALL_USERS =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id";
@@ -30,12 +37,17 @@ public class UserDaoImpl implements UserDao {
     private final String GET_DEBTORS =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE balance < 0";
-    private final String GET_PHONE_NUMBER =
-            "SELECT phone_number FROM users WHERE phone_number = ? ";
     private final String GET_SERVICES =
             "SELECT * FROM users " +
             "INNER JOIN users_services ON users.id = user_id " +
-            "INNER JOIN services ON service_id = services.id";
+            "INNER JOIN services ON service_id = services.id WHERE users.id = ?";
+    private final String GET_INVOICES =
+            "SELECT * FROM users " +
+            "INNER JOIN invoices ON users.id = user_id WHERE users.id = ?";
+    private final String GET_USER_BALANCE =
+            "SELECT balance FROM users WHERE id = ? FOR UPDATE";
+    private final String UPDATE_USER_BALANCE =
+            "UPDATE users SET balance = ? WHERE id = ?";
 
 
     private UserDaoImpl() {
@@ -79,7 +91,23 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUser(String login) {
+    public User getUserById(long id) {
+        try (Connection connection = DBManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_BY_ID);
+        ) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                return createUser(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public User getUserByLogin(String login) {
         try (Connection connection = DBManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_BY_LOGIN);
         ) {
@@ -93,6 +121,23 @@ public class UserDaoImpl implements UserDao {
         }
         return null;
     }
+
+    @Override
+    public User getUserByPhoneNumber(String phoneNumber) {
+        try (Connection connection = DBManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_BY_PHONE_NUMBER);
+        ) {
+            preparedStatement.setString(1, phoneNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                return createUser(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     @Override
     public List<User> getAllUsers() {
@@ -151,10 +196,11 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = DBManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_SERVICES);
         ) {
+            preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
-                Service user = createService(resultSet);
-                services.add(user);
+                Service service = createService(resultSet);
+                services.add(service);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -163,17 +209,50 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean checkPhoneNumber(String phoneNumber) {
+    public List<Invoice> getInvoices(long id) {
+        List<Invoice> invoices = new ArrayList<>();
         try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_PHONE_NUMBER);
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_INVOICES);
         ) {
-            preparedStatement.setString(1, phoneNumber);
+            preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
-                return true;
+            while(resultSet.next()) {
+                Invoice invoice = createInvoice(resultSet);
+                invoices.add(invoice);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return invoices;
+    }
+
+    @Override
+    public boolean updateBalance(long userId, int sum) {
+        int currentBalance = 0;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;   //TODO find out the following questions
+        try {
+            connection = DBManager.getConnection();
+            connection.setAutoCommit(false);  // 1) Should we put setAutoCommit(true) after commit.
+            preparedStatement = connection.prepareStatement(GET_USER_BALANCE);  // 2) Is this query good?
+            preparedStatement.setLong(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                currentBalance = resultSet.getInt("balance");
+            }
+//            DBManager.closeStatement(preparedStatement);  // 3) Is it necessary?
+            preparedStatement = connection.prepareStatement(UPDATE_USER_BALANCE);
+            preparedStatement.setInt(1, currentBalance + sum);
+            preparedStatement.setLong(2, userId);
+            preparedStatement.executeUpdate();
+            connection.commit();
+            return true;
+        } catch (SQLException e) {
+            DBManager.rollback(connection);
+            e.printStackTrace();
+        } finally {
+            DBManager.closeConnection(connection);
+            DBManager.closeStatement(preparedStatement);
         }
         return false;
     }
@@ -209,6 +288,16 @@ public class UserDaoImpl implements UserDao {
         service.setDescription(resultSet.getString("services.description"));
         service.setPrice(resultSet.getInt("services.price"));
         return service;
+    }
+
+    private Invoice createInvoice(ResultSet resultSet) throws SQLException {
+        Invoice invoice = new Invoice();
+        invoice.setId(resultSet.getLong("invoices.id"));
+        invoice.setDate(resultSet.getDate("invoices.date").toLocalDate());
+        invoice.setDescription(resultSet.getString("invoices.description"));
+        invoice.setPrice(resultSet.getInt("invoices.price"));
+        invoice.setPaid(resultSet.getBoolean("invoices.is_paid"));
+        return invoice;
     }
 
     private void setStatementParameters(PreparedStatement preparedStatement, User user) throws SQLException {

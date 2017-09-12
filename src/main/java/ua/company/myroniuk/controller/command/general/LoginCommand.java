@@ -22,12 +22,12 @@ public class LoginCommand implements Command {
         if (isOnline != null || result < 0) {  //TODO try to refactor
             return INDEX_JSP;
         } else if (result == 0) {
-            User user = UserServiceImpl.getInstance().getUser(login);
+            User user = UserServiceImpl.getInstance().getUserByLogin(login);
             request.getSession().setAttribute("user", user);
             request.getSession().setAttribute("is_online", true);
             return USER_JSP;
         } else {
-            User user = UserServiceImpl.getInstance().getUser(login);
+            User user = UserServiceImpl.getInstance().getUserByLogin(login);
             request.getSession().setAttribute("user", user);
             request.getSession().setAttribute("is_online", true);
             return ADMIN_JSP;

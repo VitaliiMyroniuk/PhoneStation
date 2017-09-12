@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Services page</title>
+    <title>Invoices page</title>
     <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -22,41 +22,40 @@
         </div>
 
         <div class="main">
-            <h3>Services</h3>
+            <h3>Invoices</h3>
             <br>
             <table border="1" cellspacing="0" cellpadding="2">
                 <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>Date</th>
                     <th>Description</th>
                     <th>Price</th>
                     <th>Status</th>
-                    <th>Edit</th>
+                    <th>Pay</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="service" items="${services}">
+                <c:forEach var="invoice" items="${user.invoices}">
                     <tr>
-                        <td><c:out value="${service.name}"/></td>
-                        <td><c:out value="${service.description}"/></td>
-                        <td><c:out value="${service.price}"/></td>
+                        <td><c:out value="${invoice.date}"/></td>
+                        <td><c:out value="${invoice.description}"/></td>
+                        <td><c:out value="${invoice.price}"/></td>
                         <td>
                             <c:choose>
-                                <c:when test="${user.services.contains(service)}">
-                                    <c:out value="active"/>
+                                <c:when test="${invoice.isPaid()}">
+                                    <c:out value="paid"/>
                                 </c:when>
                                 <c:otherwise>
-                                    <c:out value="not active"/>
+                                    <c:out value="not paid"/>
                                 </c:otherwise>
                             </c:choose>
                         </td>
                         <td>
                             <c:choose>
-                                <c:when test="${user.services.contains(service)}">
-                                    <a href="/controller?query=turn_off_service&service_id=${service.id}">turn off</a>
+                                <c:when test="${invoice.isPaid()}">
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="/controller?query=turn_on_service&service_id=${service.id}">turn on</a>
+                                    <a href="/controller?query=pay_invoice&invoice_id=${invoice.id}">pay</a>
                                 </c:otherwise>
                             </c:choose>
                         </td>
