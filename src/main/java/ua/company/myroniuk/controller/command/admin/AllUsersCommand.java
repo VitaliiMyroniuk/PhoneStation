@@ -14,14 +14,9 @@ import java.util.List;
 public class AllUsersCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null || !user.getAccount().isAdmin()) {
-            return ERROR_JSP;
-        } else {
-            UserService userService = UserServiceImpl.getInstance();
-            List<User> users = userService.getAllUsers();
-            request.getSession().setAttribute("all_users", users);
-            return ALL_USERS_JSP;
-        }
+        UserService userService = UserServiceImpl.getInstance();
+        List<User> users = userService.getAllUsers();
+        request.getSession().setAttribute("all_users", users);
+        return ALL_USERS_JSP;
     }
 }

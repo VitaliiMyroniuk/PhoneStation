@@ -53,10 +53,14 @@
                         <td>
                             <c:choose>
                                 <c:when test="${user.services.contains(service)}">
-                                    <a href="/controller?query=turn_off_service&service_id=${service.id}">turn off</a>
+                                    <a href="/controller?query=switch_off_service&service_id=${service.id}">
+                                        switch off
+                                    </a>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="/controller?query=turn_on_service&service_id=${service.id}">turn on</a>
+                                    <a href="/controller?query=switch_on_service&service_id=${service.id}">
+                                        switch on
+                                    </a>
                                 </c:otherwise>
                             </c:choose>
                         </td>

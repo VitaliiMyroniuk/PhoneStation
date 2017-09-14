@@ -8,10 +8,16 @@ import java.io.IOException;
 /**
  * @author Vitalii Myroniuk
  */
-//@WebFilter(urlPatterns = {"/*"},
-//           initParams = {@WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding parameter")})
+@WebFilter(urlPatterns = {"/*"},
+           initParams = {@WebInitParam(
+                   name = "encoding",
+                   value = "UTF-8",
+                   description = "Encoding parameter")})
 public class EncodingFilter implements Filter {
 
+    /**
+     * Encoding for the current request and response.
+     */
     private String encoding;
 
     @Override

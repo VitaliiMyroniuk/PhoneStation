@@ -22,7 +22,7 @@
         </div>
 
         <div class="main">
-            <h3>User page</h3>
+            <h3>Your profile</h3>
             <br>
             <table>
                 <tr>

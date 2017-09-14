@@ -1,11 +1,17 @@
 package ua.company.myroniuk.model.service.impl;
 
+import ua.company.myroniuk.dao.AccountDao;
+import ua.company.myroniuk.dao.DBManager;
 import ua.company.myroniuk.dao.UserDao;
+import ua.company.myroniuk.dao.impl.AccountDaoImpl;
 import ua.company.myroniuk.dao.impl.UserDaoImpl;
+import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.entity.Invoice;
 import ua.company.myroniuk.model.entity.Service;
 import ua.company.myroniuk.model.entity.User;
 import ua.company.myroniuk.model.service.UserService;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -14,6 +20,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserDao userDao = UserDaoImpl.getInstance();
+    private AccountDao accountDao = AccountDaoImpl.getInstance();
 
     private UserServiceImpl() {
     }
@@ -28,7 +35,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public long addUser(User user) {
-        return userDao.addUser(user);
+        long userId = -1;
+        Connection connection = null;
+        try {
+            connection = DBManager.getConnection();
+            connection.setAutoCommit(false);
+            Account account = user.getAccount();
+            long accountId = accountDao.addAccount(connection, account);
+            account.setId(accountId);
+            user.setAccount(account);
+            userId = userDao.addUser(connection, user);
+            connection.commit();
+        } catch (SQLException e) {
+            DBManager.rollback(connection);
+            e.printStackTrace();
+        } finally {
+            DBManager.closeConnection(connection);
+        }
+        return userId;
+    }
+
+    @Override
+    public long addService(long userId, long serviceId) {
+        return userDao.addService(userId, serviceId);
     }
 
     @Override

@@ -3,6 +3,8 @@ package ua.company.myroniuk.dao;
 import ua.company.myroniuk.model.entity.Invoice;
 import ua.company.myroniuk.model.entity.Service;
 import ua.company.myroniuk.model.entity.User;
+
+import java.sql.Connection;
 import java.util.List;
 
 /**
@@ -10,7 +12,9 @@ import java.util.List;
  */
 public interface UserDao {
 
-    long addUser(User user);
+    long addUser(Connection connection, User user);
+
+    long addService(long userId, long serviceId);
 
     User getUserById(long id);
 

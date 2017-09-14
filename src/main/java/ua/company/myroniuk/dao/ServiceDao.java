@@ -10,5 +10,7 @@ import java.util.List;
  */
 public interface ServiceDao {
 
+    Service getService(Connection connection, long id) throws SQLException;
+
     List<Service> getAllServices();
 }

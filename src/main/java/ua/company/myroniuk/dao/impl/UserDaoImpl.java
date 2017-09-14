@@ -1,13 +1,12 @@
 package ua.company.myroniuk.dao.impl;
 
-import ua.company.myroniuk.dao.AccountDao;
-import ua.company.myroniuk.dao.DBManager;
-import ua.company.myroniuk.dao.UserDao;
+import ua.company.myroniuk.dao.*;
 import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.entity.Invoice;
 import ua.company.myroniuk.model.entity.Service;
 import ua.company.myroniuk.model.entity.User;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +18,8 @@ public class UserDaoImpl implements UserDao {
             "INSERT INTO users " +
             "(id, account_id, name, middle_name, surname, phone_number, balance, is_registered, is_blocked) " +
             "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String ADD_SERVICE =
+            "INSERT INTO users_services (user_id, service_id) VALUES (?, ?)";
     private final String GET_USER_BY_ID =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE users.id = ?";
@@ -47,7 +48,7 @@ public class UserDaoImpl implements UserDao {
     private final String GET_USER_BALANCE =
             "SELECT balance FROM users WHERE id = ? FOR UPDATE";
     private final String UPDATE_USER_BALANCE =
-            "UPDATE users SET balance = ? WHERE id = ?";
+            "UPDATE users SET balance = balance + ? WHERE id = ?";
 
 
     private UserDaoImpl() {
@@ -62,24 +63,64 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public long addUser(User user) {
+    public long addUser(Connection connection, User user) {
         long userId = -1;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = DBManager.getConnection();
-            connection.setAutoCommit(false);
-            AccountDao accountDao = AccountDaoImpl.getInstance();
-            long accountId = accountDao.addAccount(connection, user.getAccount());
-            preparedStatement = connection.prepareStatement(ADD_USER, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setLong(1, accountId);
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(ADD_USER, Statement.RETURN_GENERATED_KEYS)
+        ) {
             setStatementParameters(preparedStatement, user);
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
                 userId = resultSet.getLong(1);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userId;
+    }
+
+    @Override
+    public long addService(long userId, long serviceId) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = DBManager.getConnection();
+            connection.setAutoCommit(false);
+            // 1) switch on the service for the user
+            preparedStatement = connection.prepareStatement(ADD_SERVICE);
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, serviceId);
+            preparedStatement.executeUpdate();
+            // 2) get the switched on service
+            ServiceDao serviceDao = ServiceDaoImpl.getInstance();
+            Service service = serviceDao.getService(connection, serviceId);
+            // 3) create invoice for the current service
+            Invoice invoice = new Invoice();
+            invoice.setDate(LocalDate.now());
+            invoice.setDescription("Invoice for a service " + service.getName());
+            invoice.setPrice(service.getPrice());
+            invoice.setPaid(false);
+            // 4) add the corresponding invoice into the data base
+            InvoiceDao invoiceDao = InvoiceDaoImpl.getInstance();
+            invoiceDao.addInvoice(connection, invoice, userId);
+
+//            // 3) get the user balance
+//            preparedStatement = connection.prepareStatement(GET_USER_BALANCE);
+//            preparedStatement.setLong(1, userId);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            if(resultSet.next()) {
+//                currentBalance = resultSet.getInt("balance");
+//            }
+//            // 4) withdraw money for the service
+//            preparedStatement = connection.prepareStatement(UPDATE_USER_BALANCE);
+//            preparedStatement.setInt(1, currentBalance - price);
+//            preparedStatement.setLong(2, userId);
+//            preparedStatement.executeUpdate();
+
+            // 4) commit
             connection.commit();
+            return serviceId;
         } catch (SQLException e) {
             DBManager.rollback(connection);
             e.printStackTrace();
@@ -87,7 +128,7 @@ public class UserDaoImpl implements UserDao {
             DBManager.closeConnection(connection);
             DBManager.closeStatement(preparedStatement);
         }
-        return userId;
+        return -1;
     }
 
     @Override
@@ -228,31 +269,15 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean updateBalance(long userId, int sum) {
-        int currentBalance = 0;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;   //TODO find out the following questions
-        try {
-            connection = DBManager.getConnection();
-            connection.setAutoCommit(false);  // 1) Should we put setAutoCommit(true) after commit.
-            preparedStatement = connection.prepareStatement(GET_USER_BALANCE);  // 2) Is this query good?
-            preparedStatement.setLong(1, userId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
-                currentBalance = resultSet.getInt("balance");
-            }
-//            DBManager.closeStatement(preparedStatement);  // 3) Is it necessary?
-            preparedStatement = connection.prepareStatement(UPDATE_USER_BALANCE);
-            preparedStatement.setInt(1, currentBalance + sum);
+        try (Connection connection = DBManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_BALANCE);
+        ) {
+            preparedStatement.setInt(1, sum);
             preparedStatement.setLong(2, userId);
             preparedStatement.executeUpdate();
-            connection.commit();
             return true;
         } catch (SQLException e) {
-            DBManager.rollback(connection);
             e.printStackTrace();
-        } finally {
-            DBManager.closeConnection(connection);
-            DBManager.closeStatement(preparedStatement);
         }
         return false;
     }
@@ -301,6 +326,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     private void setStatementParameters(PreparedStatement preparedStatement, User user) throws SQLException {
+        preparedStatement.setLong(1, user.getAccount().getId());
         preparedStatement.setString(2, user.getName());
         preparedStatement.setString(3, user.getMiddleName());
         preparedStatement.setString(4, user.getSurname());

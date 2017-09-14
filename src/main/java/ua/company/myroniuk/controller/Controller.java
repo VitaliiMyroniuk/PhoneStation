@@ -25,7 +25,6 @@ public class Controller extends HttpServlet {
     }
 
     protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         String query = request.getParameter("query");
         Command command = CommandFactory.createCommand(query);

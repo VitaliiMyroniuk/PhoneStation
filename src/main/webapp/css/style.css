@@ -2,18 +2,6 @@
     padding:0;
     margin:0;
 }
-.site-block
-{
-    background:#FFFFFF;
-    width:1200px; /* ширина сайта*/
-    height:600px;
-    margin: 0 auto; /* выравниваем сайт по центру*/
-}
-.header
-{
-    background:#DCDCDC;
-    padding:5px;
-}
 .content-block
 {
     background:#FFFFFF;
@@ -21,12 +9,15 @@
     overflow: hidden;
     padding:10px 5px 15px 5px;
 }
-.menu
+.footer
 {
-    background:#F0F8FF;
-    width:150px; /* ширина блока */
-    height:200px;
-    float:left; /* прижатие блока */
+    background:#DCDCDC;
+    padding:5px;
+}
+.header
+{
+    background:#DCDCDC;
+    padding:5px;
 }
 .main
 {
@@ -35,8 +26,17 @@
     width:1030px; /* ширина блока */
     float:right; /* прижатие блока */
 }
-.footer
+.menu
 {
-    background:#DCDCDC;
-    padding:5px;
+    background:#F0F8FF;
+    width:150px; /* ширина блока */
+    height:200px;
+    float:left; /* прижатие блока */
+}
+.site-block
+{
+    background:#FFFFFF;
+    width:1200px; /* ширина сайта*/
+    height:600px;
+    margin: 0 auto; /* выравниваем сайт по центру*/
 }

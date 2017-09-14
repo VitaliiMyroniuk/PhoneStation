@@ -19,8 +19,8 @@ public class DBManager {
             return dataSource.getConnection();
         } catch (NamingException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     public static void rollback(Connection connection) {

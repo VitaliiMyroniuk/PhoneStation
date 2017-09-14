@@ -6,7 +6,7 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class User {
-    private long id;                // TODO find what is better long or Long?
+    private long id;
     private Account account;
     private String name;
     private String middleName;
@@ -141,7 +141,7 @@ public class User {
         if (this.balance != user.balance) {
             return false;
         }
-        // TODO find if this overriding is correct?
+        // TODO find out if this overriding is correct?
         if (this.services != user.services && (this.services == null || !this.services.equals(user.services))) {
             return false;
         }

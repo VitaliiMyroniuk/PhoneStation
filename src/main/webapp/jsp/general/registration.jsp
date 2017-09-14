@@ -46,6 +46,10 @@
                     <td><input type="text" name="password"></td>
                 </tr>
                 <tr>
+                    <td><fmt:message key="registration.confirm.password" bundle="${rb}"/></td>
+                    <td><input type="text" name="confirmed_password"></td>
+                </tr>
+                <tr>
                     <td><input type="submit" value=<fmt:message key="registration.send" bundle="${rb}"/>></td>
                 </tr>
             </table>

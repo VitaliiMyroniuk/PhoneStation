@@ -7,6 +7,7 @@ import ua.company.myroniuk.controller.command.general.*;
 import ua.company.myroniuk.controller.command.user.AccountRefillCommand;
 import ua.company.myroniuk.controller.command.user.InvoicesCommand;
 import ua.company.myroniuk.controller.command.user.ServicesCommand;
+import ua.company.myroniuk.controller.command.user.SwitchOnServiceCommand;
 
 /**
  * @author Vitalii Myroniuk
@@ -50,6 +51,9 @@ public class CommandFactory {
                 break;
             case "services" :
                 command = new ServicesCommand();
+                break;
+            case "switch_on_service" :
+                command = new SwitchOnServiceCommand();
                 break;
             default:
                 command = new UnknownCommand();

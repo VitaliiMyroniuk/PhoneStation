@@ -12,6 +12,8 @@ public interface UserService {
 
     long addUser(User user);
 
+    long addService(long userId, long serviceId);
+
     User getUserById(long id);
 
     User getUserByLogin(String login);

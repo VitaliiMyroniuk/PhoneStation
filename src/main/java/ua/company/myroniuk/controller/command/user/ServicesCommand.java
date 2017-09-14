@@ -19,18 +19,14 @@ public class ServicesCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
-            return ERROR_JSP;
-        } else {
-            UserService userService = UserServiceImpl.getInstance();
-            long userId = user.getId();
-            List<Service> userServices = userService.getServices(userId);
-            user.setServices(userServices);
-            request.getSession().setAttribute("user", user);
-            ServiceService serviceService = ServiceServiceImpl.getInstance();
-            List<Service> allServices = serviceService.getAllServices();
-            request.getSession().setAttribute("services", allServices);
-            return SERVICES_JSP;
-        }
+        UserService userService = UserServiceImpl.getInstance();
+        long userId = user.getId();
+        List<Service> userServices = userService.getServices(userId);
+        user.setServices(userServices);
+        request.getSession().setAttribute("user", user);
+        ServiceService serviceService = ServiceServiceImpl.getInstance();
+        List<Service> allServices = serviceService.getAllServices();
+        request.getSession().setAttribute("services", allServices);
+        return SERVICES_JSP;
     }
 }

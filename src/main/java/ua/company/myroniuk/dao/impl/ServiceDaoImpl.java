@@ -13,6 +13,8 @@ import java.util.List;
 public class ServiceDaoImpl implements ServiceDao {
     private final String GET_ALL_SERVICES =
             "SELECT * FROM services";
+    private final String GET_SERVICE_BY_ID =
+            "SELECT * FROM services where id = ?";
     private final String UPDATE_SERVICE =
             "UPDATE services SET name = ?, price = ?, start_date = ?, " +
             "end_date = ?, is_active = ? WHERE id = ?";
@@ -28,6 +30,20 @@ public class ServiceDaoImpl implements ServiceDao {
 
     public static ServiceDaoImpl getInstance() {
         return SingletonHolder.INSTANCE;
+    }
+
+    @Override
+    public Service getService(Connection connection, long id) throws SQLException {
+        Service service = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_SERVICE_BY_ID);
+        ) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                service = createService(resultSet);
+            }
+        }
+        return service;
     }
 
     @Override

@@ -14,14 +14,9 @@ import java.util.List;
 public class DebtorsCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null || !user.getAccount().isAdmin()) {
-            return ERROR_JSP;
-        } else {
-            UserService userService = UserServiceImpl.getInstance();
-            List<User> users = userService.getDebtors();
-            request.getSession().setAttribute("debtors", users);
-            return DEBTORS_JSP;
-        }
+        UserService userService = UserServiceImpl.getInstance();
+        List<User> users = userService.getDebtors();
+        request.getSession().setAttribute("debtors", users);
+        return DEBTORS_JSP;
     }
 }

@@ -8,6 +8,7 @@
     <tr>
         <td width="90%" align="left">
             <a href="/controller?query=profile">
+                <%--<img src="/image/logo.png">--%>
                 <fmt:message key="header.phone.station" bundle="${rb}"/>
             </a>
         </td>
