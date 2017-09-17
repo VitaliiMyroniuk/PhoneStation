@@ -8,7 +8,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Debtors page</title>
-    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="site-block">
@@ -22,18 +22,19 @@
         </div>
 
         <div class="main">
-            <h3>Debtors</h3>
+            <h3><fmt:message key="admin.debtors" bundle="${rb}"/></h3>
             <br>
             <table border="1" cellspacing="0" cellpadding="2">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Middle name</th>
-                    <th>Surname</th>
-                    <th>Phone number</th>
-                    <th>Balance</th>
-                    <th>Invoices</th>
-                    <th>Block</th>
+                    <th><fmt:message key="admin.table.name" bundle="${rb}"/></th>
+                    <th><fmt:message key="admin.table.middle_name" bundle="${rb}"/></th>
+                    <th><fmt:message key="admin.table.surname" bundle="${rb}"/></th>
+                    <th><fmt:message key="admin.table.phone.number" bundle="${rb}"/></th>
+                    <th><fmt:message key="admin.table.balance" bundle="${rb}"/></th>
+                    <th><fmt:message key="admin.table.unpaid.invoices" bundle="${rb}"/></th>
+                    <th><fmt:message key="admin.table.status" bundle="${rb}"/></th>
+                    <th><fmt:message key="admin.table.change.status" bundle="${rb}"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,8 +45,35 @@
                         <td><c:out value="${user.surname}"/></td>
                         <td><c:out value="${user.phoneNumber}"/></td>
                         <td><c:out value="${user.balance}"/></td>
-                        <td><a href="/controller?query=show_invoices&user_id=${user.id}">show</a></td>
-                        <td><a href="/controller?query=block_user&user_id=${user.id}">block</a></td>
+                        <td>
+                            <a href="/controller?query=user_invoices&user_id=${user.id}">
+                                <fmt:message key="admin.table.show" bundle="${rb}"/>
+                            </a>
+                        </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${user.isBlocked()}">
+                                    <fmt:message key="admin.table.blocked" bundle="${rb}"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <fmt:message key="admin.table.active" bundle="${rb}"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${user.isBlocked()}">
+                                    <a href="/controller?query=unblock_user&user_id=${user.id}">
+                                        <fmt:message key="admin.table.unblock" bundle="${rb}"/>
+                                    </a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="/controller?query=block_user&user_id=${user.id}">
+                                        <fmt:message key="admin.table.block" bundle="${rb}"/>
+                                    </a>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>

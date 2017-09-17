@@ -20,6 +20,7 @@ public interface Command {
     String REGISTRATION_JSP = "/jsp/general/registration.jsp";
     String SERVICES_JSP = "/jsp/user/services.jsp";
     String SUCCESSFUL_REGISTRATION_JSP = "/jsp/general/successful_registration.jsp";
+    String USER_INVOICES_JSP = "/jsp/admin/user_invoices.jsp";
     String USER_JSP = "/jsp/user/user.jsp";
 
     String execute(HttpServletRequest request, HttpServletResponse response);

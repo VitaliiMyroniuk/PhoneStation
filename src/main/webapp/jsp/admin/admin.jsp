@@ -8,7 +8,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Admin page</title>
-    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="site-block">
@@ -22,7 +22,26 @@
         </div>
 
         <div class="main">
-            <h3>Admin page</h3>
+            <h3>
+                <fmt:message key="admin.hello" bundle="${rb}"/>, ${user.name} ${user.surname}!</h3>
+            </h3>
+            <br>
+            <fmt:message key="admin.info" bundle="${rb}"/>
+            <br><br>
+            <table>
+                <tr>
+                    <td> <fmt:message key="admin.all.users.count" bundle="${rb}"/> </td>
+                    <td>${user_count_info[0]}</td>
+                </tr>
+                <tr>
+                    <td><fmt:message key="admin.new.users.count" bundle="${rb}"/> </td>
+                    <td>${user_count_info[1]}</td>
+                </tr>
+                <tr>
+                    <td><fmt:message key="admin.debtors.count" bundle="${rb}"/> </td>
+                    <td>${user_count_info[2]}</td>
+                </tr>
+            </table>
         </div>
     </div>
 

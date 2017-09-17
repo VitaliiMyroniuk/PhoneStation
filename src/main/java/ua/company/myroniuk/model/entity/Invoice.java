@@ -1,13 +1,14 @@
 package ua.company.myroniuk.model.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @author Vitalii Myroniuk
  */
 public class Invoice {
     private long id;
-    private LocalDate date;
+    private LocalDateTime dateTime;
     private String description;
     private int price;
     private boolean isPaid;
@@ -20,12 +21,12 @@ public class Invoice {
         this.id = id;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String getDescription() {
@@ -72,7 +73,7 @@ public class Invoice {
         if (this.id != invoice.id) {
             return false;
         }
-        if ((this.date == null) ? (invoice.date != null) : !this.date.equals(invoice.date)) {
+        if ((this.dateTime == null) ? (invoice.dateTime != null) : !this.dateTime.equals(invoice.dateTime)) {
             return false;
         }
         if ((this.description == null) ? (invoice.description != null) : !this.description.equals(invoice.description)) {

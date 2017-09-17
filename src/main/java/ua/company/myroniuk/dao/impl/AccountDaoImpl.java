@@ -10,10 +10,13 @@ import java.sql.*;
  * @author Vitalii Myroniuk
  */
 public class AccountDaoImpl implements AccountDao {
+
     private final String ADD_ACCOUNT =
             "INSERT INTO accounts (id, login, password, is_admin) VALUES (null, ?, ?, ?)";
+
     private final String GET_ACCOUNT_BY_LOGIN =
             "SELECT * FROM accounts WHERE login = ?";
+
     private final String GET_DATA_BY_LOGIN_AND_PASSWORD =
             "SELECT is_admin, is_registered FROM accounts " +
             "INNER JOIN users ON accounts.id = account_id WHERE login = ? AND password = ?";

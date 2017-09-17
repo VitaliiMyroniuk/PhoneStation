@@ -11,12 +11,14 @@ import java.util.List;
 /**
  * @author Vitalii Myroniuk
  */
-public class NewUsersCommand implements Command {
+public class UnblockUserCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         UserService userService = UserServiceImpl.getInstance();
-        List<User> users = userService.getUnregisteredUsers();
-        request.setAttribute("new_users", users);
-        return NEW_USERS_JSP;
+        long userId = Long.parseLong(request.getParameter("user_id"));
+        userService.updateIsBlocked(userId, false);
+        List<User> debtors = userService.getDebtors();
+        request.setAttribute("debtors", debtors);
+        return DEBTORS_JSP;
     }
 }

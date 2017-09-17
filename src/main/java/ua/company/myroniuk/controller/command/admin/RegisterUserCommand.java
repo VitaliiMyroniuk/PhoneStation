@@ -11,10 +11,12 @@ import java.util.List;
 /**
  * @author Vitalii Myroniuk
  */
-public class NewUsersCommand implements Command {
+public class RegisterUserCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         UserService userService = UserServiceImpl.getInstance();
+        long userId = Long.parseLong(request.getParameter("user_id"));
+        userService.updateIsRegistered(userId);
         List<User> users = userService.getUnregisteredUsers();
         request.setAttribute("new_users", users);
         return NEW_USERS_JSP;

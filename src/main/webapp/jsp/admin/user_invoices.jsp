@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>All users page</title>
+    <title>Invoices page</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -22,24 +22,33 @@
         </div>
 
         <div class="main">
-            <h3><fmt:message key="admin.all.users" bundle="${rb}"/></h3>
+            <h3><fmt:message key="admin.table.unpaid.invoices" bundle="${rb}"/></h3>
+            <br>
+            <table>
+                <tr>
+                    <td><fmt:message key="admin.table.user" bundle="${rb}"/>: </td>
+                    <td>${subscriber.name} ${subscriber.middleName} ${subscriber.surname}</td>
+                </tr>
+                <tr>
+                    <td><fmt:message key="admin.table.phone.number" bundle="${rb}"/>: </td>
+                    <td>${subscriber.phoneNumber}</td>
+                </tr>
+            </table>
             <br>
             <table border="1" cellspacing="0" cellpadding="2">
                 <thead>
                 <tr>
-                    <th><fmt:message key="admin.table.name" bundle="${rb}"/></th>
-                    <th><fmt:message key="admin.table.middle_name" bundle="${rb}"/></th>
-                    <th><fmt:message key="admin.table.surname" bundle="${rb}"/></th>
-                    <th><fmt:message key="admin.table.phone.number" bundle="${rb}"/></th>
+                    <th><fmt:message key="admin.table.date" bundle="${rb}"/></th>
+                    <th><fmt:message key="admin.table.description" bundle="${rb}"/></th>
+                    <th><fmt:message key="admin.table.price" bundle="${rb}"/></th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="user" items="${all_users}">
+                <c:forEach var="invoice" items="${user_invoices}">
                     <tr>
-                        <td><c:out value="${user.name}"/></td>
-                        <td><c:out value="${user.middleName}"/></td>
-                        <td><c:out value="${user.surname}"/></td>
-                        <td><c:out value="${user.phoneNumber}"/></td>
+                        <td><c:out value="${invoice.dateTime}"/></td>
+                        <td><c:out value="${invoice.description}"/></td>
+                        <td><c:out value="${invoice.price}"/></td>
                     </tr>
                 </c:forEach>
                 </tbody>

@@ -27,8 +27,9 @@ public class DBManager {
         if (connection != null) {
             try {
                 connection.rollback();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
     }
@@ -39,6 +40,7 @@ public class DBManager {
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
     }
@@ -49,6 +51,7 @@ public class DBManager {
                 statement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
     }

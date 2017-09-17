@@ -13,7 +13,7 @@ public class User {
     private String surname;
     private String phoneNumber;
     private int balance;
-    private List<Service> services;  // TODO answer why we use List (ArrayLis) here?
+    private List<Service> services;
     private List<Invoice> invoices;
     private boolean isRegistered;
     private boolean isBlocked;
@@ -122,7 +122,7 @@ public class User {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final User user = (User) obj;  // TODO find out the presents of the final modifier
+        final User user = (User) obj;
         if (this.id != user.id) {
             return false;
         }
@@ -141,7 +141,6 @@ public class User {
         if (this.balance != user.balance) {
             return false;
         }
-        // TODO find out if this overriding is correct?
         if (this.services != user.services && (this.services == null || !this.services.equals(user.services))) {
             return false;
         }

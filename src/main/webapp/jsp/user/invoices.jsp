@@ -8,7 +8,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Invoices page</title>
-    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="site-block">
@@ -30,34 +30,17 @@
                     <th>Date</th>
                     <th>Description</th>
                     <th>Price</th>
-                    <th>Status</th>
                     <th>Pay</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="invoice" items="${user.invoices}">
+                <c:forEach var="invoice" items="${invoices}">
                     <tr>
-                        <td><c:out value="${invoice.date}"/></td>
+                        <td><c:out value="${invoice.dateTime}"/></td>
                         <td><c:out value="${invoice.description}"/></td>
                         <td><c:out value="${invoice.price}"/></td>
                         <td>
-                            <c:choose>
-                                <c:when test="${invoice.isPaid()}">
-                                    <c:out value="paid"/>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:out value="not paid"/>
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${invoice.isPaid()}">
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="/controller?query=pay_invoice&invoice_id=${invoice.id}">pay</a>
-                                </c:otherwise>
-                            </c:choose>
+                            <a href="/controller?query=pay_invoice&invoice_id=${invoice.id}">pay</a>
                         </td>
                     </tr>
                 </c:forEach>

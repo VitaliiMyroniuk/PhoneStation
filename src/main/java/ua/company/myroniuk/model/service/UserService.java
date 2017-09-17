@@ -12,8 +12,6 @@ public interface UserService {
 
     long addUser(User user);
 
-    long addService(long userId, long serviceId);
-
     User getUserById(long id);
 
     User getUserByLogin(String login);
@@ -26,11 +24,19 @@ public interface UserService {
 
     List<User> getDebtors();
 
-    List<Service> getServices(long id);
+    int[] getUserCountInfo();
 
-    List<Invoice> getInvoices(long id);
+    boolean updateIsRegistered(long userId);
+
+    boolean updateIsBlocked(long userId, boolean isBlocked);
 
     boolean updateBalance(long userId, int sum);
 
     boolean checkPhoneNumber(String phoneNumber);
+
+    boolean payInvoice(long userId, long invoiceId);
+
+    long switchOnService(long userId, long serviceId);
+
+    boolean switchOffService(long userId, long serviceId);
 }

@@ -29,4 +29,9 @@ public class ServiceServiceImpl implements ServiceService {
     public List<Service> getAllServices() {
         return serviceDao.getAllServices();
     }
+
+    @Override
+    public List<Service> getUserServices(long userId) {
+        return serviceDao.getUserServices(userId);
+    }
 }

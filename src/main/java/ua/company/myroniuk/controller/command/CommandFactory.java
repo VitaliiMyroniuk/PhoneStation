@@ -1,13 +1,8 @@
 package ua.company.myroniuk.controller.command;
 
-import ua.company.myroniuk.controller.command.admin.AllUsersCommand;
-import ua.company.myroniuk.controller.command.admin.DebtorsCommand;
-import ua.company.myroniuk.controller.command.admin.NewUsersCommand;
+import ua.company.myroniuk.controller.command.admin.*;
 import ua.company.myroniuk.controller.command.general.*;
-import ua.company.myroniuk.controller.command.user.AccountRefillCommand;
-import ua.company.myroniuk.controller.command.user.InvoicesCommand;
-import ua.company.myroniuk.controller.command.user.ServicesCommand;
-import ua.company.myroniuk.controller.command.user.SwitchOnServiceCommand;
+import ua.company.myroniuk.controller.command.user.*;
 
 /**
  * @author Vitalii Myroniuk
@@ -24,6 +19,9 @@ public class CommandFactory {
                 break;
             case "all_users" :
                 command = new AllUsersCommand();
+                break;
+            case "block_user" :
+                command = new BlockUserCommand();
                 break;
             case "debtors" :
                 command = new DebtorsCommand();
@@ -43,8 +41,14 @@ public class CommandFactory {
             case "new_users" :
                 command = new NewUsersCommand();
                 break;
+            case "pay_invoice" :
+                command = new PayInvoiceCommand();
+                break;
             case "profile" :
                 command = new ProfileCommand();
+                break;
+            case "register_user" :
+                command = new RegisterUserCommand();
                 break;
             case "registration" :
                 command = new RegistrationCommand();
@@ -52,8 +56,17 @@ public class CommandFactory {
             case "services" :
                 command = new ServicesCommand();
                 break;
+            case "switch_off_service" :
+                command = new SwitchOffServiceCommand();
+                break;
             case "switch_on_service" :
                 command = new SwitchOnServiceCommand();
+                break;
+            case "unblock_user" :
+                command = new UnblockUserCommand();
+                break;
+            case "user_invoices" :
+                command = new UserInvoicesCommand();
                 break;
             default:
                 command = new UnknownCommand();

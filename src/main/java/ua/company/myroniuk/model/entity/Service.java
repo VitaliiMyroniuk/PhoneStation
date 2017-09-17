@@ -7,6 +7,7 @@ public class Service {
     private long id;
     private String name;
     private String description;
+    private int duration;
     private int price;
 
     public long getId() {
@@ -31,6 +32,14 @@ public class Service {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     public int getPrice() {
@@ -65,6 +74,9 @@ public class Service {
             return false;
         }
         if ((this.description == null) ? (service.description != null) : !this.description.equals(service.description)) {
+            return false;
+        }
+        if (this.duration != service.duration) {
             return false;
         }
         if (this.price != service.price) {

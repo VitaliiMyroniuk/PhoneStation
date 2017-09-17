@@ -16,7 +16,7 @@ public class DebtorsCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         UserService userService = UserServiceImpl.getInstance();
         List<User> users = userService.getDebtors();
-        request.getSession().setAttribute("debtors", users);
+        request.setAttribute("debtors", users);
         return DEBTORS_JSP;
     }
 }

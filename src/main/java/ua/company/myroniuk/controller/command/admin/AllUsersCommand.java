@@ -16,7 +16,7 @@ public class AllUsersCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         UserService userService = UserServiceImpl.getInstance();
         List<User> users = userService.getAllUsers();
-        request.getSession().setAttribute("all_users", users);
+        request.setAttribute("all_users", users);
         return ALL_USERS_JSP;
     }
 }

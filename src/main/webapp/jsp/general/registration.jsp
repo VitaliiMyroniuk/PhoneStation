@@ -26,7 +26,7 @@
                     <td><input type="text" name="name"></td>
                 </tr>
                 <tr>
-                    <td><fmt:message key="registration.middle_name" bundle="${rb}"/></td>
+                    <td><fmt:message key="registration.middle.name" bundle="${rb}"/></td>
                     <td><input type="text" name="middle_name"></td>
                 </tr>
                 <tr>
@@ -34,7 +34,7 @@
                     <td><input type="text" name="surname"></td>
                 </tr>
                 <tr>
-                    <td><fmt:message key="registration.phone_number" bundle="${rb}"/></td>
+                    <td><fmt:message key="registration.phone.number" bundle="${rb}"/></td>
                     <td><input type="text" name="phone_number"></td>
                 </tr>
                 <tr>

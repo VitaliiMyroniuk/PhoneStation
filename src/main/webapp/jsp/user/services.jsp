@@ -8,7 +8,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Services page</title>
-    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="site-block">
@@ -31,18 +31,18 @@
                     <th>Description</th>
                     <th>Price</th>
                     <th>Status</th>
-                    <th>Edit</th>
+                    <th>Change status</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="service" items="${services}">
+                <c:forEach var="service" items="${all_services}">
                     <tr>
                         <td><c:out value="${service.name}"/></td>
                         <td><c:out value="${service.description}"/></td>
                         <td><c:out value="${service.price}"/></td>
                         <td>
                             <c:choose>
-                                <c:when test="${user.services.contains(service)}">
+                                <c:when test="${user_services.contains(service)}">
                                     <c:out value="active"/>
                                 </c:when>
                                 <c:otherwise>
@@ -52,7 +52,7 @@
                         </td>
                         <td>
                             <c:choose>
-                                <c:when test="${user.services.contains(service)}">
+                                <c:when test="${user_services.contains(service)}">
                                     <a href="/controller?query=switch_off_service&service_id=${service.id}">
                                         switch off
                                     </a>
