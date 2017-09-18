@@ -11,12 +11,12 @@ import java.util.List;
 /**
  * @author Vitalii Myroniuk
  */
-public class AllUsersCommand implements Command {
+public class UsersCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         UserService userService = UserServiceImpl.getInstance();
-        List<User> users = userService.getAllUsers();
-        request.setAttribute("all_users", users);
-        return ALL_USERS_JSP;
+        List<User> users = userService.getRegisteredUsers();
+        request.setAttribute("users", users);
+        return USERS_JSP;
     }
 }

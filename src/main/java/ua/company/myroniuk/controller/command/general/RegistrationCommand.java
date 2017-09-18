@@ -1,7 +1,6 @@
 package ua.company.myroniuk.controller.command.general;
 
 import ua.company.myroniuk.controller.command.Command;
-import ua.company.myroniuk.controller.parser.Parser;
 import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.entity.User;
 import ua.company.myroniuk.model.service.AccountService;
@@ -15,60 +14,143 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class RegistrationCommand implements Command {
+
     private final String NAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{1,10}$";
+
     private final String MIDDLE_NAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{0,10}$";
+
     private final String SURNAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{1,10}$";
+
     private final String PHONE_NUMBER_REGEX = "^\\+[1-9]{1}[0-9]{11}$";
+
     private final String LOGIN_REGEX = "^[A-Za-zЄ-Яа-ї0-9._-]{1,10}$";
-    private final String PASSWORD_REGEX = "^[A-Za-z0-9~!@#$%^&*()-_=+/|.]{5,15}$";
+
+    private final String PASSWORD_REGEX = "^[A-Za-zЄ-Яа-ї0-9~!@#$%^&*()-_=+/|.]{5,15}$";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        boolean isValid =
+                checkName(request) &
+                checkMiddleName(request) &
+                checkSurname(request) &
+                checkPhoneNumber(request) &
+                checkLogin(request) &
+                checkPassword(request) &
+                checkConfirmedPassword(request);
+        if (isValid) {
+            UserService userService = UserServiceImpl.getInstance();
+            User user = createUser(request);
+            userService.addUser(user);
+            return SUCCESSFUL_REGISTRATION_JSP;
+        } else {
+            return REGISTRATION_JSP;
+        }
+    }
 
-        // 1) retrieve the data from the form of jsp
+    private boolean checkName(HttpServletRequest request) {
         String name = request.getParameter("name");
+        if (name != null && name.matches(NAME_REGEX)) {
+            request.setAttribute("name", name);
+            request.setAttribute("name_is_valid", true);
+            return true;
+        } else {
+            request.setAttribute("name_is_valid", false);
+            return false;
+        }
+    }
+
+    private boolean checkMiddleName(HttpServletRequest request) {
         String middleName = request.getParameter("middle_name");
+        if (middleName == null || middleName.matches(MIDDLE_NAME_REGEX)) {
+            request.setAttribute("middle_name", middleName);
+            request.setAttribute("middle_name_is_valid", true);
+            return true;
+        } else {
+            request.setAttribute("middle_name_is_valid", false);
+            return false;
+        }
+    }
+
+    private boolean checkSurname(HttpServletRequest request) {
         String surname = request.getParameter("surname");
+        if (surname != null && surname.matches(SURNAME_REGEX)) {
+            request.setAttribute("surname", surname);
+            request.setAttribute("surname_is_valid", true);
+            return true;
+        } else {
+            request.setAttribute("surname_is_valid", false);
+            return false;
+        }
+    }
+
+    private boolean checkPhoneNumber(HttpServletRequest request) {
         String phoneNumber = request.getParameter("phone_number");
+        UserService userService = UserServiceImpl.getInstance();
+        if (phoneNumber != null && phoneNumber.matches(PHONE_NUMBER_REGEX) &&
+                                   !userService.checkPhoneNumber(phoneNumber)) {
+            request.setAttribute("phone_number", phoneNumber);
+            request.setAttribute("phone_number_is_valid", true);
+            return true;
+        } else {
+            request.setAttribute("phone_number_is_valid", false);
+            return false;
+        }
+    }
+
+    private boolean checkLogin(HttpServletRequest request) {
+        AccountService accountService = AccountServiceImpl.getInstance();
         String login = request.getParameter("login");
+        if (login != null && login.matches(LOGIN_REGEX) &&
+                             !accountService.checkLogin(login)) {
+            request.setAttribute("login", login);
+            request.setAttribute("login_is_valid", true);
+            return true;
+        } else {
+            request.setAttribute("login_is_valid", false);
+            return false;
+        }
+    }
+
+    private boolean checkPassword(HttpServletRequest request) {
+        String password = request.getParameter("password");
+        if (password != null && password.matches(PASSWORD_REGEX)) {
+            request.setAttribute("password_is_valid", true);
+            return true;
+        } else {
+            request.setAttribute("password_is_valid", false);
+            return false;
+        }
+    }
+
+    private boolean checkConfirmedPassword(HttpServletRequest request) {
         String password = request.getParameter("password");
         String confirmedPassword = request.getParameter("confirmed_password");
-
-        // 2) validate retrieved data (if something is wrong then we return REGISTRATION_JSP with warnings)
-        // TODO realize warnings in case the input is not valid
-        boolean isValid =
-                name != null &&
-                middleName != null &&
-                surname != null &&
-                phoneNumber != null &&
-                login != null &&
-                password != null &&
-                name.matches(NAME_REGEX) &&
-                middleName.matches(MIDDLE_NAME_REGEX) &&
-                surname.matches(SURNAME_REGEX) &&
-                phoneNumber.matches(PHONE_NUMBER_REGEX) &&
-                login.matches(LOGIN_REGEX) &&
-                password.matches(PASSWORD_REGEX) &&
-                password.equals(confirmedPassword);
-        if (!isValid) {
-            return REGISTRATION_JSP;
+        if (password != null && !password.isEmpty() && password.equals(confirmedPassword)) {
+            request.setAttribute("confirmed_password_is_valid", true);
+            return true;
+        } else {
+            request.setAttribute("confirmed_password_is_valid", false);
+            return false;
         }
+    }
 
-        // 3) check login and phone number (if something is wrong then we return REGISTRATION_JSP with warnings)
-        AccountService accountService = AccountServiceImpl.getInstance();
-        UserService userService = UserServiceImpl.getInstance();
-        if (accountService.checkLogin(login) || userService.checkPhoneNumber(phoneNumber)) {
-            return REGISTRATION_JSP;
-        }
-
-        // 4) create account
+    private Account createAccount(HttpServletRequest request) {
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
         Account account = new Account();
         account.setLogin(login);
         account.setPassword(password);
         account.setAdmin(false);
+        return account;
+    }
 
-        // 5) create user
+    private User createUser(HttpServletRequest request) {
+        String name = request.getParameter("name");
+        String middleName = request.getParameter("middle_name");
+        String surname = request.getParameter("surname");
+        String phoneNumber = request.getParameter("phone_number");
         User user = new User();
+        Account account = createAccount(request);
         user.setAccount(account);
         user.setName(name);
         user.setMiddleName(middleName);
@@ -77,9 +159,6 @@ public class RegistrationCommand implements Command {
         user.setBalance(0);
         user.setRegistered(false);
         user.setBlocked(false);
-
-        // 6) add the user into the data base
-        userService.addUser(user);
-        return SUCCESSFUL_REGISTRATION_JSP;
+        return user;
     }
 }

@@ -22,36 +22,36 @@
         </div>
 
         <div class="main">
-            <h3>Your profile</h3>
+            <h3><fmt:message key="user.profile" bundle="${rb}"/></h3>
             <br>
             <table>
                 <tr>
-                    <td>Login: </td>
-                    <td>${user.account.login}</td>
-                </tr>
-                <tr>
-                    <td>Password: </td>
-                    <td>${user.account.password}</td>
-                </tr>
-                <tr>
-                    <td>Name: </td>
+                    <td><fmt:message key="user.profile.name" bundle="${rb}"/>: &nbsp </td>
                     <td>${user.name}</td>
                 </tr>
                 <tr>
-                    <td>Middle name: </td>
+                    <td><fmt:message key="user.profile.middle.name" bundle="${rb}"/>: &nbsp </td>
                     <td>${user.middleName}</td>
                 </tr>
                 <tr>
-                    <td>Surname: </td>
+                    <td><fmt:message key="user.profile.surname" bundle="${rb}"/>: &nbsp </td>
                     <td>${user.surname}</td>
                 </tr>
                 <tr>
-                    <td>Phone number: </td>
+                    <td><fmt:message key="user.profile.phone.number" bundle="${rb}"/>: &nbsp </td>
                     <td>${user.phoneNumber}</td>
                 </tr>
                 <tr>
-                    <td>Balance: </td>
+                    <td><fmt:message key="user.profile.balance" bundle="${rb}"/>: &nbsp </td>
                     <td>${user.balance}</td>
+                </tr>
+                <tr>
+                    <td><fmt:message key="user.profile.login" bundle="${rb}"/>: &nbsp </td>
+                    <td>${user.account.login}</td>
+                </tr>
+                <tr>
+                    <td><fmt:message key="user.profile.password" bundle="${rb}"/>: &nbsp </td>
+                    <td>${user.account.password}</td>
                 </tr>
             </table>
         </div>

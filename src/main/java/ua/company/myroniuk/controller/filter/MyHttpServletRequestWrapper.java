@@ -34,13 +34,13 @@ public class MyHttpServletRequestWrapper implements HttpServletRequest {
         userQueries.add("switch_on_service");
 
         adminQueries.addAll(generalQueries);
-        adminQueries.add("all_users");
         adminQueries.add("block_user");
         adminQueries.add("debtors");
         adminQueries.add("new_users");
         adminQueries.add("register_user");
         adminQueries.add("unblock_user");
         adminQueries.add("user_invoices");
+        adminQueries.add("users");
     }
 
     public MyHttpServletRequestWrapper(HttpServletRequest originalRequest) {

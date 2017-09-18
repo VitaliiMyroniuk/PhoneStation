@@ -11,8 +11,8 @@
         </a>
     </li>
     <li>
-        <a href="/controller?query=all_users">
-            <fmt:message key="menu.all.users" bundle="${rb}"/>
+        <a href="/controller?query=users">
+            <fmt:message key="menu.users" bundle="${rb}"/>
         </a>
     </li>
     <li>

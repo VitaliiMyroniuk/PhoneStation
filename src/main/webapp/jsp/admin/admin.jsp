@@ -30,15 +30,15 @@
             <br><br>
             <table>
                 <tr>
-                    <td> <fmt:message key="admin.all.users.count" bundle="${rb}"/> </td>
+                    <td> <fmt:message key="admin.users" bundle="${rb}"/>: &nbsp </td>
                     <td>${user_count_info[0]}</td>
                 </tr>
                 <tr>
-                    <td><fmt:message key="admin.new.users.count" bundle="${rb}"/> </td>
+                    <td><fmt:message key="admin.new.users" bundle="${rb}"/>: &nbsp </td>
                     <td>${user_count_info[1]}</td>
                 </tr>
                 <tr>
-                    <td><fmt:message key="admin.debtors.count" bundle="${rb}"/> </td>
+                    <td><fmt:message key="admin.debtors" bundle="${rb}"/>: &nbsp </td>
                     <td>${user_count_info[2]}</td>
                 </tr>
             </table>

@@ -18,7 +18,7 @@ public interface UserDao {
 
     User getUserByPhoneNumber(String phoneNumber);
 
-    List<User> getAllUsers();
+    List<User> getRegisteredUsers();
 
     List<User> getUnregisteredUsers();
     

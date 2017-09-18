@@ -22,9 +22,9 @@
         </div>
 
         <div class="main">
-            <h3><fmt:message key="admin.all.users" bundle="${rb}"/></h3>
+            <h3><fmt:message key="admin.users" bundle="${rb}"/></h3>
             <br>
-            <table border="1" cellspacing="0" cellpadding="2">
+            <table class="my-table" border="1" cellspacing="0">
                 <thead>
                 <tr>
                     <th><fmt:message key="admin.table.name" bundle="${rb}"/></th>
@@ -34,7 +34,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="user" items="${all_users}">
+                <c:forEach var="user" items="${users}">
                     <tr>
                         <td><c:out value="${user.name}"/></td>
                         <td><c:out value="${user.middleName}"/></td>

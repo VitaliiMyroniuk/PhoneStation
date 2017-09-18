@@ -11,7 +11,6 @@ public interface Command {
     //TODO find out if it is better to transfer paths into the property file.
     String ACCOUNT_REFILL_JSP = "/jsp/user/account_refill.jsp";
     String ADMIN_JSP = "/jsp/admin/admin.jsp";
-    String ALL_USERS_JSP = "/jsp/admin/all_users.jsp";
     String DEBTORS_JSP = "/jsp/admin/debtors.jsp";
     String ERROR_JSP = "/jsp/general/error.jsp";
     String INDEX_JSP = "/index.jsp";
@@ -22,6 +21,7 @@ public interface Command {
     String SUCCESSFUL_REGISTRATION_JSP = "/jsp/general/successful_registration.jsp";
     String USER_INVOICES_JSP = "/jsp/admin/user_invoices.jsp";
     String USER_JSP = "/jsp/user/user.jsp";
+    String USERS_JSP = "/jsp/admin/users.jsp";
 
     String execute(HttpServletRequest request, HttpServletResponse response);
 }

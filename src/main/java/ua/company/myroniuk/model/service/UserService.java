@@ -1,7 +1,5 @@
 package ua.company.myroniuk.model.service;
 
-import ua.company.myroniuk.model.entity.Invoice;
-import ua.company.myroniuk.model.entity.Service;
 import ua.company.myroniuk.model.entity.User;
 import java.util.List;
 
@@ -18,7 +16,7 @@ public interface UserService {
 
     User getUserByPhoneNumber(String phoneNumber);
 
-    List<User> getAllUsers();
+    List<User> getRegisteredUsers();
 
     List<User> getUnregisteredUsers();
 

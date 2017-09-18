@@ -29,13 +29,13 @@ public class UserDaoImpl implements UserDao {
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE phone_number = ?";
 
-    private final String GET_ALL_USERS =
+    private final String GET_REGISTERED_USERS =
             "SELECT * FROM users " +
-            "INNER JOIN accounts ON account_id = accounts.id";
+            "INNER JOIN accounts ON account_id = accounts.id WHERE is_registered = 1";
 
     private final String GET_UNREGISTERED_USERS =
             "SELECT * FROM users " +
-            "INNER JOIN accounts ON account_id = accounts.id WHERE is_registered = false";
+            "INNER JOIN accounts ON account_id = accounts.id WHERE is_registered = 0";
 
     private final String GET_DEBTORS =
             "SELECT * FROM users " +
@@ -135,11 +135,11 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getRegisteredUsers() {
         List<User> users = new ArrayList<>();
         try (Connection connection = DBManager.getConnection();
              PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_ALL_USERS);
+                     connection.prepareStatement(GET_REGISTERED_USERS);
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {

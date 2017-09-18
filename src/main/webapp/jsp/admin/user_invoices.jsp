@@ -22,7 +22,7 @@
         </div>
 
         <div class="main">
-            <h3><fmt:message key="admin.table.unpaid.invoices" bundle="${rb}"/></h3>
+            <h3><fmt:message key="admin.table.invoices" bundle="${rb}"/></h3>
             <br>
             <table>
                 <tr>
@@ -35,7 +35,7 @@
                 </tr>
             </table>
             <br>
-            <table border="1" cellspacing="0" cellpadding="2">
+            <table class="my-table" border="1" cellspacing="0">
                 <thead>
                 <tr>
                     <th><fmt:message key="admin.table.date" bundle="${rb}"/></th>

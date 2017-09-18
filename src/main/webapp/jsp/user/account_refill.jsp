@@ -22,25 +22,66 @@
         </div>
 
         <div class="main">
-            <h3>Account refill</h3>
+            <h3><fmt:message key="user.account.refill" bundle="${rb}"/></h3>
             <br>
             <form action="/controller" method="POST">
                 <input type="hidden" name="query" value="account_refill"/>
                 <table>
                     <tr>
-                        <td><fmt:message key="account.refill.credit.card" bundle="${rb}"/></td>
-                        <td><input type="text" name="credit_card"></td>
+                        <td><fmt:message key="user.account.refill.credit.card" bundle="${rb}"/> &nbsp </td>
+                        <td><input type="text" name="credit_card_number"></td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${credit_card_number_is_valid == null}">
+                                </c:when>
+                                <c:when test="${credit_card_number_is_valid}">
+                                    <p style="color: lawngreen"> &#10004 </p>
+                                </c:when>
+                                <c:otherwise>
+                                    <p style="color: red"> * </p>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                     </tr>
                     <tr>
-                        <td><fmt:message key="account.refill.cvv" bundle="${rb}"/></td>
+                        <td><fmt:message key="user.account.refill.cvv" bundle="${rb}"/> &nbsp </td>
                         <td><input type="text" name="cvv"></td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${cvv_is_valid == null}">
+                                </c:when>
+                                <c:when test="${cvv_is_valid}">
+                                    <p style="color: lawngreen"> &#10004 </p>
+                                </c:when>
+                                <c:otherwise>
+                                    <p style="color: red"> * </p>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                     </tr>
                     <tr>
-                        <td><fmt:message key="account.refill.sum" bundle="${rb}"/></td>
+                        <td><fmt:message key="user.account.refill.sum" bundle="${rb}"/> &nbsp </td>
                         <td><input type="text" name="sum"></td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${sum_is_valid == null}">
+                                </c:when>
+                                <c:when test="${sum_is_valid}">
+                                    <p style="color: lawngreen"> &#10004 </p>
+                                </c:when>
+                                <c:otherwise>
+                                    <p style="color: red"> * </p>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                     </tr>
                     <tr>
-                        <td><input type="submit" value=<fmt:message key="account.refill.confirm" bundle="${rb}"/>></td>
+                        <td><br></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="submit" value=<fmt:message key="user.account.refill.confirm" bundle="${rb}"/>>
+                        </td>
                     </tr>
                 </table>
             </form>

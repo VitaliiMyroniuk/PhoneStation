@@ -17,7 +17,12 @@
     </div>
 
     <div class="content-block">
-        <h3>Successful registration</h3>
+        <h3><fmt:message key="registration.congratulation" bundle="${rb}"/></h3>
+        <br>
+        <p>
+            <fmt:message key="registration.congratulation.sentence1" bundle="${rb}"/><br>
+            <fmt:message key="registration.congratulation.sentence2" bundle="${rb}"/>
+        </p>
     </div>
 
     <div class="footer">

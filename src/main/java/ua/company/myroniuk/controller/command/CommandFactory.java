@@ -17,9 +17,6 @@ public class CommandFactory {
             case "account_refill" :
                 command = new AccountRefillCommand();
                 break;
-            case "all_users" :
-                command = new AllUsersCommand();
-                break;
             case "block_user" :
                 command = new BlockUserCommand();
                 break;
@@ -67,6 +64,9 @@ public class CommandFactory {
                 break;
             case "user_invoices" :
                 command = new UserInvoicesCommand();
+                break;
+            case "users" :
+                command = new UsersCommand();
                 break;
             default:
                 command = new UnknownCommand();

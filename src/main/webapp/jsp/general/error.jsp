@@ -17,7 +17,7 @@
     </div>
 
     <div class="content-block">
-        <h3>Error page</h3>
+        <h3><fmt:message key="error" bundle="${rb}"/></h3>
     </div>
 
     <div class="footer">

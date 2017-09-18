@@ -22,15 +22,15 @@
         </div>
 
         <div class="main">
-            <h3>Invoices</h3>
+            <h3><fmt:message key="user.invoices" bundle="${rb}"/></h3>
             <br>
-            <table border="1" cellspacing="0" cellpadding="2">
+            <table class="my-table" border="1" cellspacing="0">
                 <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Pay</th>
+                    <th><fmt:message key="user.table.date" bundle="${rb}"/></th>
+                    <th><fmt:message key="user.table.description" bundle="${rb}"/></th>
+                    <th><fmt:message key="user.table.price" bundle="${rb}"/></th>
+                    <th><fmt:message key="user.table.pay" bundle="${rb}"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,7 +40,9 @@
                         <td><c:out value="${invoice.description}"/></td>
                         <td><c:out value="${invoice.price}"/></td>
                         <td>
-                            <a href="/controller?query=pay_invoice&invoice_id=${invoice.id}">pay</a>
+                            <a href="/controller?query=pay_invoice&invoice_id=${invoice.id}">
+                                <fmt:message key="user.table.pay.invoice" bundle="${rb}"/>
+                            </a>
                         </td>
                     </tr>
                 </c:forEach>

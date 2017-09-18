@@ -24,7 +24,7 @@
         <div class="main">
             <h3><fmt:message key="admin.debtors" bundle="${rb}"/></h3>
             <br>
-            <table border="1" cellspacing="0" cellpadding="2">
+            <table class="my-table" border="1" cellspacing="0">
                 <thead>
                 <tr>
                     <th><fmt:message key="admin.table.name" bundle="${rb}"/></th>
@@ -32,7 +32,7 @@
                     <th><fmt:message key="admin.table.surname" bundle="${rb}"/></th>
                     <th><fmt:message key="admin.table.phone.number" bundle="${rb}"/></th>
                     <th><fmt:message key="admin.table.balance" bundle="${rb}"/></th>
-                    <th><fmt:message key="admin.table.unpaid.invoices" bundle="${rb}"/></th>
+                    <th><fmt:message key="admin.table.invoices" bundle="${rb}"/></th>
                     <th><fmt:message key="admin.table.status" bundle="${rb}"/></th>
                     <th><fmt:message key="admin.table.change.status" bundle="${rb}"/></th>
                 </tr>

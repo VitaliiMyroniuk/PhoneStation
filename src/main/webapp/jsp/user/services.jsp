@@ -22,16 +22,16 @@
         </div>
 
         <div class="main">
-            <h3>Services</h3>
+            <h3><fmt:message key="user.services" bundle="${rb}"/></h3>
             <br>
-            <table border="1" cellspacing="0" cellpadding="2">
+            <table class="my-table" border="1" cellspacing="0">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                    <th>Change status</th>
+                    <th><fmt:message key="user.table.name" bundle="${rb}"/></th>
+                    <th><fmt:message key="user.table.description" bundle="${rb}"/></th>
+                    <th><fmt:message key="user.table.price" bundle="${rb}"/></th>
+                    <th><fmt:message key="user.table.status" bundle="${rb}"/></th>
+                    <th><fmt:message key="user.table.change.status" bundle="${rb}"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,10 +43,10 @@
                         <td>
                             <c:choose>
                                 <c:when test="${user_services.contains(service)}">
-                                    <c:out value="active"/>
+                                    <fmt:message key="user.table.active" bundle="${rb}"/>
                                 </c:when>
                                 <c:otherwise>
-                                    <c:out value="not active"/>
+                                    <fmt:message key="user.table.inactive" bundle="${rb}"/>
                                 </c:otherwise>
                             </c:choose>
                         </td>
@@ -54,12 +54,12 @@
                             <c:choose>
                                 <c:when test="${user_services.contains(service)}">
                                     <a href="/controller?query=switch_off_service&service_id=${service.id}">
-                                        switch off
+                                        <fmt:message key="user.table.switch.off" bundle="${rb}"/>
                                     </a>
                                 </c:when>
                                 <c:otherwise>
                                     <a href="/controller?query=switch_on_service&service_id=${service.id}">
-                                        switch on
+                                        <fmt:message key="user.table.switch.on" bundle="${rb}"/>
                                     </a>
                                 </c:otherwise>
                             </c:choose>
