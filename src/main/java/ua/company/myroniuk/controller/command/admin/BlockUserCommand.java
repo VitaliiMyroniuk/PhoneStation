@@ -4,7 +4,6 @@ import ua.company.myroniuk.controller.command.Command;
 import ua.company.myroniuk.model.entity.User;
 import ua.company.myroniuk.model.service.UserService;
 import ua.company.myroniuk.model.service.impl.UserServiceImpl;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;

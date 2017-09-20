@@ -1,5 +1,6 @@
 package ua.company.myroniuk.dao.impl;
 
+import org.apache.log4j.Logger;
 import ua.company.myroniuk.dao.DBManager;
 import ua.company.myroniuk.dao.ServiceDao;
 import ua.company.myroniuk.model.entity.Service;
@@ -12,6 +13,8 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class ServiceDaoImpl implements ServiceDao {
+
+    private static final Logger LOGGER = Logger.getLogger(ServiceDaoImpl.class);
 
     private final String ADD_USER_SERVICE =
             "INSERT INTO users_services (user_id, service_id, start_date, end_date) " +
@@ -88,7 +91,7 @@ public class ServiceDaoImpl implements ServiceDao {
                 services.add(user);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during getting the list of all services: ", e);
         }
         return services;
     }
@@ -106,7 +109,7 @@ public class ServiceDaoImpl implements ServiceDao {
                 services.add(user);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during getting the switched on services of the user: ", e);
         }
         return services;
     }
@@ -121,7 +124,7 @@ public class ServiceDaoImpl implements ServiceDao {
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during deleting the service of the user: ", e);
         }
         return false;
     }

@@ -7,21 +7,26 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Error page</title>
+    <title>Successful registration page</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="site-block">
     <div class="header">
-        <jsp:include page="/jsp/general/header.jsp"/>
+        <jsp:include page="/WEB-INF/view/jsp/general/header.jsp"/>
     </div>
 
     <div class="content-block">
-        <h3><fmt:message key="error" bundle="${rb}"/></h3>
+        <h3><fmt:message key="registration.congratulation" bundle="${rb}"/></h3>
+        <br>
+        <p>
+            <fmt:message key="registration.congratulation.sentence1" bundle="${rb}"/><br>
+            <fmt:message key="registration.congratulation.sentence2" bundle="${rb}"/>
+        </p>
     </div>
 
     <div class="footer">
-        <jsp:include page="/jsp/general/footer.jsp"/>
+        <jsp:include page="/WEB-INF/view/jsp/general/footer.jsp"/>
     </div>
 </div>
 </body>

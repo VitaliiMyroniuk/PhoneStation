@@ -1,15 +1,39 @@
 package ua.company.myroniuk.model.entity;
 
+import java.util.Objects;
+
 /**
+ * The class describes service entity.
+ *
  * @author Vitalii Myroniuk
  */
 public class Service {
+    /**
+     * Id of the service.
+     */
     private long id;
+
+    /**
+     * Name of the service.
+     */
     private String name;
+
+    /**
+     * Description of the service.
+     */
     private String description;
+
+    /**
+     * Duration of the service.
+     */
     private int duration;
+
+    /**
+     * Price of the service.
+     */
     private int price;
 
+    // Getters and setters.
     public long getId() {
         return id;
     }
@@ -51,37 +75,19 @@ public class Service {
     }
 
     @Override
-    public int hashCode() {
-        return (int) this.id;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Service)) return false;
+        Service service = (Service) o;
+        return id == service.id &&
+               duration == service.duration &&
+               price == service.price &&
+               Objects.equals(name, service.name) &&
+               Objects.equals(description, service.description);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Service service = (Service) obj;
-        if (this.id != service.id) {
-            return false;
-        }
-        if ((this.name == null) ? (service.name != null) : !this.name.equals(service.name)) {
-            return false;
-        }
-        if ((this.description == null) ? (service.description != null) : !this.description.equals(service.description)) {
-            return false;
-        }
-        if (this.duration != service.duration) {
-            return false;
-        }
-        if (this.price != service.price) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(name, description, duration, price);
     }
 }

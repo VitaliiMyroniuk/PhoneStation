@@ -1,23 +1,70 @@
 package ua.company.myroniuk.model.entity;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
+ * The class describes the user entity.
+ *
  * @author Vitalii Myroniuk
  */
 public class User {
+    /**
+     * Id of the user.
+     */
     private long id;
+
+    /**
+     * Account of the user.
+     */
     private Account account;
+
+    /**
+     * Name of the user.
+     */
     private String name;
+
+    /**
+     * Middle name of the user.
+     */
     private String middleName;
+
+    /**
+     * Surname of the user.
+     */
     private String surname;
+
+    /**
+     * Phone number of the user.
+     */
     private String phoneNumber;
+
+    /**
+     * Balance of the user.
+     */
     private int balance;
+
+    /**
+     * List of active user services.
+     */
     private List<Service> services;
+
+    /**
+     * List of user invoices.
+     */
     private List<Invoice> invoices;
+
+    /**
+     * Status of the user registration.
+     */
     private boolean isRegistered;
+
+    /**
+     * Status of the user block.
+     */
     private boolean isBlocked;
 
+    // Getters and setters.
     public long getId() {
         return id;
     }
@@ -107,52 +154,25 @@ public class User {
     }
 
     @Override
-    public int hashCode() {
-        return (int) this.id;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id &&
+               balance == user.balance &&
+               isRegistered == user.isRegistered &&
+               isBlocked == user.isBlocked &&
+               Objects.equals(account, user.account) &&
+               Objects.equals(name, user.name) &&
+               Objects.equals(middleName, user.middleName) &&
+               Objects.equals(surname, user.surname) &&
+               Objects.equals(phoneNumber, user.phoneNumber) &&
+               Objects.equals(services, user.services) &&
+               Objects.equals(invoices, user.invoices);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final User user = (User) obj;
-        if (this.id != user.id) {
-            return false;
-        }
-        if ((this.name == null) ? (user.name != null) : !this.name.equals(user.name)) {
-            return false;
-        }
-        if ((this.middleName == null) ? (user.middleName != null) : !this.middleName.equals(user.middleName)) {
-            return false;
-        }
-        if ((this.surname == null) ? (user.surname != null) : !this.surname.equals(user.surname)) {
-            return false;
-        }
-        if ((this.phoneNumber == null) ? (user.phoneNumber != null) : !this.phoneNumber.equals(user.phoneNumber)) {
-            return false;
-        }
-        if (this.balance != user.balance) {
-            return false;
-        }
-        if (this.services != user.services && (this.services == null || !this.services.equals(user.services))) {
-            return false;
-        }
-        if (this.invoices != user.invoices && (this.invoices == null || !this.invoices.equals(user.invoices))) {
-            return false;
-        }
-        if (this.isRegistered != user.isRegistered) {
-            return false;
-        }
-        if (this.isBlocked != user.isBlocked) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(phoneNumber);
     }
 }

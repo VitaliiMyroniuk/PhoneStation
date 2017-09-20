@@ -1,5 +1,6 @@
 package ua.company.myroniuk.dao.impl;
 
+import org.apache.log4j.Logger;
 import ua.company.myroniuk.dao.*;
 import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.entity.User;
@@ -11,6 +12,8 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class UserDaoImpl implements UserDao {
+
+    private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
     private final String ADD_USER =
             "INSERT INTO users " +
@@ -94,7 +97,7 @@ public class UserDaoImpl implements UserDao {
                 return createUser(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during getting the user by id: ", e);
         }
         return null;
     }
@@ -111,7 +114,7 @@ public class UserDaoImpl implements UserDao {
                 return createUser(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during getting the user by login: ", e);
         }
         return null;
     }
@@ -128,7 +131,7 @@ public class UserDaoImpl implements UserDao {
                 return createUser(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during getting the user by phone number: ", e);
         }
         return null;
     }
@@ -147,7 +150,7 @@ public class UserDaoImpl implements UserDao {
                 users.add(user);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during getting the list of registered users: ", e);
         }
         return users;
     }
@@ -165,7 +168,7 @@ public class UserDaoImpl implements UserDao {
                 users.add(user);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during getting the list of unregistered users: ", e);
         }
         return users;
     }
@@ -183,7 +186,7 @@ public class UserDaoImpl implements UserDao {
                 users.add(user);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during getting the list of debtors: ", e);
         }
         return users;
     }
@@ -202,7 +205,7 @@ public class UserDaoImpl implements UserDao {
                 userCountInfo[2] = resultSet.getInt("debtors");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during getting the user count info: ", e);
         }
         return userCountInfo;
     }
@@ -218,7 +221,7 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during updating the user balance: ", e);
         }
         return false;
     }
@@ -245,7 +248,7 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during updating the user registration status: ", e);
         }
         return false;
     }
@@ -261,7 +264,7 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during updating the user block status: ", e);
         }
         return false;
     }

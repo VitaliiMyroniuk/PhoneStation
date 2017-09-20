@@ -1,14 +1,35 @@
 package ua.company.myroniuk.model.entity;
 
+import java.util.Objects;
+
 /**
+ * The class describes the user account entity.
+ * It contains security parameters for the user authentication.
+ *
  * @author Vitalii Myroniuk
  */
 public class Account {
+    /**
+     * Id of the account.
+     */
     private long id;
+
+    /**
+     * Login of the user.
+     */
     private String login;
+
+    /**
+     * Password of the user.
+     */
     private String password;
+
+    /**
+     * Role of the user.
+     */
     private boolean isAdmin;
 
+    // Getters and setters
     public long getId() {
         return id;
     }
@@ -42,34 +63,18 @@ public class Account {
     }
 
     @Override
-    public int hashCode() {
-        return (int) this.id;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Account)) return false;
+        Account account = (Account) o;
+        return id == account.id &&
+                isAdmin == account.isAdmin &&
+                Objects.equals(login, account.login) &&
+                Objects.equals(password, account.password);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Account account = (Account) obj;
-        if (this.id != account.id) {
-            return false;
-        }
-        if ((this.login == null) ? (account.login != null) : !this.login.equals(account.login)) {
-            return false;
-        }
-        if ((this.password == null) ? (account.password != null) : !this.password.equals(account.password)) {
-            return false;
-        }
-        if (this.isAdmin != account.isAdmin) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(login, password);
     }
 }

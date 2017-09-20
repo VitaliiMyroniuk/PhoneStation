@@ -1,15 +1,17 @@
 package ua.company.myroniuk.dao.impl;
 
+import org.apache.log4j.Logger;
 import ua.company.myroniuk.dao.AccountDao;
 import ua.company.myroniuk.dao.DBManager;
 import ua.company.myroniuk.model.entity.Account;
-
 import java.sql.*;
 
 /**
  * @author Vitalii Myroniuk
  */
 public class AccountDaoImpl implements AccountDao {
+
+    private static final Logger LOGGER = Logger.getLogger(AccountDaoImpl.class);
 
     private final String ADD_ACCOUNT =
             "INSERT INTO accounts (id, login, password, is_admin) VALUES (null, ?, ?, ?)";
@@ -61,7 +63,7 @@ public class AccountDaoImpl implements AccountDao {
                 return createAccount(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during getting an account by login: ", e);
         }
         return null;
     }
@@ -82,7 +84,7 @@ public class AccountDaoImpl implements AccountDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during checking login and password: ", e);
         }
         return -1;
     }

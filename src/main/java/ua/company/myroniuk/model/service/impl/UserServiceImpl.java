@@ -1,5 +1,6 @@
 package ua.company.myroniuk.model.service.impl;
 
+import org.apache.log4j.Logger;
 import ua.company.myroniuk.dao.*;
 import ua.company.myroniuk.dao.impl.AccountDaoImpl;
 import ua.company.myroniuk.dao.impl.InvoiceDaoImpl;
@@ -20,9 +21,14 @@ import java.util.List;
  */
 public class UserServiceImpl implements UserService {
 
+    private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
+
     private AccountDao accountDao = AccountDaoImpl.getInstance();
+
     private UserDao userDao = UserDaoImpl.getInstance();
+
     private ServiceDao serviceDao = ServiceDaoImpl.getInstance();
+
     private InvoiceDao invoiceDao = InvoiceDaoImpl.getInstance();
 
     private UserServiceImpl() {
@@ -50,8 +56,8 @@ public class UserServiceImpl implements UserService {
             userId = userDao.addUser(connection, user);
             connection.commit();
         } catch (SQLException e) {
+            LOGGER.error("Error during adding the user into the data base: ", e);
             DBManager.rollback(connection);
-            e.printStackTrace();
         } finally {
             DBManager.closeConnection(connection);
         }
@@ -128,8 +134,8 @@ public class UserServiceImpl implements UserService {
             // 4) commit
             connection.commit();
         } catch (SQLException e) {
+            LOGGER.error("Error during invoice paying: ", e);
             DBManager.rollback(connection);
-            e.printStackTrace();
         } finally {
             DBManager.closeConnection(connection);
         }
@@ -155,11 +161,11 @@ public class UserServiceImpl implements UserService {
             invoice.setPaid(false);
             // 4) add the corresponding invoice into the data base
             invoiceDao.addInvoice(connection, invoice, userId);
-            // 5) commit
+            // 5) commit transaction
             connection.commit();
         } catch (SQLException e) {
+            LOGGER.error("Error during switching on the service: ", e);
             DBManager.rollback(connection);
-            e.printStackTrace();
         } finally {
             DBManager.closeConnection(connection);
         }

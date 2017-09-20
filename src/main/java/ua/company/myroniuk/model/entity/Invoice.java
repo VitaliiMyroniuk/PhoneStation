@@ -1,18 +1,40 @@
 package ua.company.myroniuk.model.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
+ * The class describes user invoice entity.
+ *
  * @author Vitalii Myroniuk
  */
 public class Invoice {
+    /**
+     * Id of the invoice.
+     */
     private long id;
+
+    /**
+     * Date of the invoice issue.
+     */
     private LocalDateTime dateTime;
+
+    /**
+     * Description of the invoice.
+     */
     private String description;
+
+    /**
+     * Price specified in the invoice.
+     */
     private int price;
+
+    /**
+     * Status of the invoice payment.
+     */
     private boolean isPaid;
 
+    // Getters and setters.
     public long getId() {
         return id;
     }
@@ -54,37 +76,19 @@ public class Invoice {
     }
 
     @Override
-    public int hashCode() {
-        return (int) this.id;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Invoice)) return false;
+        Invoice invoice = (Invoice) o;
+        return id == invoice.id &&
+               price == invoice.price &&
+               isPaid == invoice.isPaid &&
+               Objects.equals(dateTime, invoice.dateTime) &&
+               Objects.equals(description, invoice.description);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Invoice invoice = (Invoice) obj;
-        if (this.id != invoice.id) {
-            return false;
-        }
-        if ((this.dateTime == null) ? (invoice.dateTime != null) : !this.dateTime.equals(invoice.dateTime)) {
-            return false;
-        }
-        if ((this.description == null) ? (invoice.description != null) : !this.description.equals(invoice.description)) {
-            return false;
-        }
-        if (this.price != invoice.price) {
-            return false;
-        }
-        if (this.isPaid != invoice.isPaid) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(dateTime, description, price, isPaid);
     }
 }

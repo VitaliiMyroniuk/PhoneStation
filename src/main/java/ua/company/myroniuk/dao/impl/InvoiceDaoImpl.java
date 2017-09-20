@@ -1,5 +1,6 @@
 package ua.company.myroniuk.dao.impl;
 
+import org.apache.log4j.Logger;
 import ua.company.myroniuk.dao.DBManager;
 import ua.company.myroniuk.dao.InvoiceDao;
 import ua.company.myroniuk.model.entity.Invoice;
@@ -11,6 +12,8 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class InvoiceDaoImpl implements InvoiceDao {
+
+    private static final Logger LOGGER = Logger.getLogger(InvoiceDaoImpl.class);
 
     private final String ADD_INVOICE =
             "INSERT INTO invoices (user_id, date, description, price, is_paid) " +
@@ -69,7 +72,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
                 invoice = createInvoice(resultSet);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during getting the invoice by id: ", e);
         }
         return invoice;
     }
@@ -88,7 +91,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
                 invoices.add(invoice);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during getting the invoices list by the user id: ", e);
         }
         return invoices;
     }
@@ -103,7 +106,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error during updating the pay status of the invoice: ", e);
         }
         return false;
     }

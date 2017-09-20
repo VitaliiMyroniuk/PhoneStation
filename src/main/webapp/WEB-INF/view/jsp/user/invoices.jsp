@@ -13,12 +13,12 @@
 <body>
 <div class="site-block">
     <div class="header">
-        <jsp:include page="/jsp/general/header.jsp"/>
+        <jsp:include page="/WEB-INF/view/jsp/general/header.jsp"/>
     </div>
 
     <div class="content-block">
         <div class="menu">
-            <jsp:include page="/jsp/user/user_menu.jsp"/>
+            <jsp:include page="/WEB-INF/view/jsp/user/user_menu.jsp"/>
         </div>
 
         <div class="main">
@@ -52,7 +52,7 @@
     </div>
 
     <div class="footer">
-        <jsp:include page="/jsp/general/footer.jsp"/>
+        <jsp:include page="/WEB-INF/view/jsp/general/footer.jsp"/>
     </div>
 </div>
 </body>
