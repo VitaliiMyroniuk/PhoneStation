@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 import ua.company.myroniuk.dao.AccountDao;
 import ua.company.myroniuk.dao.DBManager;
 import ua.company.myroniuk.model.entity.Account;
+import ua.company.myroniuk.model.entity.Role;
+
 import java.sql.*;
 
 /**
@@ -14,13 +16,13 @@ public class AccountDaoImpl implements AccountDao {
     private static final Logger LOGGER = Logger.getLogger(AccountDaoImpl.class);
 
     private final String ADD_ACCOUNT =
-            "INSERT INTO accounts (id, login, password, is_admin) VALUES (null, ?, ?, ?)";
+            "INSERT INTO accounts (login, password, role) VALUES (?, ?, ?)";
 
     private final String GET_ACCOUNT_BY_LOGIN =
             "SELECT * FROM accounts WHERE login = ?";
 
     private final String GET_DATA_BY_LOGIN_AND_PASSWORD =
-            "SELECT is_admin, is_registered FROM accounts " +
+            "SELECT role, is_registered FROM accounts " +
             "INNER JOIN users ON accounts.id = account_id WHERE login = ? AND password = ?";
 
     private AccountDaoImpl() {
@@ -42,7 +44,7 @@ public class AccountDaoImpl implements AccountDao {
         ) {
             preparedStatement.setString(1, account.getLogin());
             preparedStatement.setString(2, account.getPassword());
-            preparedStatement.setBoolean(3, account.isAdmin());
+            preparedStatement.setString(3, account.getRole().toString());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -77,7 +79,7 @@ public class AccountDaoImpl implements AccountDao {
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                if (resultSet.getBoolean("is_admin")) {
+                if ("admin".equalsIgnoreCase(resultSet.getString("role"))) {
                     return 1;
                 } else if (resultSet.getBoolean("is_registered")){
                     return 0;
@@ -94,7 +96,7 @@ public class AccountDaoImpl implements AccountDao {
         account.setId(resultSet.getLong("id"));
         account.setLogin(resultSet.getString("login"));
         account.setPassword(resultSet.getString("password"));
-        account.setAdmin(resultSet.getBoolean("is_admin"));
+        account.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
         return account;
     }
 }

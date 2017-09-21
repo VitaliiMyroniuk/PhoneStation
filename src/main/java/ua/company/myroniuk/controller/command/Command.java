@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public interface Command {
-
     //TODO find out if it is better to transfer paths into the property file.
     String ACCOUNT_REFILL_JSP = "/WEB-INF/view/jsp/user/account_refill.jsp";
     String ADMIN_JSP = "/WEB-INF/view/jsp/admin/admin.jsp";

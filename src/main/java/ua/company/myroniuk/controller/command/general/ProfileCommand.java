@@ -1,12 +1,12 @@
 package ua.company.myroniuk.controller.command.general;
 
 import ua.company.myroniuk.controller.command.Command;
+import ua.company.myroniuk.model.entity.Role;
 import ua.company.myroniuk.model.entity.User;
 import ua.company.myroniuk.model.service.UserService;
 import ua.company.myroniuk.model.service.impl.UserServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @author Vitalii Myroniuk
@@ -17,7 +17,10 @@ public class ProfileCommand implements Command {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return INDEX_JSP;
-        } else if (user.getAccount().isAdmin()) {
+        }
+        Role role = user.getAccount().getRole();
+        boolean isAdmin = "ADMIN".equals(role.toString());
+        if (isAdmin) {
             UserService userService = UserServiceImpl.getInstance();
             int[] userCountInfo = userService.getUserCountInfo();
             request.setAttribute("user_count_info", userCountInfo);

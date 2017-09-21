@@ -27,7 +27,7 @@ public class Account {
     /**
      * Role of the user.
      */
-    private boolean isAdmin;
+    private Role role;
 
     // Getters and setters
     public long getId() {
@@ -54,12 +54,12 @@ public class Account {
         this.password = password;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public Role getRole() {
+        return role;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
@@ -68,9 +68,9 @@ public class Account {
         if (!(o instanceof Account)) return false;
         Account account = (Account) o;
         return id == account.id &&
-                isAdmin == account.isAdmin &&
                 Objects.equals(login, account.login) &&
-                Objects.equals(password, account.password);
+                Objects.equals(password, account.password) &&
+                role == account.role;
     }
 
     @Override

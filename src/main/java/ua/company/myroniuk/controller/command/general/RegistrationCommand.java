@@ -2,6 +2,7 @@ package ua.company.myroniuk.controller.command.general;
 
 import ua.company.myroniuk.controller.command.Command;
 import ua.company.myroniuk.model.entity.Account;
+import ua.company.myroniuk.model.entity.Role;
 import ua.company.myroniuk.model.entity.User;
 import ua.company.myroniuk.model.service.AccountService;
 import ua.company.myroniuk.model.service.UserService;
@@ -140,7 +141,7 @@ public class RegistrationCommand implements Command {
         Account account = new Account();
         account.setLogin(login);
         account.setPassword(password);
-        account.setAdmin(false);
+        account.setRole(Role.SUBSCRIBER);
         return account;
     }
 

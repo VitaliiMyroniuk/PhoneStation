@@ -17,7 +17,7 @@ public class SecurityFilter implements Filter {
 
     private Set<String> generalQueries = new HashSet<>();
 
-    private Set<String> userQueries = new HashSet<>();
+    private Set<String> subscriberQueries = new HashSet<>();
 
     private Set<String> adminQueries = new HashSet<>();
 
@@ -30,14 +30,14 @@ public class SecurityFilter implements Filter {
         generalQueries.add("profile");
         generalQueries.add("registration");
 
-        // user queries
-        userQueries.addAll(generalQueries);
-        userQueries.add("account_refill");
-        userQueries.add("invoices");
-        userQueries.add("pay_invoice");
-        userQueries.add("services");
-        userQueries.add("switch_off_service");
-        userQueries.add("switch_on_service");
+        // subscriber queries
+        subscriberQueries.addAll(generalQueries);
+        subscriberQueries.add("account_refill");
+        subscriberQueries.add("invoices");
+        subscriberQueries.add("pay_invoice");
+        subscriberQueries.add("services");
+        subscriberQueries.add("switch_off_service");
+        subscriberQueries.add("switch_on_service");
 
         // admin queries
         adminQueries.addAll(generalQueries);
@@ -57,14 +57,21 @@ public class SecurityFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String query = request.getParameter("query");
         User user = (User) request.getSession().getAttribute("user");
-        boolean isForbiddenAccess =
-                user == null && !generalQueries.contains(query) ||
-                user != null && !user.getAccount().isAdmin() && !userQueries.contains(query) ||
-                user != null && user.getAccount().isAdmin() && !adminQueries.contains(query);
-        if (isForbiddenAccess) {
-            request.setAttribute("query", "profile");
-        } else {
+        boolean isAllowedGuestAccess =
+                (user == null) &&
+                generalQueries.contains(query);
+        boolean isAllowedSubscriberAccess =
+                (user != null) &&
+                subscriberQueries.contains(query) &&
+                "SUBSCRIBER".equals(user.getAccount().getRole().toString());
+        boolean isAllowedAdminAccess =
+                (user != null) &&
+                adminQueries.contains(query) &&
+                "ADMIN".equals(user.getAccount().getRole().toString());
+        if (isAllowedGuestAccess || isAllowedSubscriberAccess || isAllowedAdminAccess) {
             request.setAttribute("query", query);
+        } else {
+            request.setAttribute("query", "profile");
         }
         filterChain.doFilter(request, response);
     }
@@ -72,7 +79,7 @@ public class SecurityFilter implements Filter {
     @Override
     public void destroy() {
         generalQueries = null;
-        userQueries = null;
+        subscriberQueries = null;
         adminQueries = null;
     }
 }

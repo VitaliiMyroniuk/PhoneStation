@@ -3,6 +3,7 @@ package ua.company.myroniuk.dao.impl;
 import org.apache.log4j.Logger;
 import ua.company.myroniuk.dao.*;
 import ua.company.myroniuk.model.entity.Account;
+import ua.company.myroniuk.model.entity.Role;
 import ua.company.myroniuk.model.entity.User;
 import java.sql.*;
 import java.util.ArrayList;
@@ -274,7 +275,7 @@ public class UserDaoImpl implements UserDao {
         account.setId(resultSet.getLong("accounts.id"));
         account.setLogin(resultSet.getString("accounts.login"));
         account.setPassword(resultSet.getString("accounts.password"));
-        account.setAdmin(resultSet.getBoolean("accounts.is_admin"));
+        account.setRole(Role.valueOf(resultSet.getString("accounts.role").toUpperCase()));
         return account;
     }
 
