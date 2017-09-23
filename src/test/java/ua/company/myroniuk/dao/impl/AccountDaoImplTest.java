@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
  * @author Vitalii Myroniuk
  */
 public class AccountDaoImplTest {
+
     @Test
     public void addAccount() throws Exception {
 

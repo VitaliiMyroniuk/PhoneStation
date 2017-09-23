@@ -3,6 +3,7 @@ package ua.company.myroniuk.dao.impl;
 import org.apache.log4j.Logger;
 import ua.company.myroniuk.dao.*;
 import ua.company.myroniuk.model.entity.Account;
+import ua.company.myroniuk.model.entity.Invoice;
 import ua.company.myroniuk.model.entity.Role;
 import ua.company.myroniuk.model.entity.User;
 import java.sql.*;
@@ -25,6 +26,12 @@ public class UserDaoImpl implements UserDao {
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE users.id = ?";
 
+    private final String GET_USER_WITH_INVOICES_BY_ID =
+            "SELECT * FROM users " +
+            "INNER JOIN accounts ON account_id = accounts.id " +
+            "INNER JOIN invoices ON users.id = user_id " +
+            "WHERE users.id = ? AND is_paid = 0";
+
     private final String GET_USER_BY_LOGIN =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE login = ?";
@@ -42,13 +49,17 @@ public class UserDaoImpl implements UserDao {
             "INNER JOIN accounts ON account_id = accounts.id WHERE is_registered = 0";
 
     private final String GET_DEBTORS =
-            "SELECT * FROM users " +
-            "INNER JOIN accounts ON account_id = accounts.id WHERE balance < 0";
+            "SELECT *, sum(price) AS debt FROM users " +
+            "INNER JOIN accounts ON account_id = accounts.id " +
+            "INNER JOIN invoices ON users.id = user_id " +
+            "WHERE is_paid = 0 GROUP BY user_id ORDER BY debt DESC";
 
     private final String GET_USER_COUNT_INFO =
             "SELECT * FROM (SELECT COUNT(*) AS all_users FROM users) t1" +
             "INNER JOIN (SELECT COUNT(*) AS new_users FROM users WHERE is_registered = 0) t2" +
-            "INNER JOIN (SELECT COUNT(*) AS debtors FROM .users WHERE balance < 0) t3";
+            "INNER JOIN (SELECT count(*) AS debtors FROM " +
+                        "(SELECT * FROM invoices WHERE is_paid = 0 GROUP BY user_id) t " +
+                        ") t3";
 
     private final String UPDATE_USER_BALANCE =
             "UPDATE users SET balance = balance + ? WHERE id = ?";
@@ -58,6 +69,9 @@ public class UserDaoImpl implements UserDao {
 
     private final String UPDATE_IS_BLOCKED =
             "UPDATE users SET is_blocked = ? WHERE id = ?";
+
+    private final String DELETE_USER =
+            "DELETE FROM users where id = ?";
 
     private UserDaoImpl() {
     }
@@ -94,13 +108,41 @@ public class UserDaoImpl implements UserDao {
         ) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 return createUser(resultSet);
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the user by id: ", e);
+            throw new RuntimeException(e);
         }
         return null;
+    }
+
+    @Override
+    public User getUserWithInvoicesById(long id) {
+        User user = null;
+        try (Connection connection = DBManager.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(GET_USER_WITH_INVOICES_BY_ID);
+        ) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Invoice> invoices = new ArrayList<>();
+            while (resultSet.next()) {
+                if (user == null) {
+                    user = createUser(resultSet);
+                }
+                Invoice invoice = createInvoice(resultSet);
+                invoices.add(invoice);
+            }
+            if (user != null) {
+                user.setInvoices(invoices);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error during getting the user with invoices by id: ", e);
+            throw new RuntimeException(e);
+        }
+        return user;
     }
 
     @Override
@@ -111,11 +153,12 @@ public class UserDaoImpl implements UserDao {
         ) {
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 return createUser(resultSet);
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the user by login: ", e);
+            throw new RuntimeException(e);
         }
         return null;
     }
@@ -128,11 +171,12 @@ public class UserDaoImpl implements UserDao {
         ) {
             preparedStatement.setString(1, phoneNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 return createUser(resultSet);
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the user by phone number: ", e);
+            throw new RuntimeException(e);
         }
         return null;
     }
@@ -146,12 +190,13 @@ public class UserDaoImpl implements UserDao {
                      connection.prepareStatement(GET_REGISTERED_USERS);
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 User user = createUser(resultSet);
                 users.add(user);
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the list of registered users: ", e);
+            throw new RuntimeException(e);
         }
         return users;
     }
@@ -164,12 +209,13 @@ public class UserDaoImpl implements UserDao {
                      connection.prepareStatement(GET_UNREGISTERED_USERS);
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 User user = createUser(resultSet);
                 users.add(user);
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the list of unregistered users: ", e);
+            throw new RuntimeException(e);
         }
         return users;
     }
@@ -182,12 +228,13 @@ public class UserDaoImpl implements UserDao {
                      connection.prepareStatement(GET_DEBTORS);
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 User user = createUser(resultSet);
                 users.add(user);
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the list of debtors: ", e);
+            throw new RuntimeException(e);
         }
         return users;
     }
@@ -200,13 +247,14 @@ public class UserDaoImpl implements UserDao {
                      connection.prepareStatement(GET_USER_COUNT_INFO);
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 userCountInfo[0] = resultSet.getInt("all_users");
                 userCountInfo[1] = resultSet.getInt("new_users");
                 userCountInfo[2] = resultSet.getInt("debtors");
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the user count info: ", e);
+            throw new RuntimeException(e);
         }
         return userCountInfo;
     }
@@ -223,8 +271,8 @@ public class UserDaoImpl implements UserDao {
             return true;
         } catch (SQLException e) {
             LOGGER.error("Error during updating the user balance: ", e);
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
     @Override
@@ -250,8 +298,8 @@ public class UserDaoImpl implements UserDao {
             return true;
         } catch (SQLException e) {
             LOGGER.error("Error during updating the user registration status: ", e);
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
     @Override
@@ -266,8 +314,22 @@ public class UserDaoImpl implements UserDao {
             return true;
         } catch (SQLException e) {
             LOGGER.error("Error during updating the user block status: ", e);
+            throw new RuntimeException(e);
         }
-        return false;
+    }
+
+    @Override
+    public boolean deleteUser(Connection connection, long id) {
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(DELETE_USER);
+        ) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.error("Error during deleting the user: ", e);
+            throw new RuntimeException(e);
+        }
     }
 
     private Account createAccount(ResultSet resultSet) throws SQLException {
@@ -292,6 +354,16 @@ public class UserDaoImpl implements UserDao {
         user.setRegistered(resultSet.getBoolean("users.is_registered"));
         user.setBlocked(resultSet.getBoolean("users.is_blocked"));
         return user;
+    }
+
+    private Invoice createInvoice(ResultSet resultSet) throws SQLException {
+        Invoice invoice = new Invoice();
+        invoice.setId(resultSet.getLong("invoices.id"));
+        invoice.setDateTime(resultSet.getTimestamp("invoices.date").toLocalDateTime());
+        invoice.setDescription(resultSet.getString("invoices.description"));
+        invoice.setPrice(resultSet.getInt("invoices.price"));
+        invoice.setPaid(resultSet.getBoolean("invoices.is_paid"));
+        return invoice;
     }
 
     private void setStatementParameters(PreparedStatement preparedStatement, User user) throws SQLException {

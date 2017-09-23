@@ -35,6 +35,9 @@ public class ServiceDaoImpl implements ServiceDao {
     private final String DELETE_USER_SERVICE =
             "DELETE FROM users_services WHERE user_id = ? AND service_id = ?";
 
+    private final String DELETE_USER_SERVICES =
+            "DELETE FROM users_services WHERE user_id = ?";
+
     private ServiceDaoImpl() {
     }
 
@@ -68,7 +71,8 @@ public class ServiceDaoImpl implements ServiceDao {
     @Override
     public Service getService(Connection connection, long id) throws SQLException {
         Service service = null;
-        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_SERVICE_BY_ID);
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(GET_SERVICE_BY_ID);
         ) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -83,15 +87,17 @@ public class ServiceDaoImpl implements ServiceDao {
     public List<Service> getAllServices() {
         List<Service> services = new ArrayList<>();
         try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_SERVICES);
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(GET_ALL_SERVICES);
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 Service user = createService(resultSet);
                 services.add(user);
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the list of all services: ", e);
+            throw new RuntimeException(e);
         }
         return services;
     }
@@ -100,16 +106,18 @@ public class ServiceDaoImpl implements ServiceDao {
     public List<Service> getUserServices(long userId) {
         List<Service> services = new ArrayList<>();
         try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_SERVICES);
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(GET_USER_SERVICES);
         ) {
             preparedStatement.setLong(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 Service user = createService(resultSet);
                 services.add(user);
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the switched on services of the user: ", e);
+            throw new RuntimeException(e);
         }
         return services;
     }
@@ -117,7 +125,8 @@ public class ServiceDaoImpl implements ServiceDao {
     @Override
     public boolean deleteUserService(long userId, long serviceId) {
         try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_SERVICE);
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(DELETE_USER_SERVICE);
         ) {
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, serviceId);
@@ -125,8 +134,22 @@ public class ServiceDaoImpl implements ServiceDao {
             return true;
         } catch (SQLException e) {
             LOGGER.error("Error during deleting the service of the user: ", e);
+            throw new RuntimeException(e);
         }
-        return false;
+    }
+
+    @Override
+    public boolean deleteUserServices(Connection connection, long userId) {
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(DELETE_USER_SERVICES);
+        ) {
+            preparedStatement.setLong(1, userId);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.error("Error during deleting the user services: ", e);
+            throw new RuntimeException(e);
+        }
     }
 
     private Service createService(ResultSet resultSet) throws SQLException {

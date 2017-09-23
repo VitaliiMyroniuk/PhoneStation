@@ -43,6 +43,7 @@ public class SecurityFilter implements Filter {
         adminQueries.addAll(generalQueries);
         adminQueries.add("block_user");
         adminQueries.add("debtors");
+        adminQueries.add("delete_user");
         adminQueries.add("new_users");
         adminQueries.add("register_user");
         adminQueries.add("unblock_user");

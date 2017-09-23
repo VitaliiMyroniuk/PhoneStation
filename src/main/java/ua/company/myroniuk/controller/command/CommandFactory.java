@@ -23,6 +23,9 @@ public class CommandFactory {
             case "debtors" :
                 command = new DebtorsCommand();
                 break;
+            case "delete_user" :
+                command = new DeleteUserCommand();
+                break;
             case "invoices" :
                 command = new InvoicesCommand();
                 break;

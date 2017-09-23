@@ -22,12 +22,13 @@ public class InvoiceDaoImpl implements InvoiceDao {
     private final String GET_INVOICE_BY_ID =
             "SELECT * FROM invoices WHERE id = ?";
 
-
     private final String GET_UNPAID_INVOICES_BY_USER_ID =
             "SELECT * FROM invoices WHERE user_id = ? AND is_paid = 0";
 
     private final String UPDATE_IS_PAID =
             "UPDATE invoices SET is_paid = ? WHERE id = ?";
+
+    private final String DELETE_INVOICES = "DELETE FROM invoices WHERE user_id = ?";
 
     private InvoiceDaoImpl() {
     }
@@ -68,11 +69,12 @@ public class InvoiceDaoImpl implements InvoiceDao {
         ) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 invoice = createInvoice(resultSet);
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the invoice by id: ", e);
+            throw new RuntimeException(e);
         }
         return invoice;
     }
@@ -86,12 +88,13 @@ public class InvoiceDaoImpl implements InvoiceDao {
         ) {
             preparedStatement.setLong(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 Invoice invoice = createInvoice(resultSet);
                 invoices.add(invoice);
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the invoices list by the user id: ", e);
+            throw new RuntimeException(e);
         }
         return invoices;
     }
@@ -107,8 +110,22 @@ public class InvoiceDaoImpl implements InvoiceDao {
             return true;
         } catch (SQLException e) {
             LOGGER.error("Error during updating the pay status of the invoice: ", e);
+            throw new RuntimeException(e);
         }
-        return false;
+    }
+
+    @Override
+    public boolean deleteInvoices(Connection connection, long userId) {
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(DELETE_INVOICES);
+        ) {
+            preparedStatement.setLong(1, userId);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.error("Error during deleting user invoices: ", e);
+            throw new RuntimeException(e);
+        }
     }
 
     private Invoice createInvoice(ResultSet resultSet) throws SQLException {

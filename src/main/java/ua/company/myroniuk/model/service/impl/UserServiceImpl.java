@@ -10,6 +10,7 @@ import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.entity.Invoice;
 import ua.company.myroniuk.model.entity.Service;
 import ua.company.myroniuk.model.entity.User;
+import ua.company.myroniuk.model.exception.NotEnoughMoneyException;
 import ua.company.myroniuk.model.service.UserService;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -58,6 +59,7 @@ public class UserServiceImpl implements UserService {
         } catch (SQLException e) {
             LOGGER.error("Error during adding the user into the data base: ", e);
             DBManager.rollback(connection);
+            throw new RuntimeException(e);
         } finally {
             DBManager.closeConnection(connection);
         }
@@ -67,6 +69,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(long id) {
         return userDao.getUserById(id);
+    }
+
+    @Override
+    public User getUserWithInvoicesById(long id) {
+        return userDao.getUserWithInvoicesById(id);
     }
 
     @Override
@@ -95,6 +102,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int getDebt(User user) {
+        int debt = 0;
+        for (Invoice invoice : user.getInvoices()) {
+            debt += invoice.getPrice();
+        }
+        return debt;
+    }
+
+    @Override
     public int[] getUserCountInfo() {
         return userDao.getUserCountInfo();
     }
@@ -115,27 +131,51 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean deleteUser(long userId) {
+        Connection connection = null;
+        try {
+            connection = DBManager.getConnection();
+            connection.setAutoCommit(false);
+            User user = userDao.getUserById(userId);
+            long accountId = user.getAccount().getId();
+            invoiceDao.deleteInvoices(connection, userId);
+            serviceDao.deleteUserServices(connection, userId);
+            userDao.deleteUser(connection, userId);
+            accountDao.deleteAccount(connection, accountId);
+            connection.commit();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.error("Error during deleting the user from the data base: ", e);
+            DBManager.rollback(connection);
+            throw new RuntimeException(e);
+        } finally {
+            DBManager.closeConnection(connection);
+        }
+    }
+
+    @Override
     public boolean checkPhoneNumber(String phoneNumber) {
         return userDao.getUserByPhoneNumber(phoneNumber) != null;
     }
 
     @Override
-    public boolean payInvoice(long userId, long invoiceId) {
+    public boolean payInvoice(long userId, long invoiceId) throws NotEnoughMoneyException {
         Connection connection = null;
         try {
             connection = DBManager.getConnection();
             connection.setAutoCommit(false);
-            // 1) get the invoice that has to be paid
+            User user = userDao.getUserById(userId);
             Invoice invoice = invoiceDao.getInvoice(connection, invoiceId);
-            // 2) update user balance (withdraw money)
+            if (user.getBalance() < invoice.getPrice()) {
+                throw new NotEnoughMoneyException();
+            }
             userDao.updateBalance(connection, userId, - invoice.getPrice());
-            // 3) update corresponding invoice from the data base
             invoiceDao.updateIsPaid(connection, true, invoiceId);
-            // 4) commit
             connection.commit();
         } catch (SQLException e) {
             LOGGER.error("Error during invoice paying: ", e);
             DBManager.rollback(connection);
+            throw new RuntimeException(e);
         } finally {
             DBManager.closeConnection(connection);
         }
@@ -149,23 +189,19 @@ public class UserServiceImpl implements UserService {
         try {
             connection = DBManager.getConnection();
             connection.setAutoCommit(false);
-            // 1) get the service that has to be switched
             Service service = serviceDao.getService(connection, serviceId);
-            // 2) add the record into users_services table
             serviceDao.addUserService(connection, service, userId);
-            // 3) create invoice for the current service
             Invoice invoice = new Invoice();
             invoice.setDateTime(LocalDateTime.now());
             invoice.setDescription("Invoice for a service " + service.getName());
             invoice.setPrice(service.getPrice());
             invoice.setPaid(false);
-            // 4) add the corresponding invoice into the data base
             invoiceDao.addInvoice(connection, invoice, userId);
-            // 5) commit transaction
             connection.commit();
         } catch (SQLException e) {
             LOGGER.error("Error during switching on the service: ", e);
             DBManager.rollback(connection);
+            throw new RuntimeException(e);
         } finally {
             DBManager.closeConnection(connection);
         }

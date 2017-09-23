@@ -14,7 +14,6 @@ import java.io.IOException;
                    value = "UTF-8",
                    description = "Encoding parameter")})
 public class EncodingFilter implements Filter {
-
     /**
      * Encoding for the current request and response.
      */

@@ -17,4 +17,6 @@ public interface InvoiceDao {
     List<Invoice> getInvoices(long userId);
 
     boolean updateIsPaid(Connection connection, boolean isPaid, long id);
+
+    boolean deleteInvoices(Connection connection, long userId);
 }

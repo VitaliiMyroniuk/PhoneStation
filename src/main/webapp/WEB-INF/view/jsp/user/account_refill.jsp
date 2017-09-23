@@ -29,7 +29,7 @@
                 <table>
                     <tr>
                         <td><fmt:message key="user.account.refill.credit.card" bundle="${rb}"/> &nbsp </td>
-                        <td><input type="text" name="credit_card_number"></td>
+                        <td><input type="text" name="credit_card_number" value="${credit_card_number}"></td>
                         <td>
                             <c:choose>
                                 <c:when test="${credit_card_number_is_valid == null}">
@@ -45,7 +45,7 @@
                     </tr>
                     <tr>
                         <td><fmt:message key="user.account.refill.cvv" bundle="${rb}"/> &nbsp </td>
-                        <td><input type="text" name="cvv"></td>
+                        <td><input type="text" name="cvv" value="${cvv}"></td>
                         <td>
                             <c:choose>
                                 <c:when test="${cvv_is_valid == null}">
@@ -61,7 +61,7 @@
                     </tr>
                     <tr>
                         <td><fmt:message key="user.account.refill.sum" bundle="${rb}"/> &nbsp </td>
-                        <td><input type="text" name="sum"></td>
+                        <td><input type="text" name="sum" value="${sum}"></td>
                         <td>
                             <c:choose>
                                 <c:when test="${sum_is_valid == null}">
@@ -79,7 +79,7 @@
                         <td><br></td>
                     </tr>
                     <tr>
-                        <td>
+                        <td colspan="2" align="right">
                             <input type="submit" value=<fmt:message key="user.account.refill.confirm" bundle="${rb}"/>>
                         </td>
                     </tr>

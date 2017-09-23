@@ -16,7 +16,7 @@ public class AccountRefillCommand implements Command {
 
     private final String CVV_REGEX = "^[0-9]{3}$";
 
-    private final String SUM_REGEX = "^[1-9]{1}[0-9]{0,8}$";
+    private final String SUM_REGEX = "^[1-9]{1,4}|0\\.[0-9]{1,2}|[1-9]{1,4}\\.[0-9]{1,2}$";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -28,8 +28,8 @@ public class AccountRefillCommand implements Command {
             UserService userService = UserServiceImpl.getInstance();
             User user = (User) request.getSession().getAttribute("user");
             long userId = user.getId();
-            int sum = Integer.parseInt(request.getParameter("sum"));
-            userService.updateBalance(userId, 1000 * sum);
+            int sum = getSum(request);
+            userService.updateBalance(userId, sum);
             user = userService.getUserById(userId);
             request.getSession().setAttribute("user", user);
             return USER_JSP;
@@ -72,5 +72,11 @@ public class AccountRefillCommand implements Command {
             request.setAttribute("sum_is_valid", false);
             return false;
         }
+    }
+
+    private int getSum(HttpServletRequest request) {
+        String stringSum = request.getParameter("sum");
+        double sum = Double.parseDouble(stringSum);
+        return (int) (100 * sum);
     }
 }

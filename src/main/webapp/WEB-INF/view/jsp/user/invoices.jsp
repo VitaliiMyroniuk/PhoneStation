@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
@@ -24,6 +25,12 @@
         <div class="main">
             <h3><fmt:message key="user.invoices" bundle="${rb}"/></h3>
             <br>
+            <c:if test="${not_enough_money}">
+                <div style="color: red">
+                    <fmt:message key="user.not.enough.money" bundle="${rb}"/>
+                </div>
+            </c:if>
+            <br>
             <table class="my-table" border="1" cellspacing="0">
                 <thead>
                 <tr>
@@ -36,9 +43,13 @@
                 <tbody>
                 <c:forEach var="invoice" items="${invoices}">
                     <tr>
-                        <td><c:out value="${invoice.dateTime}"/></td>
+                        <td>
+                            <ctg:date-format dateTime="${invoice.dateTime}" locale="${sessionScope.locale}"/>
+                        </td>
                         <td><c:out value="${invoice.description}"/></td>
-                        <td><c:out value="${invoice.price}"/></td>
+                        <td>
+                            <ctg:price-format price="${invoice.price}"/>
+                        </td>
                         <td>
                             <a href="/controller?query=pay_invoice&invoice_id=${invoice.id}">
                                 <fmt:message key="user.table.pay.invoice" bundle="${rb}"/>

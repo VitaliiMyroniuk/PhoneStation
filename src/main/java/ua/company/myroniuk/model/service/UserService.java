@@ -1,6 +1,8 @@
 package ua.company.myroniuk.model.service;
 
 import ua.company.myroniuk.model.entity.User;
+import ua.company.myroniuk.model.exception.NotEnoughMoneyException;
+
 import java.util.List;
 
 /**
@@ -12,6 +14,8 @@ public interface UserService {
 
     User getUserById(long id);
 
+    User getUserWithInvoicesById(long id);
+
     User getUserByLogin(String login);
 
     User getUserByPhoneNumber(String phoneNumber);
@@ -22,6 +26,8 @@ public interface UserService {
 
     List<User> getDebtors();
 
+    int getDebt(User user);
+
     int[] getUserCountInfo();
 
     boolean updateIsRegistered(long userId);
@@ -30,9 +36,11 @@ public interface UserService {
 
     boolean updateBalance(long userId, int sum);
 
+    boolean deleteUser(long userId);
+
     boolean checkPhoneNumber(String phoneNumber);
 
-    boolean payInvoice(long userId, long invoiceId);
+    boolean payInvoice(long userId, long invoiceId) throws NotEnoughMoneyException;
 
     long switchOnService(long userId, long serviceId);
 

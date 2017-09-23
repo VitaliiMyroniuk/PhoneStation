@@ -6,20 +6,19 @@ import ua.company.myroniuk.model.service.UserService;
 import ua.company.myroniuk.model.service.impl.UserServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author Vitalii Myroniuk
  */
-public class BlockUserCommand implements Command {
+public class DeleteUserCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         UserService userService = UserServiceImpl.getInstance();
         long userId = Long.parseLong(request.getParameter("user_id"));
-        userService.updateIsBlocked(userId, true);
-        User user = userService.getUserWithInvoicesById(userId);
-        request.setAttribute("subscriber", user);
-        int debt = userService.getDebt(user);
-        request.setAttribute("debt", debt);
-        return USER_INVOICES_JSP;
+        userService.deleteUser(userId);
+        List<User> users = userService.getUnregisteredUsers();
+        request.setAttribute("new_users", users);
+        return NEW_USERS_JSP;
     }
 }

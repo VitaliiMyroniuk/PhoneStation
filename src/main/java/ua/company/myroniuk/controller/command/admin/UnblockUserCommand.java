@@ -6,7 +6,6 @@ import ua.company.myroniuk.model.service.UserService;
 import ua.company.myroniuk.model.service.impl.UserServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @author Vitalii Myroniuk
@@ -17,8 +16,10 @@ public class UnblockUserCommand implements Command {
         UserService userService = UserServiceImpl.getInstance();
         long userId = Long.parseLong(request.getParameter("user_id"));
         userService.updateIsBlocked(userId, false);
-        List<User> debtors = userService.getDebtors();
-        request.setAttribute("debtors", debtors);
-        return DEBTORS_JSP;
+        User user = userService.getUserWithInvoicesById(userId);
+        request.setAttribute("subscriber", user);
+        int debt = userService.getDebt(user);
+        request.setAttribute("debt", debt);
+        return USER_INVOICES_JSP;
     }
 }

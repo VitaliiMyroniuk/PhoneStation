@@ -24,10 +24,14 @@ public class Controller extends HttpServlet {
         process(request, response);
     }
 
-    protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String query = (String) request.getAttribute("query");
-        Command command = CommandFactory.createCommand(query);
-        String page = command.execute(request, response);
-        getServletContext().getRequestDispatcher(page).forward(request, response);
+    private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            String query = (String) request.getAttribute("query");
+            Command command = CommandFactory.createCommand(query);
+            String page = command.execute(request, response);
+            getServletContext().getRequestDispatcher(page).forward(request, response);
+        } catch (Exception e) {
+            getServletContext().getRequestDispatcher(Command.ERROR_JSP).forward(request, response);
+        }
     }
 }

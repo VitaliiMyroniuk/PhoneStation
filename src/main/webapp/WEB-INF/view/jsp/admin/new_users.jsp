@@ -32,6 +32,7 @@
                     <th><fmt:message key="admin.table.surname" bundle="${rb}"/></th>
                     <th><fmt:message key="admin.table.phone.number" bundle="${rb}"/></th>
                     <th><fmt:message key="admin.table.add" bundle="${rb}"/></th>
+                    <th><fmt:message key="admin.table.delete" bundle="${rb}"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,6 +45,11 @@
                         <td>
                             <a href="/controller?query=register_user&user_id=${user.id}">
                                 <fmt:message key="admin.table.add.user" bundle="${rb}"/>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="/controller?query=delete_user&user_id=${user.id}">
+                                <fmt:message key="admin.table.delete.user" bundle="${rb}"/>
                             </a>
                         </td>
                     </tr>

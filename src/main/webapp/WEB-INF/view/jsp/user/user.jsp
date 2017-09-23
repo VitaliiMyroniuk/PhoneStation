@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
@@ -43,15 +44,7 @@
                 </tr>
                 <tr>
                     <td><fmt:message key="user.profile.balance" bundle="${rb}"/>: &nbsp </td>
-                    <td>${user.balance}</td>
-                </tr>
-                <tr>
-                    <td><fmt:message key="user.profile.login" bundle="${rb}"/>: &nbsp </td>
-                    <td>${user.account.login}</td>
-                </tr>
-                <tr>
-                    <td><fmt:message key="user.profile.password" bundle="${rb}"/>: &nbsp </td>
-                    <td>${user.account.password}</td>
+                    <td><ctg:price-format price="${user.balance}"/> &#8372</td>
                 </tr>
             </table>
         </div>

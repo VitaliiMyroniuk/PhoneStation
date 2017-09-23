@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
@@ -24,35 +25,76 @@
         <div class="main">
             <h3><fmt:message key="admin.table.invoices" bundle="${rb}"/></h3>
             <br>
-            <table>
-                <tr>
-                    <td><fmt:message key="admin.table.user" bundle="${rb}"/>: </td>
-                    <td>${subscriber.name} ${subscriber.middleName} ${subscriber.surname}</td>
-                </tr>
-                <tr>
-                    <td><fmt:message key="admin.table.phone.number" bundle="${rb}"/>: </td>
-                    <td>${subscriber.phoneNumber}</td>
-                </tr>
-            </table>
-            <br>
-            <table class="my-table" border="1" cellspacing="0">
-                <thead>
-                <tr>
-                    <th><fmt:message key="admin.table.date" bundle="${rb}"/></th>
-                    <th><fmt:message key="admin.table.description" bundle="${rb}"/></th>
-                    <th><fmt:message key="admin.table.price" bundle="${rb}"/></th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="invoice" items="${user_invoices}">
+
+            <div style="float: left; width: 40%">
+                <table align="left">
                     <tr>
-                        <td><c:out value="${invoice.dateTime}"/></td>
-                        <td><c:out value="${invoice.description}"/></td>
-                        <td><c:out value="${invoice.price}"/></td>
+                        <td><fmt:message key="admin.table.user" bundle="${rb}"/>: &nbsp </td>
+                        <td>${subscriber.name} ${subscriber.middleName} ${subscriber.surname}</td>
                     </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+                    <tr>
+                        <td><fmt:message key="admin.table.phone.number" bundle="${rb}"/>: &nbsp </td>
+                        <td>${subscriber.phoneNumber}</td>
+                    </tr>
+                    <tr>
+                        <td><fmt:message key="admin.table.debt" bundle="${rb}"/>: &nbsp </td>
+                        <td><ctg:price-format price="${debt}"/> (&#8372)</td>
+                    </tr>
+                    <tr>
+                        <td><fmt:message key="admin.table.status" bundle="${rb}"/>: &nbsp </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${subscriber.isBlocked()}">
+                                    <fmt:message key="admin.table.blocked" bundle="${rb}"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <fmt:message key="admin.table.active" bundle="${rb}"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <c:choose>
+                                <c:when test="${subscriber.isBlocked()}">
+                                    <form action="/controller?query=unblock_user&user_id=${subscriber.id}" method="POST">
+                                        <input type="submit" value=<fmt:message key="admin.table.unblock" bundle="${rb}"/>>
+                                    </form>
+                                </c:when>
+                                <c:otherwise>
+                                    <form action="/controller?query=block_user&user_id=${subscriber.id}" method="POST">
+                                        <input type="submit" value=<fmt:message key="admin.table.block" bundle="${rb}"/>>
+                                    </form>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="float: right; width: 60%">
+                <table class="my-table" border="1" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th><fmt:message key="admin.table.date" bundle="${rb}"/></th>
+                        <th><fmt:message key="admin.table.description" bundle="${rb}"/></th>
+                        <th><fmt:message key="admin.table.price" bundle="${rb}"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="invoice" items="${subscriber.invoices}">
+                        <tr>
+                            <td><ctg:date-format dateTime="${invoice.dateTime}" locale="${sessionScope.locale}"/></td>
+                            <td><c:out value="${invoice.description}"/></td>
+                            <td><ctg:price-format price="${invoice.price}"/></td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

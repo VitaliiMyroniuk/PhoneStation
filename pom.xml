@@ -40,6 +40,14 @@
             <version>1.2</version>
         </dependency>
 
+        <!-- Custom tag support -->
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.2</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- JDBC support -->
         <dependency>
             <groupId>mysql</groupId>

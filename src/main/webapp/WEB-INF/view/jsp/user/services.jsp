@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
@@ -39,7 +40,7 @@
                     <tr>
                         <td><c:out value="${service.name}"/></td>
                         <td><c:out value="${service.description}"/></td>
-                        <td><c:out value="${service.price}"/></td>
+                        <td><ctg:price-format price="${service.price}"/></td>
                         <td>
                             <c:choose>
                                 <c:when test="${user_services.contains(service)}">

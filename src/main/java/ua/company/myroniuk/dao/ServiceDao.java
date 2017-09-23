@@ -19,4 +19,6 @@ public interface ServiceDao {
     List<Service> getUserServices(long userId);
 
     boolean deleteUserService(long userId, long serviceId);
+
+    boolean deleteUserServices(Connection connection, long userId);
 }

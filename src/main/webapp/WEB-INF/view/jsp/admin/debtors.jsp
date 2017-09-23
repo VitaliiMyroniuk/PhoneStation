@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
@@ -32,9 +33,8 @@
                     <th><fmt:message key="admin.table.surname" bundle="${rb}"/></th>
                     <th><fmt:message key="admin.table.phone.number" bundle="${rb}"/></th>
                     <th><fmt:message key="admin.table.balance" bundle="${rb}"/></th>
-                    <th><fmt:message key="admin.table.invoices" bundle="${rb}"/></th>
                     <th><fmt:message key="admin.table.status" bundle="${rb}"/></th>
-                    <th><fmt:message key="admin.table.change.status" bundle="${rb}"/></th>
+                    <th><fmt:message key="admin.table.invoices" bundle="${rb}"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,12 +44,7 @@
                         <td><c:out value="${user.middleName}"/></td>
                         <td><c:out value="${user.surname}"/></td>
                         <td><c:out value="${user.phoneNumber}"/></td>
-                        <td><c:out value="${user.balance}"/></td>
-                        <td>
-                            <a href="/controller?query=user_invoices&user_id=${user.id}">
-                                <fmt:message key="admin.table.show" bundle="${rb}"/>
-                            </a>
-                        </td>
+                        <td><ctg:price-format price="${user.balance}"/></td>
                         <td>
                             <c:choose>
                                 <c:when test="${user.isBlocked()}">
@@ -61,18 +56,9 @@
                             </c:choose>
                         </td>
                         <td>
-                            <c:choose>
-                                <c:when test="${user.isBlocked()}">
-                                    <a href="/controller?query=unblock_user&user_id=${user.id}">
-                                        <fmt:message key="admin.table.unblock" bundle="${rb}"/>
-                                    </a>
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="/controller?query=block_user&user_id=${user.id}">
-                                        <fmt:message key="admin.table.block" bundle="${rb}"/>
-                                    </a>
-                                </c:otherwise>
-                            </c:choose>
+                            <a href="/controller?query=user_invoices&user_id=${user.id}">
+                                <fmt:message key="admin.table.show" bundle="${rb}"/>
+                            </a>
                         </td>
                     </tr>
                 </c:forEach>

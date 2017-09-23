@@ -5,7 +5,6 @@ import ua.company.myroniuk.dao.AccountDao;
 import ua.company.myroniuk.dao.DBManager;
 import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.entity.Role;
-
 import java.sql.*;
 
 /**
@@ -24,6 +23,9 @@ public class AccountDaoImpl implements AccountDao {
     private final String GET_DATA_BY_LOGIN_AND_PASSWORD =
             "SELECT role, is_registered FROM accounts " +
             "INNER JOIN users ON accounts.id = account_id WHERE login = ? AND password = ?";
+
+    private final String DELETE_ACCOUNT =
+            "DELETE FROM accounts where id = ?";
 
     private AccountDaoImpl() {
     }
@@ -57,7 +59,8 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public Account getAccountByLogin(String login) {
         try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_ACCOUNT_BY_LOGIN);
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(GET_ACCOUNT_BY_LOGIN);
         ) {
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -66,14 +69,30 @@ public class AccountDaoImpl implements AccountDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting an account by login: ", e);
+            throw new RuntimeException(e);
         }
         return null;
     }
 
     @Override
+    public boolean deleteAccount(Connection connection, long accountId) {
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(DELETE_ACCOUNT);
+        ) {
+            preparedStatement.setLong(1, accountId);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.error("Error during deleting the account: ", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public int checkLoginAndPassword(String login, String password) {
         try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_DATA_BY_LOGIN_AND_PASSWORD);
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(GET_DATA_BY_LOGIN_AND_PASSWORD);
         ) {
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
@@ -87,6 +106,7 @@ public class AccountDaoImpl implements AccountDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Error during checking login and password: ", e);
+            throw new RuntimeException(e);
         }
         return -1;
     }

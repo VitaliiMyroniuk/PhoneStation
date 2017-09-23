@@ -14,6 +14,8 @@ public interface AccountDao {
 
     Account getAccountByLogin(String login);
 
+    boolean deleteAccount(Connection connection, long accountId);
+
     /**
      * The method checks the given login and password.
      * @param login the login entered by the user.
