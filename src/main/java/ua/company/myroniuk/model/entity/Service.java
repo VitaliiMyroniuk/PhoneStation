@@ -24,7 +24,7 @@ public class Service {
     private String description;
 
     /**
-     * Duration of the service.
+     * Duration of the service (days quantity).
      */
     private int duration;
 
@@ -32,6 +32,18 @@ public class Service {
      * Price of the service.
      */
     private int price;
+
+    // Constructors.
+    public Service() {
+    }
+
+    private Service(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.description = builder.description;
+        this.duration = builder.duration;
+        this.price = builder.price;
+    }
 
     // Getters and setters.
     public long getId() {
@@ -89,5 +101,43 @@ public class Service {
     @Override
     public int hashCode() {
         return Objects.hash(name, description, duration, price);
+    }
+
+    // Builder.
+    public static class Builder {
+        private long id;
+        private String name;
+        private String description;
+        private int duration;
+        private int price;
+
+        public Builder setId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder setDuration(int duration) {
+            this.duration = duration;
+            return this;
+        }
+
+        public Builder setPrice(int price) {
+            this.price = price;
+            return this;
+        }
+
+        public Service build() {
+            return new Service(this);
+        }
     }
 }

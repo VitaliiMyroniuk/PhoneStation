@@ -29,7 +29,18 @@ public class Account {
      */
     private Role role;
 
-    // Getters and setters
+    // Constructors.
+    public Account() {
+    }
+
+    private Account(Builder builder) {
+        this.id = builder.id;
+        this.login = builder.login;
+        this.password = builder.password;
+        this.role = builder.role;
+    }
+
+    // Getters and setters.
     public long getId() {
         return id;
     }
@@ -76,5 +87,37 @@ public class Account {
     @Override
     public int hashCode() {
         return Objects.hash(login, password);
+    }
+
+    // Builder.
+    public static class Builder {
+        private long id;
+        private String login;
+        private String password;
+        private Role role;
+
+        public Builder setId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setLogin(String login) {
+            this.login = login;
+            return this;
+        }
+
+        public Builder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder setRole(Role role) {
+            this.role = role;
+            return this;
+        }
+
+        public Account build() {
+            return new Account(this);
+        }
     }
 }

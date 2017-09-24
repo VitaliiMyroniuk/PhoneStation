@@ -129,13 +129,13 @@ public class InvoiceDaoImpl implements InvoiceDao {
     }
 
     private Invoice createInvoice(ResultSet resultSet) throws SQLException {
-        Invoice invoice = new Invoice();
-        invoice.setId(resultSet.getLong("invoices.id"));
-        invoice.setDateTime(resultSet.getTimestamp("invoices.date").toLocalDateTime());
-        invoice.setDescription(resultSet.getString("invoices.description"));
-        invoice.setPrice(resultSet.getInt("invoices.price"));
-        invoice.setPaid(resultSet.getBoolean("invoices.is_paid"));
-        return invoice;
+        return new Invoice.Builder()
+                .setId(resultSet.getLong("invoices.id"))
+                .setDateTime(resultSet.getTimestamp("invoices.date").toLocalDateTime())
+                .setDescription(resultSet.getString("invoices.description"))
+                .setPrice(resultSet.getInt("invoices.price"))
+                .setPaid(resultSet.getBoolean("invoices.is_paid"))
+                .build();
     }
 
 }

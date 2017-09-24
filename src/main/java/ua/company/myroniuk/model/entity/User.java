@@ -64,6 +64,24 @@ public class User {
      */
     private boolean isBlocked;
 
+    // Constructors
+    public User() {
+    }
+
+    private User(Builder builder) {
+        this.account = builder.account;
+        this.id = builder.id;
+        this.name = builder.name;
+        this.middleName = builder.middleName;
+        this.surname = builder.surname;
+        this.phoneNumber = builder.phoneNumber;
+        this.balance = builder.balance;
+        this.services = builder.services;
+        this.invoices = builder.invoices;
+        this.isRegistered = builder.isRegistered;
+        this.isBlocked = builder.isBlocked;
+    }
+
     // Getters and setters.
     public long getId() {
         return id;
@@ -174,5 +192,79 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(phoneNumber);
+    }
+
+    // Builder.
+    public static class Builder {
+        private long id;
+        private Account account;
+        private String name;
+        private String middleName;
+        private String surname;
+        private String phoneNumber;
+        private int balance;
+        private List<Service> services;
+        private List<Invoice> invoices;
+        private boolean isRegistered;
+        private boolean isBlocked;
+
+        public Builder setId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setAccount(Account account) {
+            this.account = account;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setMiddleName(String middleName) {
+            this.middleName = middleName;
+            return this;
+        }
+
+        public Builder setSurname(String surname) {
+            this.surname = surname;
+            return this;
+        }
+
+        public Builder setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+            return this;
+        }
+
+        public Builder setBalance(int balance) {
+            this.balance = balance;
+            return this;
+        }
+
+        public Builder setServices(List<Service> services) {
+            this.services = services;
+            return this;
+        }
+
+        public Builder setInvoices(List<Invoice> invoices) {
+            this.invoices = invoices;
+            return this;
+        }
+
+        public Builder setRegistered(boolean isRegistered) {
+            this.isRegistered = isRegistered;
+            return this;
+        }
+
+        public Builder setBlocked(boolean isBlocked) {
+            this.isBlocked = isBlocked;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
     }
 }

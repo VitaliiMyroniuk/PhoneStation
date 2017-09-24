@@ -17,7 +17,11 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class PayInvoiceCommand implements Command {
+    /**
+     * Logger.
+     */
     private static final Logger LOGGER = Logger.getLogger(PayInvoiceCommand.class);
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         UserService userService = UserServiceImpl.getInstance();
@@ -29,7 +33,7 @@ public class PayInvoiceCommand implements Command {
             userService.payInvoice(userId, invoiceId);
         } catch (NotEnoughMoneyException e) {
             request.setAttribute("not_enough_money", true);
-            LOGGER.error("Error during invoice payment: ", e);
+            LOGGER.error("Error during invoice payment (not enough money): ", e);
         }
         List<Invoice> invoices = invoiceService.getInvoices(userId);
         request.setAttribute("invoices", invoices);

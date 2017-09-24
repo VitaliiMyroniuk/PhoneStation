@@ -17,31 +17,48 @@
         <jsp:include page="/WEB-INF/view/jsp/general/header.jsp"/>
     </div>
 
-    <div class="content-block">
-        <form action="/controller" method="POST">
-            <h3><fmt:message key="login.authentication" bundle="${rb}"/></h3>
-            <input type="hidden" name="query" value="login"/>
-            <table>
-                <tr>
-                    <td><fmt:message key="login.login" bundle="${rb}"/></td>
-                    <td><input type="text" name="login"></td>
-                </tr>
-                <tr>
-                    <td><fmt:message key="login.password" bundle="${rb}"/></td>
-                    <td><input type="password" name="password"></td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="submit" value=<fmt:message key="login.enter" bundle="${rb}"/>>
-                    </td>
-                    <td>
-                        <a href="/controller?query=registration">
-                            <fmt:message key="login.registration" bundle="${rb}"/>
-                        </a>
-                    </td>
-                </tr>
-            </table>
-        </form>
+    <div class="content-block" style="display: flex">
+        <div class="login-container">
+            <form action="/controller" method="POST">
+                <input type="hidden" name="query" value="login"/>
+                <table>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <h2><fmt:message key="login.authentication" bundle="${rb}"/></h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><br></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><fmt:message key="login.login" bundle="${rb}"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input class="my-input" type="text" name="login"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><fmt:message key="login.password" bundle="${rb}"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input class="my-input" type="password" name="password"></td>
+                    </tr>
+                    <tr>
+                        <td><br></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="my-button" type="submit"
+                                   value="<fmt:message key="login.sign.in" bundle="${rb}"/>">
+                        </td>
+                        <td style="text-align: right">
+                            <a href="/controller?query=registration">
+                                <fmt:message key="login.sign.up" bundle="${rb}"/>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
     </div>
 
     <div class="footer">

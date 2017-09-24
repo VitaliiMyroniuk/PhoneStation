@@ -80,7 +80,8 @@
                     </tr>
                     <tr>
                         <td colspan="2" align="right">
-                            <input type="submit" value=<fmt:message key="user.account.refill.confirm" bundle="${rb}"/>>
+                            <input type="submit" class="my-button"
+                                   value=<fmt:message key="user.account.refill.confirm" bundle="${rb}"/>>
                         </td>
                     </tr>
                 </table>

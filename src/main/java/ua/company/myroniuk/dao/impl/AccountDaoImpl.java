@@ -112,11 +112,11 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     private Account createAccount(ResultSet resultSet) throws SQLException {
-        Account account = new Account();
-        account.setId(resultSet.getLong("id"));
-        account.setLogin(resultSet.getString("login"));
-        account.setPassword(resultSet.getString("password"));
-        account.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
-        return account;
+        return new Account.Builder()
+                .setId(resultSet.getLong("id"))
+                .setLogin(resultSet.getString("login"))
+                .setPassword(resultSet.getString("password"))
+                .setRole(Role.valueOf(resultSet.getString("role").toUpperCase()))
+                .build();
     }
 }

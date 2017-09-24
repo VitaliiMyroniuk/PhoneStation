@@ -333,37 +333,37 @@ public class UserDaoImpl implements UserDao {
     }
 
     private Account createAccount(ResultSet resultSet) throws SQLException {
-        Account account = new Account();
-        account.setId(resultSet.getLong("accounts.id"));
-        account.setLogin(resultSet.getString("accounts.login"));
-        account.setPassword(resultSet.getString("accounts.password"));
-        account.setRole(Role.valueOf(resultSet.getString("accounts.role").toUpperCase()));
-        return account;
+        return new Account.Builder()
+                .setId(resultSet.getLong("accounts.id"))
+                .setLogin(resultSet.getString("accounts.login"))
+                .setPassword(resultSet.getString("accounts.password"))
+                .setRole(Role.valueOf(resultSet.getString("accounts.role").toUpperCase()))
+                .build();
     }
 
     private User createUser(ResultSet resultSet) throws SQLException {
         Account account = createAccount(resultSet);
-        User user = new User();
-        user.setAccount(account);
-        user.setId(resultSet.getLong("users.id"));
-        user.setName(resultSet.getString("users.name"));
-        user.setMiddleName(resultSet.getString("users.middle_name"));
-        user.setSurname(resultSet.getString("users.surname"));
-        user.setPhoneNumber(resultSet.getString("users.phone_number"));
-        user.setBalance(resultSet.getInt("users.balance"));
-        user.setRegistered(resultSet.getBoolean("users.is_registered"));
-        user.setBlocked(resultSet.getBoolean("users.is_blocked"));
-        return user;
+        return new User.Builder()
+                .setAccount(account)
+                .setId(resultSet.getLong("users.id"))
+                .setName(resultSet.getString("users.name"))
+                .setMiddleName(resultSet.getString("users.middle_name"))
+                .setSurname(resultSet.getString("users.surname"))
+                .setPhoneNumber(resultSet.getString("users.phone_number"))
+                .setBalance(resultSet.getInt("users.balance"))
+                .setRegistered(resultSet.getBoolean("users.is_registered"))
+                .setBlocked(resultSet.getBoolean("users.is_blocked"))
+                .build();
     }
 
     private Invoice createInvoice(ResultSet resultSet) throws SQLException {
-        Invoice invoice = new Invoice();
-        invoice.setId(resultSet.getLong("invoices.id"));
-        invoice.setDateTime(resultSet.getTimestamp("invoices.date").toLocalDateTime());
-        invoice.setDescription(resultSet.getString("invoices.description"));
-        invoice.setPrice(resultSet.getInt("invoices.price"));
-        invoice.setPaid(resultSet.getBoolean("invoices.is_paid"));
-        return invoice;
+        return new Invoice.Builder()
+                .setId(resultSet.getLong("invoices.id"))
+                .setDateTime(resultSet.getTimestamp("invoices.date").toLocalDateTime())
+                .setDescription(resultSet.getString("invoices.description"))
+                .setPrice(resultSet.getInt("invoices.price"))
+                .setPaid(resultSet.getBoolean("invoices.is_paid"))
+                .build();
     }
 
     private void setStatementParameters(PreparedStatement preparedStatement, User user) throws SQLException {

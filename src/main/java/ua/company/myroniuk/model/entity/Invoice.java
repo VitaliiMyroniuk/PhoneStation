@@ -34,6 +34,18 @@ public class Invoice {
      */
     private boolean isPaid;
 
+    // Constructors.
+    public Invoice() {
+    }
+
+    private Invoice(Builder builder) {
+        this.id = builder.id;
+        this.dateTime = builder.dateTime;
+        this.description = builder.description;
+        this.price = builder.price;
+        this.isPaid = builder.isPaid;
+    }
+
     // Getters and setters.
     public long getId() {
         return id;
@@ -90,5 +102,42 @@ public class Invoice {
     @Override
     public int hashCode() {
         return Objects.hash(dateTime, description, price, isPaid);
+    }
+
+    public static class Builder {
+        private long id;
+        private LocalDateTime dateTime;
+        private String description;
+        private int price;
+        private boolean isPaid;
+
+        public Builder setId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setDateTime(LocalDateTime dateTime) {
+            this.dateTime = dateTime;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder setPrice(int price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder setPaid(boolean isPaid) {
+            this.isPaid = isPaid;
+            return this;
+        }
+
+        public Invoice build() {
+            return new Invoice(this);
+        }
     }
 }

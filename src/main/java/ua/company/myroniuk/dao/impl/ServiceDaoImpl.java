@@ -153,12 +153,12 @@ public class ServiceDaoImpl implements ServiceDao {
     }
 
     private Service createService(ResultSet resultSet) throws SQLException {
-        Service service = new Service();
-        service.setId(resultSet.getLong("services.id"));
-        service.setName(resultSet.getString("services.name"));
-        service.setDescription(resultSet.getString("services.description"));
-        service.setDuration(resultSet.getInt("services.duration"));
-        service.setPrice(resultSet.getInt("services.price"));
-        return service;
+        return new Service.Builder()
+                .setId(resultSet.getLong("services.id"))
+                .setName(resultSet.getString("services.name"))
+                .setDescription(resultSet.getString("services.description"))
+                .setDuration(resultSet.getInt("services.duration"))
+                .setPrice(resultSet.getInt("services.price"))
+                .build();
     }
 }
