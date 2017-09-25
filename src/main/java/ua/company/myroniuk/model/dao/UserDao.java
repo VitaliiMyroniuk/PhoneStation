@@ -1,4 +1,4 @@
-package ua.company.myroniuk.dao;
+package ua.company.myroniuk.model.dao;
 
 import ua.company.myroniuk.model.entity.User;
 import java.sql.Connection;

@@ -1,11 +1,11 @@
 package ua.company.myroniuk.model.service.impl;
 
 import org.apache.log4j.Logger;
-import ua.company.myroniuk.dao.*;
-import ua.company.myroniuk.dao.impl.AccountDaoImpl;
-import ua.company.myroniuk.dao.impl.InvoiceDaoImpl;
-import ua.company.myroniuk.dao.impl.ServiceDaoImpl;
-import ua.company.myroniuk.dao.impl.UserDaoImpl;
+import ua.company.myroniuk.model.dao.*;
+import ua.company.myroniuk.model.dao.impl.AccountDaoImpl;
+import ua.company.myroniuk.model.dao.impl.InvoiceDaoImpl;
+import ua.company.myroniuk.model.dao.impl.ServiceDaoImpl;
+import ua.company.myroniuk.model.dao.impl.UserDaoImpl;
 import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.entity.Invoice;
 import ua.company.myroniuk.model.entity.Service;

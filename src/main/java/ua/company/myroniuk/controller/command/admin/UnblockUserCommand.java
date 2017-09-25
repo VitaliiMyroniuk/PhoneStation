@@ -20,6 +20,6 @@ public class UnblockUserCommand implements Command {
         request.setAttribute("subscriber", user);
         int debt = userService.getDebt(user);
         request.setAttribute("debt", debt);
-        return USER_INVOICES_JSP;
+        return "redirect:/phone_station/user_invoices?user_id=" + userId;
     }
 }

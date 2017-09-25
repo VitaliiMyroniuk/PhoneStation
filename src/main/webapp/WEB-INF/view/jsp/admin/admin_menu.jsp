@@ -6,22 +6,22 @@
 
 <ul>
     <li>
-        <a href="/controller?query=profile">
+        <a href="/phone_station/profile">
             <fmt:message key="menu.profile" bundle="${rb}"/>
         </a>
     </li>
     <li>
-        <a href="/controller?query=users">
+        <a href="/phone_station/users">
             <fmt:message key="menu.users" bundle="${rb}"/>
         </a>
     </li>
     <li>
-        <a href="/controller?query=new_users">
+        <a href="/phone_station/new_users">
             <fmt:message key="menu.new.users" bundle="${rb}"/>
         </a>
     </li>
     <li>
-        <a href="/controller?query=debtors">
+        <a href="/phone_station/debtors">
             <fmt:message key="menu.debtors" bundle="${rb}"/>
         </a>
     </li>

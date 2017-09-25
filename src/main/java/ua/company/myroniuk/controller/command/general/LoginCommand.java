@@ -8,7 +8,6 @@ import ua.company.myroniuk.model.service.impl.AccountServiceImpl;
 import ua.company.myroniuk.model.service.impl.UserServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @author Vitalii Myroniuk
@@ -27,13 +26,13 @@ public class LoginCommand implements Command {
         } else if (result == 0) {
             user = userService.getUserByLogin(login);
             request.getSession().setAttribute("user", user);
-            return USER_JSP;
+            return "redirect:/phone_station/profile";
         } else {
             User admin = userService.getUserByLogin(login);
             request.getSession().setAttribute("user", admin);
             int[] userCountInfo = userService.getUserCountInfo();
             request.setAttribute("user_count_info", userCountInfo);
-            return ADMIN_JSP;
+            return "redirect:/phone_station/profile";
         }
     }
 }

@@ -1,7 +1,7 @@
 package ua.company.myroniuk.model.service.impl;
 
-import ua.company.myroniuk.dao.AccountDao;
-import ua.company.myroniuk.dao.impl.AccountDaoImpl;
+import ua.company.myroniuk.model.dao.AccountDao;
+import ua.company.myroniuk.model.dao.impl.AccountDaoImpl;
 import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.service.AccountService;
 

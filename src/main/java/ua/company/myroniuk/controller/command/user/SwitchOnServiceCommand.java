@@ -27,6 +27,6 @@ public class SwitchOnServiceCommand implements Command {
         List<Service> userServices = serviceService.getUserServices(userId);
         request.setAttribute("all_services", allServices);
         request.setAttribute("user_services", userServices);
-        return SERVICES_JSP;
+        return "redirect:/phone_station/services";
     }
 }

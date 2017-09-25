@@ -24,8 +24,7 @@
         <div class="main">
             <h3><fmt:message key="user.account.refill" bundle="${rb}"/></h3>
             <br>
-            <form action="/controller" method="POST">
-                <input type="hidden" name="query" value="account_refill"/>
+            <form action="/phone_station/account_refill" method="POST">
                 <table>
                     <tr>
                         <td><fmt:message key="user.account.refill.credit.card" bundle="${rb}"/> &nbsp </td>
@@ -80,7 +79,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" align="right">
-                            <input type="submit" class="my-button"
+                            <input type="submit" style="padding: 2px 5px"
                                    value=<fmt:message key="user.account.refill.confirm" bundle="${rb}"/>>
                         </td>
                     </tr>

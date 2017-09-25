@@ -19,6 +19,6 @@ public class DeleteUserCommand implements Command {
         userService.deleteUser(userId);
         List<User> users = userService.getUnregisteredUsers();
         request.setAttribute("new_users", users);
-        return NEW_USERS_JSP;
+        return "redirect:/phone_station/new_users";
     }
 }

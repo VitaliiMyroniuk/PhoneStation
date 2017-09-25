@@ -1,4 +1,4 @@
-package ua.company.myroniuk.tag;
+package ua.company.myroniuk.model.tag;
 
 import org.apache.log4j.Logger;
 import javax.servlet.jsp.JspException;

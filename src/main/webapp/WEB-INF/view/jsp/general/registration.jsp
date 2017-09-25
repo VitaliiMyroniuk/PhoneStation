@@ -18,8 +18,7 @@
 
     <div class="content-block" style="display: flex">
         <div class="registration-container">
-            <form action="/controller" method="POST">
-                <input type="hidden" name="query" value="registration"/>
+            <form action="/phone_station/registration" method="POST">
                 <table>
                     <tr>
                         <td colspan="2" align="center">
@@ -123,7 +122,8 @@
                         <td><fmt:message key="registration.password" bundle="${rb}"/></td>
                     </tr>
                     <tr>
-                        <td><input class="my-input" type="password" name="password"></td>
+                        <td><input class="my-input"
+                                   type="password" name="password" value="${password}"></td>
                         <td>
                             <c:choose>
                                 <c:when test="${password_is_valid == null}">
@@ -141,7 +141,8 @@
                         <td><fmt:message key="registration.confirm.password" bundle="${rb}"/></td>
                     </tr>
                     <tr>
-                        <td><input class="my-input" type="password" name="confirmed_password"></td>
+                        <td><input class="my-input" type="password"
+                                   name="confirmed_password" value="${confirmed_password}"></td>
                         <td>
                             <c:choose>
                                 <c:when test="${confirmed_password_is_valid == null}">

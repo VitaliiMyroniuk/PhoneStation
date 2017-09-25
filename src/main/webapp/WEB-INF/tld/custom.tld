@@ -11,13 +11,13 @@
 
     <tag>
         <name>date-format</name>
-        <tag-class>ua.company.myroniuk.tag.DateFormatTag</tag-class>
+        <tag-class>ua.company.myroniuk.model.tag.DateFormatTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>dateTime</name>
-            <type>java.time.LocalDateTime</type>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
+            <type>java.time.LocalDateTime</type>
         </attribute>
         <attribute>
             <name>locale</name>
@@ -28,7 +28,7 @@
 
     <tag>
         <name>price-format</name>
-        <tag-class>ua.company.myroniuk.tag.PriceFormatTag</tag-class>
+        <tag-class>ua.company.myroniuk.model.tag.PriceFormatTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>price</name>

@@ -25,7 +25,7 @@
         <div class="main">
             <h3><fmt:message key="user.invoices" bundle="${rb}"/></h3>
             <br>
-            <c:if test="${not_enough_money}">
+            <c:if test="${param.not_enough_money}">
                 <div style="color: red">
                     <fmt:message key="user.not.enough.money" bundle="${rb}"/>
                 </div>
@@ -51,7 +51,7 @@
                             <ctg:price-format price="${invoice.price}"/>
                         </td>
                         <td>
-                            <a href="/controller?query=pay_invoice&invoice_id=${invoice.id}">
+                            <a href="/phone_station/pay_invoice?invoice_id=${invoice.id}">
                                 <fmt:message key="user.table.pay.invoice" bundle="${rb}"/>
                             </a>
                         </td>

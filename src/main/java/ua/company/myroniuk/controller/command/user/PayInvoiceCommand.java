@@ -32,11 +32,11 @@ public class PayInvoiceCommand implements Command {
         try {
             userService.payInvoice(userId, invoiceId);
         } catch (NotEnoughMoneyException e) {
-            request.setAttribute("not_enough_money", true);
             LOGGER.error("Error during invoice payment (not enough money): ", e);
+            return "redirect:/phone_station/invoices?not_enough_money=true";
         }
         List<Invoice> invoices = invoiceService.getInvoices(userId);
         request.setAttribute("invoices", invoices);
-        return INVOICES_JSP;
+        return "redirect:/phone_station/invoices";
     }
 }

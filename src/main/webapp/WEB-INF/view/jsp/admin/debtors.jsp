@@ -56,7 +56,7 @@
                             </c:choose>
                         </td>
                         <td>
-                            <a href="/controller?query=user_invoices&user_id=${user.id}">
+                            <a href="/phone_station/user_invoices?user_id=${user.id}">
                                 <fmt:message key="admin.table.show" bundle="${rb}"/>
                             </a>
                         </td>

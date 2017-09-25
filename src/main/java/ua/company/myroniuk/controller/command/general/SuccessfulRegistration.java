@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author Vitalii Myroniuk
  */
-public class UnknownCommand implements Command {
+public class SuccessfulRegistration implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return ERROR_JSP;
+        return SUCCESSFUL_REGISTRATION_JSP;
     }
 }

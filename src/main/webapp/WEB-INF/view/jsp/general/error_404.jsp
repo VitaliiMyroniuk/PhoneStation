@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Error page</title>
+    <title>Page not found</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -18,7 +18,7 @@
 
     <div class="content-block">
         <br>
-        <h3><fmt:message key="error" bundle="${rb}"/></h3>
+        <h3><fmt:message key="error.404" bundle="${rb}"/></h3>
     </div>
 
     <div class="footer">

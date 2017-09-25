@@ -60,13 +60,13 @@
                         <td colspan="2" align="center">
                             <c:choose>
                                 <c:when test="${subscriber.isBlocked()}">
-                                    <form action="/controller?query=unblock_user&user_id=${subscriber.id}" method="POST">
+                                    <form action="/phone_station/unblock_user?user_id=${subscriber.id}" method="POST">
                                         <input type="submit" class="my-button"
                                                value=<fmt:message key="admin.table.unblock" bundle="${rb}"/>>
                                     </form>
                                 </c:when>
                                 <c:otherwise>
-                                    <form action="/controller?query=block_user&user_id=${subscriber.id}" method="POST">
+                                    <form action="/phone_station/block_user?user_id=${subscriber.id}" method="POST">
                                         <input type="submit" class="my-button"
                                                value=<fmt:message key="admin.table.block" bundle="${rb}"/>>
                                     </form>

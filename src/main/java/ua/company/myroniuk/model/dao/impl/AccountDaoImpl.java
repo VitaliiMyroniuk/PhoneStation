@@ -1,8 +1,8 @@
-package ua.company.myroniuk.dao.impl;
+package ua.company.myroniuk.model.dao.impl;
 
 import org.apache.log4j.Logger;
-import ua.company.myroniuk.dao.AccountDao;
-import ua.company.myroniuk.dao.DBManager;
+import ua.company.myroniuk.model.dao.AccountDao;
+import ua.company.myroniuk.model.dao.DBManager;
 import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.entity.Role;
 import java.sql.*;

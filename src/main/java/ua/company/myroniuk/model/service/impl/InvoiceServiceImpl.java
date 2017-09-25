@@ -1,7 +1,7 @@
 package ua.company.myroniuk.model.service.impl;
 
-import ua.company.myroniuk.dao.InvoiceDao;
-import ua.company.myroniuk.dao.impl.InvoiceDaoImpl;
+import ua.company.myroniuk.model.dao.InvoiceDao;
+import ua.company.myroniuk.model.dao.impl.InvoiceDaoImpl;
 import ua.company.myroniuk.model.entity.Invoice;
 import ua.company.myroniuk.model.service.InvoiceService;
 

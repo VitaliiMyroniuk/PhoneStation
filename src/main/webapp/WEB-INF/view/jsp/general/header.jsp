@@ -7,23 +7,33 @@
 <table width="100%">
     <tr>
         <td width="90%" align="left">
-            <a href="/controller?query=profile">
-                <fmt:message key="header.phone.station" bundle="${rb}"/>
-            </a>
+            <c:choose>
+                <c:when test="${not empty sessionScope.user}">
+                    <a href="/phone_station/profile">
+                        <fmt:message key="header.phone.station" bundle="${rb}"/>
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <a href="/phone_station/login">
+                        <fmt:message key="header.phone.station" bundle="${rb}"/>
+                    </a>
+                </c:otherwise>
+            </c:choose>
         </td>
         <td width="5%" align="right">
-            <form action="/controller?query=language" method="POST">
+            <form action="/phone_station/language" method="POST">
+                <input type="hidden" name="requestURI" value="${pageContext.request.requestURI}">
+                <input type="hidden" name="queryString" value="${pageContext.request.queryString}">
                 <select name="locale" onchange="submit()">
                     <option value="en_GB" ${sessionScope.locale == 'en_GB' ? 'selected' : ''}>Eng</option>
                     <option value="uk_UA" ${sessionScope.locale == 'uk_UA' ? 'selected' : ''}>Укр</option>
                 </select>
-                <input type="hidden" name="page" value="${pageContext.request.requestURI}">
             </form>
         </td>
         <td width="5%" align="right">
             <c:choose>
                 <c:when test="${sessionScope.user != null}">
-                    <a href="/controller?query=logout">
+                    <a href="/phone_station/logout">
                         <fmt:message key="header.logout" bundle="${rb}"/>
                     </a>
                 </c:when>

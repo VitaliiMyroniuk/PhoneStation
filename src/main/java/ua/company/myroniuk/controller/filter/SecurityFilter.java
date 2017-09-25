@@ -12,43 +12,45 @@ import java.util.Set;
 /**
  * @author Vitalii Myroniuk
  */
-@WebFilter(urlPatterns = {"/controller"})
+@WebFilter(urlPatterns={"/*"})
 public class SecurityFilter implements Filter {
 
-    private Set<String> generalQueries = new HashSet<>();
+    private Set<String> generalURI = new HashSet<>();
 
-    private Set<String> subscriberQueries = new HashSet<>();
+    private Set<String> subscriberURI = new HashSet<>();
 
-    private Set<String> adminQueries = new HashSet<>();
+    private Set<String> adminURI = new HashSet<>();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        // general queries
-        generalQueries.add("language");
-        generalQueries.add("login");
-        generalQueries.add("logout");
-        generalQueries.add("profile");
-        generalQueries.add("registration");
+        // general uri
+        generalURI.add("/phone_station/language");
+        generalURI.add("/phone_station/login");
+        generalURI.add("/phone_station/logout");
+        generalURI.add("/phone_station/registration");
+        generalURI.add("/phone_station/successful_registration");
 
-        // subscriber queries
-        subscriberQueries.addAll(generalQueries);
-        subscriberQueries.add("account_refill");
-        subscriberQueries.add("invoices");
-        subscriberQueries.add("pay_invoice");
-        subscriberQueries.add("services");
-        subscriberQueries.add("switch_off_service");
-        subscriberQueries.add("switch_on_service");
+        // subscriber uri
+        subscriberURI.addAll(generalURI);
+        subscriberURI.add("/phone_station/account_refill");
+        subscriberURI.add("/phone_station/invoices");
+        subscriberURI.add("/phone_station/pay_invoice");
+        subscriberURI.add("/phone_station/profile");
+        subscriberURI.add("/phone_station/services");
+        subscriberURI.add("/phone_station/switch_off_service");
+        subscriberURI.add("/phone_station/switch_on_service");
 
-        // admin queries
-        adminQueries.addAll(generalQueries);
-        adminQueries.add("block_user");
-        adminQueries.add("debtors");
-        adminQueries.add("delete_user");
-        adminQueries.add("new_users");
-        adminQueries.add("register_user");
-        adminQueries.add("unblock_user");
-        adminQueries.add("user_invoices");
-        adminQueries.add("users");
+        // admin uri
+        adminURI.addAll(generalURI);
+        adminURI.add("/phone_station/block_user");
+        adminURI.add("/phone_station/debtors");
+        adminURI.add("/phone_station/delete_user");
+        adminURI.add("/phone_station/new_users");
+        adminURI.add("/phone_station/profile");
+        adminURI.add("/phone_station/register_user");
+        adminURI.add("/phone_station/unblock_user");
+        adminURI.add("/phone_station/user_invoices");
+        adminURI.add("/phone_station/users");
     }
 
     @Override
@@ -56,31 +58,31 @@ public class SecurityFilter implements Filter {
                          FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        String query = request.getParameter("query");
         User user = (User) request.getSession().getAttribute("user");
+        String uri = request.getRequestURI();
         boolean isAllowedGuestAccess =
                 (user == null) &&
-                generalQueries.contains(query);
+                generalURI.contains(uri);
         boolean isAllowedSubscriberAccess =
                 (user != null) &&
-                subscriberQueries.contains(query) &&
-                "SUBSCRIBER".equals(user.getAccount().getRole().toString());
+                "SUBSCRIBER".equals(user.getAccount().getRole().toString()) &&
+                subscriberURI.contains(uri);
         boolean isAllowedAdminAccess =
                 (user != null) &&
-                adminQueries.contains(query) &&
-                "ADMIN".equals(user.getAccount().getRole().toString());
+                "ADMIN".equals(user.getAccount().getRole().toString()) &&
+                adminURI.contains(uri);
         if (isAllowedGuestAccess || isAllowedSubscriberAccess || isAllowedAdminAccess) {
-            request.setAttribute("query", query);
+            request.setAttribute("uri", uri);
         } else {
-            request.setAttribute("query", "profile");
+            request.setAttribute("uri", "/phone_station/login");
         }
         filterChain.doFilter(request, response);
     }
 
     @Override
     public void destroy() {
-        generalQueries = null;
-        subscriberQueries = null;
-        adminQueries = null;
+        generalURI = null;
+        subscriberURI = null;
+        adminURI = null;
     }
 }

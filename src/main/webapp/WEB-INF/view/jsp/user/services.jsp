@@ -54,12 +54,12 @@
                         <td>
                             <c:choose>
                                 <c:when test="${user_services.contains(service)}">
-                                    <a href="/controller?query=switch_off_service&service_id=${service.id}">
+                                    <a href="/phone_station/switch_off_service?service_id=${service.id}">
                                         <fmt:message key="user.table.switch.off" bundle="${rb}"/>
                                     </a>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="/controller?query=switch_on_service&service_id=${service.id}">
+                                    <a href="/phone_station/switch_on_service?service_id=${service.id}">
                                         <fmt:message key="user.table.switch.on" bundle="${rb}"/>
                                     </a>
                                 </c:otherwise>

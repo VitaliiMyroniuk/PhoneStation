@@ -43,12 +43,12 @@
                         <td><c:out value="${user.surname}"/></td>
                         <td><c:out value="${user.phoneNumber}"/></td>
                         <td>
-                            <a href="/controller?query=register_user&user_id=${user.id}">
+                            <a href="/phone_station/register_user?user_id=${user.id}">
                                 <fmt:message key="admin.table.add.user" bundle="${rb}"/>
                             </a>
                         </td>
                         <td>
-                            <a href="/controller?query=delete_user&user_id=${user.id}">
+                            <a href="/phone_station/delete_user?user_id=${user.id}">
                                 <fmt:message key="admin.table.delete.user" bundle="${rb}"/>
                             </a>
                         </td>

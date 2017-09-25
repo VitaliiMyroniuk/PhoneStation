@@ -16,15 +16,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RegistrationCommand implements Command {
 
-    private final String NAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{1,10}$";
+    private final String NAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{1,15}$";
 
-    private final String MIDDLE_NAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{0,10}$";
+    private final String MIDDLE_NAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{0,15}$";
 
-    private final String SURNAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{1,10}$";
+    private final String SURNAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{1,15}$";
 
     private final String PHONE_NUMBER_REGEX = "^\\+[1-9]{1}[0-9]{11}$";
 
-    private final String LOGIN_REGEX = "^[A-Za-zЄ-Яа-ї0-9._-]{1,10}$";
+    private final String LOGIN_REGEX = "^[A-Za-zЄ-Яа-ї0-9._-]{1,15}$";
 
     private final String PASSWORD_REGEX = "^[A-Za-zЄ-Яа-ї0-9~!@#$%^&*()-_=+/|.]{5,15}$";
 
@@ -42,7 +42,7 @@ public class RegistrationCommand implements Command {
             UserService userService = UserServiceImpl.getInstance();
             User user = createUser(request);
             userService.addUser(user);
-            return SUCCESSFUL_REGISTRATION_JSP;
+            return "redirect:/phone_station/successful_registration";
         } else {
             return REGISTRATION_JSP;
         }
@@ -115,6 +115,7 @@ public class RegistrationCommand implements Command {
     private boolean checkPassword(HttpServletRequest request) {
         String password = request.getParameter("password");
         if (password != null && password.matches(PASSWORD_REGEX)) {
+            request.setAttribute("password", password);
             request.setAttribute("password_is_valid", true);
             return true;
         } else {
@@ -126,7 +127,8 @@ public class RegistrationCommand implements Command {
     private boolean checkConfirmedPassword(HttpServletRequest request) {
         String password = request.getParameter("password");
         String confirmedPassword = request.getParameter("confirmed_password");
-        if (password != null && !password.isEmpty() && password.equals(confirmedPassword)) {
+        if (password != null && password.matches(PASSWORD_REGEX) && password.equals(confirmedPassword)) {
+            request.setAttribute("confirmed_password", confirmedPassword);
             request.setAttribute("confirmed_password_is_valid", true);
             return true;
         } else {
@@ -138,11 +140,11 @@ public class RegistrationCommand implements Command {
     private Account createAccount(HttpServletRequest request) {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        Account account = new Account();
-        account.setLogin(login);
-        account.setPassword(password);
-        account.setRole(Role.SUBSCRIBER);
-        return account;
+        return new Account.Builder()
+                .setLogin(login)
+                .setPassword(password)
+                .setRole(Role.SUBSCRIBER)
+                .build();
     }
 
     private User createUser(HttpServletRequest request) {
@@ -150,16 +152,16 @@ public class RegistrationCommand implements Command {
         String middleName = request.getParameter("middle_name");
         String surname = request.getParameter("surname");
         String phoneNumber = request.getParameter("phone_number");
-        User user = new User();
         Account account = createAccount(request);
-        user.setAccount(account);
-        user.setName(name);
-        user.setMiddleName(middleName);
-        user.setSurname(surname);
-        user.setPhoneNumber(phoneNumber);
-        user.setBalance(0);
-        user.setRegistered(false);
-        user.setBlocked(false);
-        return user;
+        return new User.Builder()
+                .setAccount(account)
+                .setName(name)
+                .setMiddleName(middleName)
+                .setSurname(surname)
+                .setPhoneNumber(phoneNumber)
+                .setBalance(0)
+                .setRegistered(false)
+                .setBlocked(false)
+                .build();
     }
 }

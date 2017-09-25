@@ -1,7 +1,7 @@
-package ua.company.myroniuk.dao.impl;
+package ua.company.myroniuk.model.dao.impl;
 
 import org.apache.log4j.Logger;
-import ua.company.myroniuk.dao.*;
+import ua.company.myroniuk.model.dao.*;
 import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.entity.Invoice;
 import ua.company.myroniuk.model.entity.Role;
@@ -55,7 +55,7 @@ public class UserDaoImpl implements UserDao {
             "WHERE is_paid = 0 GROUP BY user_id ORDER BY debt DESC";
 
     private final String GET_USER_COUNT_INFO =
-            "SELECT * FROM (SELECT COUNT(*) AS all_users FROM users) t1" +
+            "SELECT * FROM (SELECT COUNT(*) AS all_users FROM users WHERE phone_number IS NOT NULL) t1" +
             "INNER JOIN (SELECT COUNT(*) AS new_users FROM users WHERE is_registered = 0) t2" +
             "INNER JOIN (SELECT count(*) AS debtors FROM " +
                         "(SELECT * FROM invoices WHERE is_paid = 0 GROUP BY user_id) t " +

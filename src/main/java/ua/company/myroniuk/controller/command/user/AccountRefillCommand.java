@@ -16,7 +16,7 @@ public class AccountRefillCommand implements Command {
 
     private final String CVV_REGEX = "^[0-9]{3}$";
 
-    private final String SUM_REGEX = "^[1-9]{1,4}|0\\.[0-9]{1,2}|[1-9]{1,4}\\.[0-9]{1,2}$";
+    private final String SUM_REGEX = "^[1-9][0-9]{0,3}|0\\.[0-9]{1,2}|[1-9]{1,4}\\.[0-9]{1,2}$";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -32,7 +32,7 @@ public class AccountRefillCommand implements Command {
             userService.updateBalance(userId, sum);
             user = userService.getUserById(userId);
             request.getSession().setAttribute("user", user);
-            return USER_JSP;
+            return "redirect:/phone_station/profile";
         } else {
             return ACCOUNT_REFILL_JSP;
         }

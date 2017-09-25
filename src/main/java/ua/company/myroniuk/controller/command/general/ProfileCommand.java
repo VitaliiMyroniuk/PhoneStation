@@ -14,19 +14,15 @@ import javax.servlet.http.HttpServletResponse;
 public class ProfileCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        UserService userService = UserServiceImpl.getInstance();
         User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
-            return INDEX_JSP;
-        }
         Role role = user.getAccount().getRole();
         boolean isAdmin = "ADMIN".equals(role.toString());
         if (isAdmin) {
-            UserService userService = UserServiceImpl.getInstance();
             int[] userCountInfo = userService.getUserCountInfo();
             request.setAttribute("user_count_info", userCountInfo);
             return ADMIN_JSP;
         } else {
-            UserService userService = UserServiceImpl.getInstance();
             long userId = user.getId();
             user = userService.getUserById(userId);
             request.getSession().setAttribute("user", user);

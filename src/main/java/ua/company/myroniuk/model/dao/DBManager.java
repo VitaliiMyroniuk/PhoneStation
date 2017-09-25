@@ -1,4 +1,4 @@
-package ua.company.myroniuk.dao;
+package ua.company.myroniuk.model.dao;
 
 import org.apache.log4j.Logger;
 import javax.naming.InitialContext;

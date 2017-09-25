@@ -17,6 +17,7 @@
     </div>
 
     <div class="content-block">
+        <br>
         <h3><fmt:message key="registration.congratulation" bundle="${rb}"/></h3>
         <br>
         <p>

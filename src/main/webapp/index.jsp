@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'uk_UA'}" scope="session"/>
+<c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'en_GB'}" scope="session"/>
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
@@ -19,7 +19,7 @@
 
     <div class="content-block" style="display: flex">
         <div class="login-container">
-            <form action="/controller" method="POST">
+            <form action="/phone_station/login" method="POST">
                 <input type="hidden" name="query" value="login"/>
                 <table>
                     <tr>
@@ -51,7 +51,7 @@
                                    value="<fmt:message key="login.sign.in" bundle="${rb}"/>">
                         </td>
                         <td style="text-align: right">
-                            <a href="/controller?query=registration">
+                            <a href="/phone_station/registration">
                                 <fmt:message key="login.sign.up" bundle="${rb}"/>
                             </a>
                         </td>

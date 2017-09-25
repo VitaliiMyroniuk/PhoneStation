@@ -46,6 +46,19 @@
                     <td><fmt:message key="user.profile.balance" bundle="${rb}"/>: &nbsp </td>
                     <td><ctg:price-format price="${user.balance}"/> &#8372</td>
                 </tr>
+                <tr>
+                    <td><fmt:message key="user.profile.status" bundle="${rb}"/>: &nbsp </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${user.isBlocked()}">
+                                <fmt:message key="user.profile.blocked" bundle="${rb}"/>
+                            </c:when>
+                            <c:otherwise>
+                                <fmt:message key="user.profile.active" bundle="${rb}"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
             </table>
         </div>
     </div>
