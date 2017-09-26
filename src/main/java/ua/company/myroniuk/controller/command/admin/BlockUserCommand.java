@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * The class describes the {@code Command} interface implementation.
+ * It contains the method for blocking user process.
+ *
  * @author Vitalii Myroniuk
  */
 public class BlockUserCommand implements Command {

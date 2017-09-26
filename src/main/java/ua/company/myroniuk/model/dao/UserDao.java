@@ -36,5 +36,7 @@ public interface UserDao {
 
     boolean updateIsBlocked(long userId, boolean isBlocked);
 
+    boolean updateIsBlocked(Connection connection, long userId, boolean isBlocked) throws SQLException;
+
     boolean deleteUser(Connection connection, long id);
 }

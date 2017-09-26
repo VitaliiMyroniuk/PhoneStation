@@ -49,13 +49,13 @@ public class UserServiceImpl implements UserService {
         Connection connection = null;
         try {
             connection = DBManager.getConnection();
-            connection.setAutoCommit(false);
+            DBManager.beginTransaction(connection);
             Account account = user.getAccount();
             long accountId = accountDao.addAccount(connection, account);
             account.setId(accountId);
             user.setAccount(account);
             userId = userDao.addUser(connection, user);
-            connection.commit();
+            DBManager.commitTransaction(connection);
         } catch (SQLException e) {
             LOGGER.error("Error during adding the user into the data base: ", e);
             DBManager.rollback(connection);
@@ -135,14 +135,14 @@ public class UserServiceImpl implements UserService {
         Connection connection = null;
         try {
             connection = DBManager.getConnection();
-            connection.setAutoCommit(false);
+            DBManager.beginTransaction(connection);
             User user = userDao.getUserById(userId);
             long accountId = user.getAccount().getId();
             invoiceDao.deleteInvoices(connection, userId);
             serviceDao.deleteUserServices(connection, userId);
             userDao.deleteUser(connection, userId);
             accountDao.deleteAccount(connection, accountId);
-            connection.commit();
+            DBManager.commitTransaction(connection);
             return true;
         } catch (SQLException e) {
             LOGGER.error("Error during deleting the user from the data base: ", e);
@@ -163,15 +163,18 @@ public class UserServiceImpl implements UserService {
         Connection connection = null;
         try {
             connection = DBManager.getConnection();
-            connection.setAutoCommit(false);
-            User user = userDao.getUserById(userId);
+            DBManager.beginTransaction(connection);
+            User user = userDao.getUserWithInvoicesById(userId);
             Invoice invoice = invoiceDao.getInvoice(connection, invoiceId);
             if (user.getBalance() < invoice.getPrice()) {
                 throw new NotEnoughMoneyException();
             }
             userDao.updateBalance(connection, userId, - invoice.getPrice());
             invoiceDao.updateIsPaid(connection, true, invoiceId);
-            connection.commit();
+            if (user.getInvoices().size() == 1) {
+                userDao.updateIsBlocked(connection, userId, false);
+            }
+            DBManager.commitTransaction(connection);
         } catch (SQLException e) {
             LOGGER.error("Error during invoice paying: ", e);
             DBManager.rollback(connection);
@@ -188,7 +191,7 @@ public class UserServiceImpl implements UserService {
         Connection connection = null;
         try {
             connection = DBManager.getConnection();
-            connection.setAutoCommit(false);
+            DBManager.beginTransaction(connection);
             Service service = serviceDao.getService(connection, serviceId);
             serviceDao.addUserService(connection, service, userId);
             Invoice invoice = new Invoice();
@@ -197,7 +200,7 @@ public class UserServiceImpl implements UserService {
             invoice.setPrice(service.getPrice());
             invoice.setPaid(false);
             invoiceDao.addInvoice(connection, invoice, userId);
-            connection.commit();
+            DBManager.commitTransaction(connection);
         } catch (SQLException e) {
             LOGGER.error("Error during switching on the service: ", e);
             DBManager.rollback(connection);

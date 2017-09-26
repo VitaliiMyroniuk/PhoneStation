@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
+ * The class describes the {@code Command} interface implementation.
+ * It contains the method for the registration user process.
+ *
  * @author Vitalii Myroniuk
  */
 public class RegisterUserCommand implements Command {

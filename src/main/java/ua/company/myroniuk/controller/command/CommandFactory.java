@@ -5,15 +5,25 @@ import ua.company.myroniuk.controller.command.general.*;
 import ua.company.myroniuk.controller.command.user.*;
 
 /**
+ * The class describes the factory for the creation of {@code Command} objects.
+ *
  * @author Vitalii Myroniuk
  */
 public class CommandFactory {
-
+    /**
+     * The command object.
+     */
     private static Command command;
 
-    public static Command createCommand(String query) {
+    /**
+     * The method creates an appropriate command object depending on the given {@code uri}.
+     *
+     * @param uri uri based on which the corresponding command is created.
+     * @return an appropriate command object.
+     */
+    public static Command createCommand(String uri) {
         //TODO find out if the commands should be singletons
-        switch (query) {
+        switch (uri) {
             case "/phone_station/account_refill" :
                 command = new AccountRefillCommand();
                 break;

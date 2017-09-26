@@ -7,12 +7,14 @@ import ua.company.myroniuk.model.service.ServiceService;
 import ua.company.myroniuk.model.service.UserService;
 import ua.company.myroniuk.model.service.impl.ServiceServiceImpl;
 import ua.company.myroniuk.model.service.impl.UserServiceImpl;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
+ * The class describes the {@code Command} interface implementation.
+ * It contains the method for the service switch off process.
+ *
  * @author Vitalii Myroniuk
  */
 public class SwitchOffServiceCommand implements Command {

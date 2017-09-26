@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * The class describes the {@code Command} interface implementation.
+ * It contains the method for the user login process.
+ *
  * @author Vitalii Myroniuk
  */
 public class LoginCommand implements Command {

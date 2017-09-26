@@ -6,6 +6,9 @@ import javax.servlet.annotation.WebInitParam;
 import java.io.IOException;
 
 /**
+ * {@code EncodingFilter} is the class that describes character encoding filter.
+ * It provides UTF-8 encoding for all servlets with url pattern {@code "/*"}.
+ *
  * @author Vitalii Myroniuk
  */
 @WebFilter(urlPatterns = {"/*"},
@@ -15,7 +18,7 @@ import java.io.IOException;
                    description = "Encoding parameter")})
 public class EncodingFilter implements Filter {
     /**
-     * Encoding for the current request and response.
+     * Encoding for the servlet request and response.
      */
     private String encoding;
 

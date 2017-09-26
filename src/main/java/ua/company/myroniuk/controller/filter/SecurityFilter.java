@@ -10,15 +10,26 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * {@code SecurityFilter} is the class that describes security filter.
+ * It forbids the access to resources for the users that don't have necessary rights.
+ *
  * @author Vitalii Myroniuk
  */
 @WebFilter(urlPatterns={"/*"})
 public class SecurityFilter implements Filter {
-
+    /**
+     * Set of allowed uri's for all users.
+     */
     private Set<String> generalURI = new HashSet<>();
 
+    /**
+     * Set of allowed uri's for the subscriber.
+     */
     private Set<String> subscriberURI = new HashSet<>();
 
+    /**
+     * Set of allowed uri's for the admin.
+     */
     private Set<String> adminURI = new HashSet<>();
 
     @Override

@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * The class describes the {@code Command} interface implementation.
+ * It contains the method for the user logout process.
+ *
  * @author Vitalii Myroniuk
  */
 public class LogoutCommand implements Command {

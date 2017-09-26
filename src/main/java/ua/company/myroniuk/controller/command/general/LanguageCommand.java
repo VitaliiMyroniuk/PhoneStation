@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
+ * The class describes the {@code Command} interface implementation.
+ * It contains the method for changing the current language.
+ *
  * @author Vitalii Myroniuk
  */
 public class LanguageCommand implements Command {

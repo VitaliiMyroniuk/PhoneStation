@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * The class describes the main controller servlet.
+ *
  * @author Vitalii Myroniuk
  */
 public class Controller extends HttpServlet {
@@ -22,6 +24,14 @@ public class Controller extends HttpServlet {
         process(request, response);
     }
 
+    /**
+     * The methods provides the common process for http {@code GET} and {@code POST} methods.
+     *
+     * @param request http servlet request.
+     * @param response http servlet response.
+     * @throws ServletException if a specific servlet error occurs.
+     * @throws IOException if an error occurs during the input or output.
+     */
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String uri = (String) request.getAttribute("uri");
         Command command = CommandFactory.createCommand(uri);

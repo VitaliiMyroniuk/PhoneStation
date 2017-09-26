@@ -9,6 +9,7 @@ public interface AccountService {
 
     /**
      * The method checks the given login and password.
+     *
      * @param login the login entered by the user.
      * @param password the password entered by the user.
      * @return 1 if the given login and password correspond with admin; <br>
@@ -19,6 +20,7 @@ public interface AccountService {
 
     /**
      * The method checks if the given login is in the data base.
+     *
      * @param login the login entered by the user.
      * @return true if the given login is in the data base; <br>
      *         false otherwise.

@@ -319,6 +319,18 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public boolean updateIsBlocked(Connection connection, long userId, boolean isBlocked) throws SQLException {
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(UPDATE_IS_BLOCKED);
+        ) {
+            preparedStatement.setBoolean(1, isBlocked);
+            preparedStatement.setLong(2, userId);
+            preparedStatement.executeUpdate();
+            return true;
+        }
+    }
+
+    @Override
     public boolean deleteUser(Connection connection, long id) {
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement(DELETE_USER);

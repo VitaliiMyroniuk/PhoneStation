@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 /**
  * The class describes the data base manager.
- * It contains useful methods for data base interaction.
+ * It contains useful methods for the data base interaction.
  *
  * @author Vitalii Myroniuk
  */
@@ -23,7 +23,7 @@ public class DBManager {
     /**
      * The method gets the connection to the data base from the connection pool.
      *
-     * @return connection taken from the connection pool.
+     * @return java.sql.Connection taken from the connection pool.
      */
     public static Connection getConnection()  {
         try {
@@ -40,9 +40,29 @@ public class DBManager {
     }
 
     /**
+     * The method begins the transaction for the given connection.
+     *
+     * @param connection java.sql.Connection taken from the connection pool.
+     * @throws SQLException if there is no connection to tha data base.
+     */
+    public static void beginTransaction(Connection connection) throws SQLException {
+        connection.setAutoCommit(false);
+    }
+
+    /**
+     * The method commits the transaction for the given connection.
+     *
+     * @param connection java.sql.Connection taken from the connection pool.
+     * @throws SQLException if there is no connection to tha data base.
+     */
+    public static void commitTransaction(Connection connection) throws SQLException {
+        connection.commit();
+    }
+
+    /**
      * The method rolls back the current transaction for the given connection.
      *
-     * @param connection taken from the connection pool.
+     * @param connection java.sql.Connection taken from the connection pool.
      */
     public static void rollback(Connection connection) {
         if (connection != null) {
@@ -58,7 +78,7 @@ public class DBManager {
     /**
      * The method closes the given connection.
      *
-     * @param connection taken from the connection pool.
+     * @param connection java.sql.Connection taken from the connection pool.
      */
     public static void closeConnection(Connection connection) {
         if (connection != null) {
