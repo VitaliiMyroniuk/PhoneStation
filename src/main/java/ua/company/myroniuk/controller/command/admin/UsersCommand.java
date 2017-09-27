@@ -15,9 +15,15 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class UsersCommand implements Command {
+
+    private UserService userService;
+
+    public UsersCommand() {
+        userService = UserServiceImpl.getInstance();
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        UserService userService = UserServiceImpl.getInstance();
         List<User> users = userService.getRegisteredUsers();
         request.setAttribute("users", users);
         return USERS_JSP;

@@ -16,10 +16,16 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class LoginCommand implements Command {
+    private AccountService accountService;   // TODO refactor this dependencies.
+    private UserService userService;
+
+    public LoginCommand() {
+        accountService = AccountServiceImpl.getInstance();
+        userService = UserServiceImpl.getInstance();
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        AccountService accountService = AccountServiceImpl.getInstance();
-        UserService userService = UserServiceImpl.getInstance();
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         int result = accountService.checkLoginAndPassword(login, password);

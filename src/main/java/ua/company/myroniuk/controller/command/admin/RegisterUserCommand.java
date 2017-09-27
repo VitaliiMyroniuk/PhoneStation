@@ -15,9 +15,15 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class RegisterUserCommand implements Command {
+
+    private UserService userService;
+
+    public RegisterUserCommand() {
+        userService = UserServiceImpl.getInstance();
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        UserService userService = UserServiceImpl.getInstance();
         long userId = Long.parseLong(request.getParameter("user_id"));
         userService.updateIsRegistered(userId);
         List<User> users = userService.getUnregisteredUsers();

@@ -14,9 +14,15 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class BlockUserCommand implements Command {
+
+    private UserService userService;
+
+    public BlockUserCommand() {
+        userService = UserServiceImpl.getInstance();
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        UserService userService = UserServiceImpl.getInstance();
         long userId = Long.parseLong(request.getParameter("user_id"));
         userService.updateIsBlocked(userId, true);
         User user = userService.getUserWithInvoicesById(userId);

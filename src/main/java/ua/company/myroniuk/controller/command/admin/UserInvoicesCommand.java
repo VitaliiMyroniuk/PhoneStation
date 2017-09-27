@@ -14,9 +14,15 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class UserInvoicesCommand implements Command {
+
+    private UserService userService;
+
+    public UserInvoicesCommand() {
+        userService = UserServiceImpl.getInstance();
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        UserService userService = UserServiceImpl.getInstance();
         long userId = Long.parseLong(request.getParameter("user_id"));
         User user = userService.getUserWithInvoicesById(userId);
         int debt = userService.getDebt(user);

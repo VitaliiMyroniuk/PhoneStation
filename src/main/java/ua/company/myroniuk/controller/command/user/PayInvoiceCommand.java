@@ -25,10 +25,16 @@ public class PayInvoiceCommand implements Command {
      */
     private static final Logger LOGGER = Logger.getLogger(PayInvoiceCommand.class);
 
+    private UserService userService = UserServiceImpl.getInstance();  // TODO refactor this dependencies.
+    private InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
+
+    public PayInvoiceCommand() {
+        userService = UserServiceImpl.getInstance();
+        invoiceService = InvoiceServiceImpl.getInstance();
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        UserService userService = UserServiceImpl.getInstance();
-        InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
         User user = (User) request.getSession().getAttribute("user");
         long userId = user.getId();
         long invoiceId = Long.parseLong(request.getParameter("invoice_id"));

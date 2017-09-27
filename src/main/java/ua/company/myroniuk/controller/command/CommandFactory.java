@@ -22,7 +22,6 @@ public class CommandFactory {
      * @return an appropriate command object.
      */
     public static Command createCommand(String uri) {
-        //TODO find out if the commands should be singletons
         switch (uri) {
             case "/phone_station/account_refill" :
                 command = new AccountRefillCommand();

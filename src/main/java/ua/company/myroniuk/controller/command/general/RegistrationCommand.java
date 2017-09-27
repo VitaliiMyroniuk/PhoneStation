@@ -31,6 +31,12 @@ public class RegistrationCommand implements Command {
 
     private final String PASSWORD_REGEX = "^[A-Za-zЄ-Яа-ї0-9~!@#$%^&*()-_=+/|.]{5,15}$";
 
+    private UserService userService;
+
+    public RegistrationCommand() {
+        userService = UserServiceImpl.getInstance();
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         boolean isValid =
@@ -42,7 +48,6 @@ public class RegistrationCommand implements Command {
                 checkPassword(request) &
                 checkConfirmedPassword(request);
         if (isValid) {
-            UserService userService = UserServiceImpl.getInstance();
             User user = createUser(request);
             userService.addUser(user);
             return "redirect:/phone_station/successful_registration";

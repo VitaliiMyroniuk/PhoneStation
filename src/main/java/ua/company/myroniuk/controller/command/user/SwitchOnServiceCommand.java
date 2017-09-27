@@ -18,10 +18,16 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class SwitchOnServiceCommand implements Command {
+    private UserService userService;
+    private ServiceService serviceService;
+
+    public SwitchOnServiceCommand() {
+        userService = UserServiceImpl.getInstance();
+        serviceService = ServiceServiceImpl.getInstance();
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        UserService userService = UserServiceImpl.getInstance();
-        ServiceService serviceService = ServiceServiceImpl.getInstance();
         User user = (User) request.getSession().getAttribute("user");
         long userId = user.getId();
         long serviceId = Long.parseLong(request.getParameter("service_id"));

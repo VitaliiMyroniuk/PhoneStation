@@ -16,9 +16,14 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class ServicesCommand implements Command {
+    private ServiceService serviceService;
+
+    public ServicesCommand() {
+        serviceService = ServiceServiceImpl.getInstance();
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        ServiceService serviceService = ServiceServiceImpl.getInstance();
         User user = (User) request.getSession().getAttribute("user");
         long userId = user.getId();
         List<Service> allServices = serviceService.getAllServices();

@@ -15,9 +15,15 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class DebtorsCommand implements Command {
+
+    private UserService userService;
+
+    public DebtorsCommand() {
+        userService = UserServiceImpl.getInstance();
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        UserService userService = UserServiceImpl.getInstance();
         List<User> users = userService.getDebtors();
         request.setAttribute("debtors", users);
         return DEBTORS_JSP;

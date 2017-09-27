@@ -15,9 +15,15 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class ProfileCommand implements Command {
+
+    private UserService userService;
+
+    public ProfileCommand() {
+        userService = UserServiceImpl.getInstance();
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        UserService userService = UserServiceImpl.getInstance();
         User user = (User) request.getSession().getAttribute("user");
         Role role = user.getAccount().getRole();
         boolean isAdmin = "ADMIN".equals(role.toString());
