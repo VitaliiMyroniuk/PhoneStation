@@ -2,102 +2,113 @@ package ua.company.myroniuk.model.service.impl;
 
 import org.apache.log4j.Logger;
 import ua.company.myroniuk.model.dao.*;
-import ua.company.myroniuk.model.dao.impl.AccountDaoImpl;
-import ua.company.myroniuk.model.dao.impl.InvoiceDaoImpl;
-import ua.company.myroniuk.model.dao.impl.ServiceDaoImpl;
-import ua.company.myroniuk.model.dao.impl.UserDaoImpl;
 import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.entity.Invoice;
 import ua.company.myroniuk.model.entity.Service;
 import ua.company.myroniuk.model.entity.User;
 import ua.company.myroniuk.model.exception.NotEnoughMoneyException;
 import ua.company.myroniuk.model.service.UserService;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
+ * The class represents the service for the {@code User} object.
+ * It implements {@code UserService} interface.
+ *
  * @author Vitalii Myroniuk
  */
 public class UserServiceImpl implements UserService {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
 
-    private AccountDao accountDao = AccountDaoImpl.getInstance();
+    /**
+     * DaoFactory object.
+     */
+    private DaoFactory daoFactory;
 
-    private UserDao userDao = UserDaoImpl.getInstance();
-
-    private ServiceDao serviceDao = ServiceDaoImpl.getInstance();
-
-    private InvoiceDao invoiceDao = InvoiceDaoImpl.getInstance();
-
+    /**
+     * Constructor for creating empty {@code UserServiceImpl} object.
+     */
     private UserServiceImpl() {
+        this.daoFactory = DaoFactory.getInstance();
     }
 
+    /**
+     * The class {@code SingletonHolder} is the auxiliary static nested class
+     * for the thread safe (Bill Pugh) singleton implementation.
+     */
     private static class SingletonHolder {
         private static final UserServiceImpl INSTANCE = new UserServiceImpl();
     }
 
+    /**
+     * The methods provides creating or getting already created {@code UserServiceImpl} object.
+     *
+     * @return {@code UserServiceImpl} object.
+     */
     public static UserServiceImpl getInstance() {
         return SingletonHolder.INSTANCE;
     }
 
     @Override
     public long addUser(User user) {
-        long userId = -1;
-        Connection connection = null;
-        try {
-            connection = DBManager.getConnection();
-            DBManager.beginTransaction(connection);
+        long userId;
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            AccountDao accountDao = daoFactory.createAccountDao(daoConnection);
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            daoConnection.beginTransaction();
             Account account = user.getAccount();
-            long accountId = accountDao.addAccount(connection, account);
+            long accountId = accountDao.addAccount(account);
             account.setId(accountId);
             user.setAccount(account);
-            userId = userDao.addUser(connection, user);
-            DBManager.commitTransaction(connection);
-        } catch (SQLException e) {
-            LOGGER.error("Error during adding the user into the data base: ", e);
-            DBManager.rollback(connection);
-            throw new RuntimeException(e);
-        } finally {
-            DBManager.closeConnection(connection);
+            userId = userDao.addUser(user);
+            daoConnection.commitTransaction();
         }
         return userId;
     }
 
     @Override
     public User getUserById(long id) {
+        UserDao userDao = daoFactory.createUserDao();
         return userDao.getUserById(id);
     }
 
     @Override
     public User getUserWithInvoicesById(long id) {
+        UserDao userDao = daoFactory.createUserDao();
         return userDao.getUserWithInvoicesById(id);
     }
 
     @Override
     public User getUserByLogin(String login) {
+        UserDao userDao = daoFactory.createUserDao();
         return userDao.getUserByLogin(login);
     }
 
     @Override
     public User getUserByPhoneNumber(String phoneNumber) {
+        UserDao userDao = daoFactory.createUserDao();
         return userDao.getUserByPhoneNumber(phoneNumber);
     }
 
     @Override
     public List<User> getRegisteredUsers() {
+        UserDao userDao = daoFactory.createUserDao();
         return userDao.getRegisteredUsers();
     }
 
     @Override
     public List<User> getUnregisteredUsers() {
+        UserDao userDao = daoFactory.createUserDao();
         return userDao.getUnregisteredUsers();
     }
 
     @Override
     public List<User> getDebtors() {
+        UserDao userDao = daoFactory.createUserDao();
         return userDao.getDebtors();
     }
 
@@ -112,107 +123,105 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int[] getUserCountInfo() {
+        UserDao userDao = daoFactory.createUserDao();
         return userDao.getUserCountInfo();
     }
 
     @Override
     public boolean updateBalance(long userId, int sum) {
+        UserDao userDao = daoFactory.createUserDao();
         return userDao.updateBalance(userId, sum);
     }
 
     @Override
     public boolean updateIsRegistered(long userId) {
+        UserDao userDao = daoFactory.createUserDao();
         return userDao.updateIsRegistered(userId);
     }
 
     @Override
     public boolean updateIsBlocked(long userId, boolean isBlocked) {
+        UserDao userDao = daoFactory.createUserDao();
         return userDao.updateIsBlocked(userId, isBlocked);
     }
 
     @Override
     public boolean deleteUser(long userId) {
-        Connection connection = null;
-        try {
-            connection = DBManager.getConnection();
-            DBManager.beginTransaction(connection);
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            AccountDao accountDao = daoFactory.createAccountDao(daoConnection);
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            ServiceDao serviceDao = daoFactory.createServiceDao(daoConnection);
+            InvoiceDao invoiceDao = daoFactory.createInvoiceDao(daoConnection);
+            daoConnection.beginTransaction();
             User user = userDao.getUserById(userId);
             long accountId = user.getAccount().getId();
-            invoiceDao.deleteInvoices(connection, userId);
-            serviceDao.deleteUserServices(connection, userId);
-            userDao.deleteUser(connection, userId);
-            accountDao.deleteAccount(connection, accountId);
-            DBManager.commitTransaction(connection);
-            return true;
-        } catch (SQLException e) {
-            LOGGER.error("Error during deleting the user from the data base: ", e);
-            DBManager.rollback(connection);
-            throw new RuntimeException(e);
-        } finally {
-            DBManager.closeConnection(connection);
+            invoiceDao.deleteInvoices(userId);
+            serviceDao.deleteUserServices(userId);
+            userDao.deleteUser(userId);
+            accountDao.deleteAccount(accountId);
+            daoConnection.commitTransaction();
         }
+        return true;
     }
 
     @Override
     public boolean checkPhoneNumber(String phoneNumber) {
+        UserDao userDao = daoFactory.createUserDao();
         return userDao.getUserByPhoneNumber(phoneNumber) != null;
     }
 
     @Override
     public boolean payInvoice(long userId, long invoiceId) throws NotEnoughMoneyException {
-        Connection connection = null;
-        try {
-            connection = DBManager.getConnection();
-            DBManager.beginTransaction(connection);
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            InvoiceDao invoiceDao = daoFactory.createInvoiceDao(daoConnection);
+            daoConnection.beginTransaction();
             User user = userDao.getUserWithInvoicesById(userId);
-            Invoice invoice = invoiceDao.getInvoice(connection, invoiceId);
+            Invoice invoice = invoiceDao.getInvoice(invoiceId);
             if (user.getBalance() < invoice.getPrice()) {
                 throw new NotEnoughMoneyException();
             }
-            userDao.updateBalance(connection, userId, - invoice.getPrice());
-            invoiceDao.updateIsPaid(connection, true, invoiceId);
+            userDao.updateBalance(userId, - invoice.getPrice());
+            invoiceDao.updateIsPaid(true, invoiceId);
             if (user.getInvoices().size() == 1) {
-                userDao.updateIsBlocked(connection, userId, false);
+                userDao.updateIsBlocked(userId, false);
             }
-            DBManager.commitTransaction(connection);
-        } catch (SQLException e) {
-            LOGGER.error("Error during invoice paying: ", e);
-            DBManager.rollback(connection);
-            throw new RuntimeException(e);
-        } finally {
-            DBManager.closeConnection(connection);
+            daoConnection.commitTransaction();
         }
-        return false;
+        return true;
     }
 
     @Override
     public long switchOnService(long userId, long serviceId) {
-        long usersServicesId = -1;
-        Connection connection = null;
-        try {
-            connection = DBManager.getConnection();
-            DBManager.beginTransaction(connection);
-            Service service = serviceDao.getService(connection, serviceId);
-            serviceDao.addUserService(connection, service, userId);
-            Invoice invoice = new Invoice();
-            invoice.setDateTime(LocalDateTime.now());
-            invoice.setDescription("Invoice for a service " + service.getName());
-            invoice.setPrice(service.getPrice());
-            invoice.setPaid(false);
-            invoiceDao.addInvoice(connection, invoice, userId);
-            DBManager.commitTransaction(connection);
-        } catch (SQLException e) {
-            LOGGER.error("Error during switching on the service: ", e);
-            DBManager.rollback(connection);
-            throw new RuntimeException(e);
-        } finally {
-            DBManager.closeConnection(connection);
+        long usersServicesId;
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            InvoiceDao invoiceDao = daoFactory.createInvoiceDao(daoConnection);
+            ServiceDao serviceDao = daoFactory.createServiceDao(daoConnection);
+            daoConnection.beginTransaction();
+            Service service = serviceDao.getService(serviceId);
+            usersServicesId = serviceDao.addUserService(service, userId);
+            Invoice invoice = createInvoice(service);
+            invoiceDao.addInvoice(invoice, userId);
+            daoConnection.commitTransaction();
         }
         return usersServicesId;
     }
 
     @Override
     public boolean switchOffService(long userId, long serviceId) {
+        ServiceDao serviceDao = daoFactory.createServiceDao();
         return serviceDao.deleteUserService(userId, serviceId);
+    }
+
+    private Invoice createInvoice(Service service) {
+        return new Invoice.Builder()
+                .setDateTime(LocalDateTime.now())
+                .setDescription("Invoice for a service " + service.getName())
+                .setPrice(service.getPrice())
+                .setPaid(false)
+                .build();
     }
 }

@@ -1,8 +1,6 @@
 package ua.company.myroniuk.model.dao;
 
 import ua.company.myroniuk.model.entity.Invoice;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -10,13 +8,13 @@ import java.util.List;
  */
 public interface InvoiceDao {
 
-    long addInvoice(Connection connection, Invoice invoice, long userId) throws SQLException;
+    long addInvoice(Invoice invoice, long userId);
 
-    Invoice getInvoice(Connection connection, long id);
+    Invoice getInvoice(long id);
 
     List<Invoice> getInvoices(long userId);
 
-    boolean updateIsPaid(Connection connection, boolean isPaid, long id);
+    boolean updateIsPaid(boolean isPaid, long id);
 
-    boolean deleteInvoices(Connection connection, long userId);
+    boolean deleteInvoices(long userId);
 }

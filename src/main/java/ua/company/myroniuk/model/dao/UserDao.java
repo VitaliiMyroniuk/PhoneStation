@@ -1,8 +1,6 @@
 package ua.company.myroniuk.model.dao;
 
 import ua.company.myroniuk.model.entity.User;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -10,9 +8,11 @@ import java.util.List;
  */
 public interface UserDao {
 
-    long addUser(Connection connection, User user) throws SQLException;
+    long addUser(User user);
 
     User getUserById(long id);
+
+    boolean deleteUser(long id);
 
     User getUserWithInvoicesById(long id);
 
@@ -30,13 +30,7 @@ public interface UserDao {
 
     boolean updateBalance(long userId, int sum);
 
-    boolean updateBalance(Connection connection, long userId, int sum) throws SQLException;
-
     boolean updateIsRegistered(long userId);
 
     boolean updateIsBlocked(long userId, boolean isBlocked);
-
-    boolean updateIsBlocked(Connection connection, long userId, boolean isBlocked) throws SQLException;
-
-    boolean deleteUser(Connection connection, long id);
 }

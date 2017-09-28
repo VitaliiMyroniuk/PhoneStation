@@ -1,4 +1,4 @@
-package ua.company.myroniuk.model.dao.impl;
+package ua.company.myroniuk.model.dao.impl.jdbc;
 
 import org.apache.log4j.Logger;
 import ua.company.myroniuk.model.dao.*;
@@ -13,79 +13,74 @@ import java.util.List;
 /**
  * @author Vitalii Myroniuk
  */
-public class UserDaoImpl implements UserDao {
+public class JdbcUserDao implements UserDao {
 
-    private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
-
-    private final String ADD_USER =
+    private static final String ADD_USER =
             "INSERT INTO users " +
             "(account_id, name, middle_name, surname, phone_number, balance, is_registered, is_blocked) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-    private final String GET_USER_BY_ID =
+    private static final String GET_USER_BY_ID =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE users.id = ?";
 
-    private final String GET_USER_WITH_INVOICES_BY_ID =
+    private static final String GET_USER_WITH_INVOICES_BY_ID =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id " +
             "INNER JOIN invoices ON users.id = user_id " +
             "WHERE users.id = ? AND is_paid = 0";
 
-    private final String GET_USER_BY_LOGIN =
+    private static final String GET_USER_BY_LOGIN =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE login = ?";
 
-    private final String GET_USER_BY_PHONE_NUMBER =
+    private static final String GET_USER_BY_PHONE_NUMBER =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE phone_number = ?";
 
-    private final String GET_REGISTERED_USERS =
+    private static final String GET_REGISTERED_USERS =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE is_registered = 1";
 
-    private final String GET_UNREGISTERED_USERS =
+    private static final String GET_UNREGISTERED_USERS =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE is_registered = 0";
 
-    private final String GET_DEBTORS =
+    private static final String GET_DEBTORS =
             "SELECT *, sum(price) AS debt FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id " +
             "INNER JOIN invoices ON users.id = user_id " +
             "WHERE is_paid = 0 GROUP BY user_id ORDER BY debt DESC";
 
-    private final String GET_USER_COUNT_INFO =
+    private static final String GET_USER_COUNT_INFO =
             "SELECT * FROM (SELECT COUNT(*) AS all_users FROM users WHERE phone_number IS NOT NULL) t1" +
             "INNER JOIN (SELECT COUNT(*) AS new_users FROM users WHERE is_registered = 0) t2" +
             "INNER JOIN (SELECT count(*) AS debtors FROM " +
                         "(SELECT * FROM invoices WHERE is_paid = 0 GROUP BY user_id) t " +
                         ") t3";
 
-    private final String UPDATE_USER_BALANCE =
+    private static final String UPDATE_USER_BALANCE =
             "UPDATE users SET balance = balance + ? WHERE id = ?";
 
-    private final String UPDATE_IS_REGISTERED =
+    private static final String UPDATE_IS_REGISTERED =
             "UPDATE users SET is_registered = 1 WHERE id = ?";
 
-    private final String UPDATE_IS_BLOCKED =
+    private static final String UPDATE_IS_BLOCKED =
             "UPDATE users SET is_blocked = ? WHERE id = ?";
 
-    private final String DELETE_USER =
+    private static final String DELETE_USER =
             "DELETE FROM users where id = ?";
 
-    private UserDaoImpl() {
-    }
+    private static final Logger LOGGER = Logger.getLogger(JdbcUserDao.class);
 
-    private static class SingletonHolder {
-        private static final UserDaoImpl INSTANCE = new UserDaoImpl();
-    }
+    private Connection connection;
 
-    public static UserDaoImpl getInstance() {
-        return SingletonHolder.INSTANCE;
+    JdbcUserDao(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
-    public long addUser(Connection connection, User user) throws SQLException {
+    public long addUser(User user) {
         long userId = -1;
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement(ADD_USER, Statement.RETURN_GENERATED_KEYS)
@@ -96,14 +91,16 @@ public class UserDaoImpl implements UserDao {
             if (resultSet.next()) {
                 userId = resultSet.getLong(1);
             }
+        } catch (SQLException e) {
+            LOGGER.error("Error during inserting the account into the data base: ", e);
+            throw new RuntimeException(e);
         }
         return userId;
     }
 
     @Override
     public User getUserById(long id) {
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(GET_USER_BY_ID);
         ) {
             preparedStatement.setLong(1, id);
@@ -119,10 +116,23 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public boolean deleteUser(long id) {
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(DELETE_USER);
+        ) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.error("Error during deleting the user: ", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public User getUserWithInvoicesById(long id) {
         User user = null;
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(GET_USER_WITH_INVOICES_BY_ID);
         ) {
             preparedStatement.setLong(1, id);
@@ -147,8 +157,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByLogin(String login) {
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(GET_USER_BY_LOGIN);
         ) {
             preparedStatement.setString(1, login);
@@ -165,8 +174,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByPhoneNumber(String phoneNumber) {
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(GET_USER_BY_PHONE_NUMBER);
         ) {
             preparedStatement.setString(1, phoneNumber);
@@ -185,8 +193,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> getRegisteredUsers() {
         List<User> users = new ArrayList<>();
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(GET_REGISTERED_USERS);
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -204,8 +211,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> getUnregisteredUsers() {
         List<User> users = new ArrayList<>();
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(GET_UNREGISTERED_USERS);
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -223,8 +229,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> getDebtors() {
         List<User> users = new ArrayList<>();
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(GET_DEBTORS);
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -242,8 +247,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int[] getUserCountInfo() {
         int[] userCountInfo = new int[3];
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(GET_USER_COUNT_INFO);
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -261,8 +265,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean updateBalance(long userId, int sum) {
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(UPDATE_USER_BALANCE);
         ) {
             preparedStatement.setInt(1, sum);
@@ -276,21 +279,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean updateBalance(Connection connection, long userId, int sum) throws SQLException {
-        try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(UPDATE_USER_BALANCE);
-        ) {
-            preparedStatement.setInt(1, sum);
-            preparedStatement.setLong(2, userId);
-            preparedStatement.executeUpdate();
-            return true;
-        }
-    }
-
-    @Override
     public boolean updateIsRegistered(long userId) {
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(UPDATE_IS_REGISTERED);
         ) {
             preparedStatement.setLong(1, userId);
@@ -304,8 +294,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean updateIsBlocked(long userId, boolean isBlocked) {
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(UPDATE_IS_BLOCKED);
         ) {
             preparedStatement.setBoolean(1, isBlocked);
@@ -314,32 +303,6 @@ public class UserDaoImpl implements UserDao {
             return true;
         } catch (SQLException e) {
             LOGGER.error("Error during updating the user block status: ", e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public boolean updateIsBlocked(Connection connection, long userId, boolean isBlocked) throws SQLException {
-        try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(UPDATE_IS_BLOCKED);
-        ) {
-            preparedStatement.setBoolean(1, isBlocked);
-            preparedStatement.setLong(2, userId);
-            preparedStatement.executeUpdate();
-            return true;
-        }
-    }
-
-    @Override
-    public boolean deleteUser(Connection connection, long id) {
-        try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(DELETE_USER);
-        ) {
-            preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            LOGGER.error("Error during deleting the user: ", e);
             throw new RuntimeException(e);
         }
     }

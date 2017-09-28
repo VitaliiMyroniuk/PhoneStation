@@ -2,19 +2,16 @@ package ua.company.myroniuk.model.dao;
 
 import ua.company.myroniuk.model.entity.Account;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 /**
  * @author Vitalii Myroniuk
  */
 public interface AccountDao {
 
-    long addAccount(Connection connection, Account account) throws SQLException;
+    long addAccount(Account account);
 
     Account getAccountByLogin(String login);
 
-    boolean deleteAccount(Connection connection, long accountId);
+    boolean deleteAccount(long accountId);
 
     /**
      * The method checks the given login and password.

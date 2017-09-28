@@ -1,7 +1,6 @@
-package ua.company.myroniuk.model.dao.impl;
+package ua.company.myroniuk.model.dao.impl.jdbc;
 
 import org.apache.log4j.Logger;
-import ua.company.myroniuk.model.dao.DBManager;
 import ua.company.myroniuk.model.dao.InvoiceDao;
 import ua.company.myroniuk.model.entity.Invoice;
 import java.sql.*;
@@ -11,58 +10,52 @@ import java.util.List;
 /**
  * @author Vitalii Myroniuk
  */
-public class InvoiceDaoImpl implements InvoiceDao {
+public class JdbcInvoiceDao implements InvoiceDao {
 
-    private static final Logger LOGGER = Logger.getLogger(InvoiceDaoImpl.class);
-
-    private final String ADD_INVOICE =
+    private static final String ADD_INVOICE =
             "INSERT INTO invoices (user_id, date, description, price, is_paid) " +
             "VALUES (?, ?, ?, ?, ?)";
 
-    private final String GET_INVOICE_BY_ID =
+    private static final String GET_INVOICE_BY_ID =
             "SELECT * FROM invoices WHERE id = ?";
 
-    private final String GET_UNPAID_INVOICES_BY_USER_ID =
+    private static final String GET_UNPAID_INVOICES_BY_USER_ID =
             "SELECT * FROM invoices WHERE user_id = ? AND is_paid = 0";
 
-    private final String UPDATE_IS_PAID =
+    private static final String UPDATE_IS_PAID =
             "UPDATE invoices SET is_paid = ? WHERE id = ?";
 
-    private final String DELETE_INVOICES = "DELETE FROM invoices WHERE user_id = ?";
+    private static final String DELETE_INVOICES = "DELETE FROM invoices WHERE user_id = ?";
 
-    private InvoiceDaoImpl() {
-    }
+    private static final Logger LOGGER = Logger.getLogger(JdbcInvoiceDao.class);
 
-    private static class SingletonHolder {
-        private static final InvoiceDaoImpl INSTANCE = new InvoiceDaoImpl();
-    }
+    private Connection connection;
 
-    public static InvoiceDaoImpl getInstance() {
-        return SingletonHolder.INSTANCE;
+    JdbcInvoiceDao(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
-    public long addInvoice(Connection connection, Invoice invoice, long userId) throws SQLException {
+    public long addInvoice(Invoice invoice, long userId) {
         long invoiceId = -1;
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement(ADD_INVOICE, Statement.RETURN_GENERATED_KEYS);
         ) {
-            preparedStatement.setLong(1, userId);
-            preparedStatement.setTimestamp(2, Timestamp.valueOf(invoice.getDateTime()));
-            preparedStatement.setString(3, invoice.getDescription());
-            preparedStatement.setInt(4, invoice.getPrice());
-            preparedStatement.setBoolean(5, invoice.isPaid());
+            setStatementParameters(preparedStatement, userId, invoice);
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
                 invoiceId = resultSet.getLong(1);
             }
+        } catch (SQLException e) {
+            LOGGER.error("Error during inserting the invoice into the data base: ", e);
+            throw new RuntimeException(e);
         }
         return invoiceId;
     }
 
     @Override
-    public Invoice getInvoice(Connection connection, long id) {
+    public Invoice getInvoice(long id) {
         Invoice invoice = null;
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement(GET_INVOICE_BY_ID);
@@ -82,8 +75,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
     @Override
     public List<Invoice> getInvoices(long userId) {
         List<Invoice> invoices = new ArrayList<>();
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(GET_UNPAID_INVOICES_BY_USER_ID);
         ) {
             preparedStatement.setLong(1, userId);
@@ -100,7 +92,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
     }
 
     @Override
-    public boolean updateIsPaid(Connection connection, boolean isPaid, long id) {
+    public boolean updateIsPaid(boolean isPaid, long id) {
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement(UPDATE_IS_PAID);
         ) {
@@ -115,7 +107,7 @@ public class InvoiceDaoImpl implements InvoiceDao {
     }
 
     @Override
-    public boolean deleteInvoices(Connection connection, long userId) {
+    public boolean deleteInvoices(long userId) {
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement(DELETE_INVOICES);
         ) {
@@ -138,4 +130,12 @@ public class InvoiceDaoImpl implements InvoiceDao {
                 .build();
     }
 
+    private void setStatementParameters(PreparedStatement preparedStatement,
+                                        long userId, Invoice invoice) throws SQLException {
+        preparedStatement.setLong(1, userId);
+        preparedStatement.setTimestamp(2, Timestamp.valueOf(invoice.getDateTime()));
+        preparedStatement.setString(3, invoice.getDescription());
+        preparedStatement.setInt(4, invoice.getPrice());
+        preparedStatement.setBoolean(5, invoice.isPaid());
+    }
 }

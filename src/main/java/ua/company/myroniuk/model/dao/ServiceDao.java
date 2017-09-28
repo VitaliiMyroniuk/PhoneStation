@@ -1,8 +1,6 @@
 package ua.company.myroniuk.model.dao;
 
 import ua.company.myroniuk.model.entity.Service;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -10,9 +8,9 @@ import java.util.List;
  */
 public interface ServiceDao {
 
-    long addUserService(Connection connection, Service service, long userId) throws SQLException;
+    long addUserService(Service service, long userId);
 
-    Service getService(Connection connection, long id) throws SQLException;
+    Service getService(long id);
 
     List<Service> getAllServices();
 
@@ -20,5 +18,5 @@ public interface ServiceDao {
 
     boolean deleteUserService(long userId, long serviceId);
 
-    boolean deleteUserServices(Connection connection, long userId);
+    boolean deleteUserServices(long userId);
 }

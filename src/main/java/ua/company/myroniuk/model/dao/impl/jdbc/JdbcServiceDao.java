@@ -1,7 +1,6 @@
-package ua.company.myroniuk.model.dao.impl;
+package ua.company.myroniuk.model.dao.impl.jdbc;
 
 import org.apache.log4j.Logger;
-import ua.company.myroniuk.model.dao.DBManager;
 import ua.company.myroniuk.model.dao.ServiceDao;
 import ua.company.myroniuk.model.entity.Service;
 import java.sql.*;
@@ -12,64 +11,59 @@ import java.util.List;
 /**
  * @author Vitalii Myroniuk
  */
-public class ServiceDaoImpl implements ServiceDao {
+public class JdbcServiceDao implements ServiceDao {
 
-    private static final Logger LOGGER = Logger.getLogger(ServiceDaoImpl.class);
-
-    private final String ADD_USER_SERVICE =
+    private static final String ADD_USER_SERVICE =
             "INSERT INTO users_services (user_id, service_id, start_date, end_date) " +
             "VALUES (?, ?, ?, ?)";
 
-    private final String GET_SERVICE_BY_ID =
+    private static final String GET_SERVICE_BY_ID =
             "SELECT * FROM services where id = ?";
 
-    private final String GET_ALL_SERVICES =
+    private static final String GET_ALL_SERVICES =
             "SELECT * FROM services";
 
-    private final String GET_USER_SERVICES =
+    private static final String GET_USER_SERVICES =
             "SELECT * FROM users " +
             "INNER JOIN users_services ON users.id = user_id " +
             "INNER JOIN services ON service_id = services.id " +
             "WHERE users.id = ? AND NOW() BETWEEN start_date AND end_date";
 
-    private final String DELETE_USER_SERVICE =
+    private static final String DELETE_USER_SERVICE =
             "DELETE FROM users_services WHERE user_id = ? AND service_id = ?";
 
-    private final String DELETE_USER_SERVICES =
+    private static final String DELETE_USER_SERVICES =
             "DELETE FROM users_services WHERE user_id = ?";
 
-    private ServiceDaoImpl() {
-    }
+    private static final Logger LOGGER = Logger.getLogger(JdbcServiceDao.class);
 
-    private static class SingletonHolder {
-        private static final ServiceDaoImpl INSTANCE = new ServiceDaoImpl();
-    }
+    private Connection connection;
 
-    public static ServiceDaoImpl getInstance() {
-        return SingletonHolder.INSTANCE;
+    JdbcServiceDao(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
-    public long addUserService(Connection connection, Service service, long userId) throws SQLException {
+    public long addUserService(Service service, long userId) {
         long userServicesId = -1;
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement(ADD_USER_SERVICE, Statement.RETURN_GENERATED_KEYS)
         ) {
-            preparedStatement.setLong(1, userId);
-            preparedStatement.setLong(2, service.getId());
-            preparedStatement.setDate(3, Date.valueOf(LocalDate.now()));
-            preparedStatement.setDate(4, Date.valueOf(LocalDate.now().plusDays(service.getDuration())));
+            setStatementParameters(preparedStatement, userId, service);
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
                 userServicesId = resultSet.getLong(1);
             }
+        } catch (SQLException e) {
+            LOGGER.error("Error during inserting the service into the data base: ", e);
+            throw new RuntimeException(e);
         }
         return userServicesId;
     }
 
     @Override
-    public Service getService(Connection connection, long id) throws SQLException {
+    public Service getService(long id) {
         Service service = null;
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement(GET_SERVICE_BY_ID);
@@ -79,6 +73,9 @@ public class ServiceDaoImpl implements ServiceDao {
             if (resultSet.next()) {
                 service = createService(resultSet);
             }
+        } catch (SQLException e) {
+            LOGGER.error("Error during getting the service from the data base: ", e);
+            throw new RuntimeException(e);
         }
         return service;
     }
@@ -86,8 +83,7 @@ public class ServiceDaoImpl implements ServiceDao {
     @Override
     public List<Service> getAllServices() {
         List<Service> services = new ArrayList<>();
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(GET_ALL_SERVICES);
         ) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -105,8 +101,7 @@ public class ServiceDaoImpl implements ServiceDao {
     @Override
     public List<Service> getUserServices(long userId) {
         List<Service> services = new ArrayList<>();
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(GET_USER_SERVICES);
         ) {
             preparedStatement.setLong(1, userId);
@@ -124,8 +119,7 @@ public class ServiceDaoImpl implements ServiceDao {
 
     @Override
     public boolean deleteUserService(long userId, long serviceId) {
-        try (Connection connection = DBManager.getConnection();
-             PreparedStatement preparedStatement =
+        try (PreparedStatement preparedStatement =
                      connection.prepareStatement(DELETE_USER_SERVICE);
         ) {
             preparedStatement.setLong(1, userId);
@@ -133,13 +127,13 @@ public class ServiceDaoImpl implements ServiceDao {
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.error("Error during deleting the service of the user: ", e);
+            LOGGER.error("Error during deleting the user service: ", e);
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public boolean deleteUserServices(Connection connection, long userId) {
+    public boolean deleteUserServices(long userId) {
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement(DELETE_USER_SERVICES);
         ) {
@@ -160,5 +154,13 @@ public class ServiceDaoImpl implements ServiceDao {
                 .setDuration(resultSet.getInt("services.duration"))
                 .setPrice(resultSet.getInt("services.price"))
                 .build();
+    }
+
+    private void setStatementParameters(PreparedStatement preparedStatement,
+                                        long userId, Service service) throws SQLException {
+        preparedStatement.setLong(1, userId);
+        preparedStatement.setLong(2, service.getId());
+        preparedStatement.setDate(3, Date.valueOf(LocalDate.now()));
+        preparedStatement.setDate(4, Date.valueOf(LocalDate.now().plusDays(service.getDuration())));
     }
 }
