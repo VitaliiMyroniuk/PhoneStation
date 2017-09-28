@@ -12,7 +12,7 @@ public abstract class DaoFactory {
     private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
 
     /**
-     * Factory class name. It should be change if you use other factory.
+     * Factory class name. It should be change depending on which factory you use.
      */
     private static final String FACTORY_CLASS_NAME = "ua.company.myroniuk.model.dao.impl.jdbc.JdbcDaoFactory";
 
@@ -38,10 +38,6 @@ public abstract class DaoFactory {
     }
 
     public abstract DaoConnection getDaoConnection();
-    public abstract AccountDao createAccountDao();
-    public abstract UserDao createUserDao();
-    public abstract ServiceDao createServiceDao();
-    public abstract InvoiceDao createInvoiceDao();
     public abstract AccountDao createAccountDao(DaoConnection daoConnection);
     public abstract UserDao createUserDao(DaoConnection daoConnection);
     public abstract ServiceDao createServiceDao(DaoConnection daoConnection);

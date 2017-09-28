@@ -18,7 +18,7 @@ public class JdbcDaoConnection implements DaoConnection {
     }
 
     // Getter.
-    public Connection getConnection() {
+    Connection getConnection() {
         return connection;
     }
 

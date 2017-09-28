@@ -1,5 +1,6 @@
 package ua.company.myroniuk.model.service.impl;
 
+import ua.company.myroniuk.model.dao.DaoConnection;
 import ua.company.myroniuk.model.dao.DaoFactory;
 import ua.company.myroniuk.model.dao.InvoiceDao;
 import ua.company.myroniuk.model.entity.Invoice;
@@ -42,7 +43,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public List<Invoice> getInvoices(long userId) {
-        InvoiceDao invoiceDao = daoFactory.createInvoiceDao();
-        return invoiceDao.getInvoices(userId);
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            InvoiceDao invoiceDao = daoFactory.createInvoiceDao(daoConnection);
+            return invoiceDao.getInvoices(userId);
+        }
     }
 }

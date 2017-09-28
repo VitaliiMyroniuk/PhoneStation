@@ -32,15 +32,6 @@ public class JdbcDaoFactory extends DaoFactory {
         }
     }
 
-    public Connection getConnection() {
-        try {
-            return dataSource.getConnection();
-        } catch (SQLException e) {
-            LOGGER.error("Error during the java.sql.Connection getting: ", e);
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
     public DaoConnection getDaoConnection() {
         try {
@@ -49,26 +40,6 @@ public class JdbcDaoFactory extends DaoFactory {
             LOGGER.error("Error during the DaoConnection getting: ", e);
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public AccountDao createAccountDao() {
-        return new JdbcAccountDao(getConnection());
-    }
-
-    @Override
-    public UserDao createUserDao() {
-        return new JdbcUserDao(getConnection());
-    }
-
-    @Override
-    public ServiceDao createServiceDao() {
-        return new JdbcServiceDao(getConnection());
-    }
-
-    @Override
-    public InvoiceDao createInvoiceDao() {
-        return new JdbcInvoiceDao(getConnection());
     }
 
     @Override

@@ -1,10 +1,10 @@
 package ua.company.myroniuk.model.service.impl;
 
+import ua.company.myroniuk.model.dao.DaoConnection;
 import ua.company.myroniuk.model.dao.DaoFactory;
 import ua.company.myroniuk.model.dao.ServiceDao;
 import ua.company.myroniuk.model.entity.Service;
 import ua.company.myroniuk.model.service.ServiceService;
-
 import java.util.List;
 
 /**
@@ -42,13 +42,19 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public List<Service> getAllServices() {
-        ServiceDao serviceDao = daoFactory.createServiceDao();
-        return serviceDao.getAllServices();
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            ServiceDao serviceDao = daoFactory.createServiceDao(daoConnection);
+            return serviceDao.getAllServices();
+        }
     }
 
     @Override
     public List<Service> getUserServices(long userId) {
-        ServiceDao serviceDao = daoFactory.createServiceDao();
-        return serviceDao.getUserServices(userId);
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            ServiceDao serviceDao = daoFactory.createServiceDao(daoConnection);
+            return serviceDao.getUserServices(userId);
+        }
     }
 }

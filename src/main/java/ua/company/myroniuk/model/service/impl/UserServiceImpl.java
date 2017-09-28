@@ -72,44 +72,65 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(long id) {
-        UserDao userDao = daoFactory.createUserDao();
-        return userDao.getUserById(id);
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            return userDao.getUserById(id);
+        }
     }
 
     @Override
     public User getUserWithInvoicesById(long id) {
-        UserDao userDao = daoFactory.createUserDao();
-        return userDao.getUserWithInvoicesById(id);
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            return userDao.getUserWithInvoicesById(id);
+        }
     }
 
     @Override
     public User getUserByLogin(String login) {
-        UserDao userDao = daoFactory.createUserDao();
-        return userDao.getUserByLogin(login);
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            return userDao.getUserByLogin(login);
+        }
     }
 
     @Override
     public User getUserByPhoneNumber(String phoneNumber) {
-        UserDao userDao = daoFactory.createUserDao();
-        return userDao.getUserByPhoneNumber(phoneNumber);
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            return userDao.getUserByPhoneNumber(phoneNumber);
+        }
     }
 
     @Override
     public List<User> getRegisteredUsers() {
-        UserDao userDao = daoFactory.createUserDao();
-        return userDao.getRegisteredUsers();
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            return userDao.getRegisteredUsers();
+        }
     }
 
     @Override
     public List<User> getUnregisteredUsers() {
-        UserDao userDao = daoFactory.createUserDao();
-        return userDao.getUnregisteredUsers();
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            return userDao.getUnregisteredUsers();
+        }
     }
 
     @Override
     public List<User> getDebtors() {
-        UserDao userDao = daoFactory.createUserDao();
-        return userDao.getDebtors();
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            return userDao.getDebtors();
+        }
     }
 
     @Override
@@ -123,26 +144,39 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int[] getUserCountInfo() {
-        UserDao userDao = daoFactory.createUserDao();
-        return userDao.getUserCountInfo();
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            return userDao.getUserCountInfo();
+        }
+
     }
 
     @Override
     public boolean updateBalance(long userId, int sum) {
-        UserDao userDao = daoFactory.createUserDao();
-        return userDao.updateBalance(userId, sum);
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            return userDao.updateBalance(userId, sum);
+        }
     }
 
     @Override
     public boolean updateIsRegistered(long userId) {
-        UserDao userDao = daoFactory.createUserDao();
-        return userDao.updateIsRegistered(userId);
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            return userDao.updateIsRegistered(userId);
+        }
     }
 
     @Override
     public boolean updateIsBlocked(long userId, boolean isBlocked) {
-        UserDao userDao = daoFactory.createUserDao();
-        return userDao.updateIsBlocked(userId, isBlocked);
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            return userDao.updateIsBlocked(userId, isBlocked);
+        }
     }
 
     @Override
@@ -167,8 +201,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkPhoneNumber(String phoneNumber) {
-        UserDao userDao = daoFactory.createUserDao();
-        return userDao.getUserByPhoneNumber(phoneNumber) != null;
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            UserDao userDao = daoFactory.createUserDao(daoConnection);
+            return userDao.getUserByPhoneNumber(phoneNumber) != null;
+        }
     }
 
     @Override
@@ -212,8 +249,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean switchOffService(long userId, long serviceId) {
-        ServiceDao serviceDao = daoFactory.createServiceDao();
-        return serviceDao.deleteUserService(userId, serviceId);
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            ServiceDao serviceDao = daoFactory.createServiceDao(daoConnection);
+            return serviceDao.deleteUserService(userId, serviceId);
+        }
     }
 
     private Invoice createInvoice(Service service) {

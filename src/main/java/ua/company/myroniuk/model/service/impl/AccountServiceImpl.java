@@ -1,6 +1,7 @@
 package ua.company.myroniuk.model.service.impl;
 
 import ua.company.myroniuk.model.dao.AccountDao;
+import ua.company.myroniuk.model.dao.DaoConnection;
 import ua.company.myroniuk.model.dao.DaoFactory;
 import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.service.AccountService;
@@ -52,8 +53,11 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public int checkLoginAndPassword(String login, String password) {
-        AccountDao accountDao = daoFactory.createAccountDao();
-        return accountDao.checkLoginAndPassword(login, password);
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            AccountDao accountDao = daoFactory.createAccountDao(daoConnection);
+            return accountDao.checkLoginAndPassword(login, password);
+        }
     }
 
     /**
@@ -65,8 +69,11 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public boolean checkLogin(String login) {
-        AccountDao accountDao = daoFactory.createAccountDao();
-        Account account = accountDao.getAccountByLogin(login);
-        return account != null;
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
+        ) {
+            AccountDao accountDao = daoFactory.createAccountDao(daoConnection);
+            Account account = accountDao.getAccountByLogin(login);
+            return account != null;
+        }
     }
 }
