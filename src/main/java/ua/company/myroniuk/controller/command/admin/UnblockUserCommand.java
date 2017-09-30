@@ -17,8 +17,16 @@ public class UnblockUserCommand implements Command {
 
     private UserService userService;
 
-    public UnblockUserCommand() {
-        userService = UserServiceImpl.getInstance();
+    UnblockUserCommand(UserService userService) {
+        this.userService = userService;
+    }
+
+    private static class SingletonHolder {
+        private static final UnblockUserCommand INSTANCE = new UnblockUserCommand(UserServiceImpl.getInstance());
+    }
+
+    public static UnblockUserCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override

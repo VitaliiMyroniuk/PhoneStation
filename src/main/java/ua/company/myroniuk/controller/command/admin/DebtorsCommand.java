@@ -18,8 +18,16 @@ public class DebtorsCommand implements Command {
 
     private UserService userService;
 
-    public DebtorsCommand() {
-        userService = UserServiceImpl.getInstance();
+    DebtorsCommand(UserService userService) {
+        this.userService = userService;
+    }
+
+    private static class SingletonHolder {
+        private static final DebtorsCommand INSTANCE = new DebtorsCommand(UserServiceImpl.getInstance());
+    }
+
+    public static DebtorsCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override

@@ -17,8 +17,16 @@ public class UserInvoicesCommand implements Command {
 
     private UserService userService;
 
-    public UserInvoicesCommand() {
-        userService = UserServiceImpl.getInstance();
+    UserInvoicesCommand(UserService userService) {
+        this.userService = userService;
+    }
+
+    private static class SingletonHolder {
+        private static final UserInvoicesCommand INSTANCE = new UserInvoicesCommand(UserServiceImpl.getInstance());
+    }
+
+    public static UserInvoicesCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override

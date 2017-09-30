@@ -18,8 +18,16 @@ public class RegisterUserCommand implements Command {
 
     private UserService userService;
 
-    public RegisterUserCommand() {
-        userService = UserServiceImpl.getInstance();
+    RegisterUserCommand(UserService userService) {
+        this.userService = userService;
+    }
+
+    private static class SingletonHolder {
+        private static final RegisterUserCommand INSTANCE = new RegisterUserCommand(UserServiceImpl.getInstance());
+    }
+
+    public static RegisterUserCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override

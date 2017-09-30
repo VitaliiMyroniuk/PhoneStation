@@ -18,8 +18,16 @@ public class DeleteUserCommand implements Command {
 
     private UserService userService;
 
-    public DeleteUserCommand() {
-        userService = UserServiceImpl.getInstance();
+    DeleteUserCommand(UserService userService) {
+        this.userService = userService;
+    }
+
+    private static class SingletonHolder {
+        private static final DeleteUserCommand INSTANCE = new DeleteUserCommand(UserServiceImpl.getInstance());
+    }
+
+    public static DeleteUserCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override

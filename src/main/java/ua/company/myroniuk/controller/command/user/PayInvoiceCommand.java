@@ -28,9 +28,18 @@ public class PayInvoiceCommand implements Command {
     private UserService userService = UserServiceImpl.getInstance();  // TODO refactor this dependencies.
     private InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
 
-    public PayInvoiceCommand() {
-        userService = UserServiceImpl.getInstance();
-        invoiceService = InvoiceServiceImpl.getInstance();
+    PayInvoiceCommand(UserService userService, InvoiceService invoiceService) {
+        this.userService = userService;
+        this.invoiceService = invoiceService;
+    }
+
+    private static class SingletonHolder {
+        private static final PayInvoiceCommand INSTANCE =
+                new PayInvoiceCommand(UserServiceImpl.getInstance(), InvoiceServiceImpl.getInstance());
+    }
+
+    public static PayInvoiceCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override

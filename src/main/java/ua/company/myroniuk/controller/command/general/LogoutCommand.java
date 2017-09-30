@@ -12,6 +12,18 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class LogoutCommand implements Command {
+
+    LogoutCommand() {
+    }
+
+    private static class SingletonHolder {
+        private static final LogoutCommand INSTANCE = new LogoutCommand();
+    }
+
+    public static LogoutCommand getInstance() {
+        return SingletonHolder.INSTANCE;
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().invalidate();

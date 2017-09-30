@@ -33,8 +33,16 @@ public class RegistrationCommand implements Command {
 
     private UserService userService;
 
-    public RegistrationCommand() {
-        userService = UserServiceImpl.getInstance();
+    RegistrationCommand(UserService userService) {
+        this.userService = userService;
+    }
+
+    private static class SingletonHolder {
+        private static final RegistrationCommand INSTANCE = new RegistrationCommand(UserServiceImpl.getInstance());
+    }
+
+    public static RegistrationCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override

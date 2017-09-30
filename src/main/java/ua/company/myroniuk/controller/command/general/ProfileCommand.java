@@ -18,8 +18,16 @@ public class ProfileCommand implements Command {
 
     private UserService userService;
 
-    public ProfileCommand() {
-        userService = UserServiceImpl.getInstance();
+    ProfileCommand(UserService userService) {
+        this.userService = userService;
+    }
+
+    private static class SingletonHolder {
+        private static final ProfileCommand INSTANCE = new ProfileCommand(UserServiceImpl.getInstance());
+    }
+
+    public static ProfileCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override
@@ -30,12 +38,12 @@ public class ProfileCommand implements Command {
         if (isAdmin) {
             int[] userCountInfo = userService.getUserCountInfo();
             request.setAttribute("user_count_info", userCountInfo);
-            return ADMIN_JSP;
+            return ADMIN_PROFILE_JSP;
         } else {
             long userId = user.getId();
             user = userService.getUserById(userId);
             request.getSession().setAttribute("user", user);
-            return USER_JSP;
+            return USER_PROFILE_JSP;
         }
     }
 }

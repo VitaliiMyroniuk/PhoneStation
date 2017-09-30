@@ -19,9 +19,18 @@ public class LoginCommand implements Command {
     private AccountService accountService;   // TODO refactor this dependencies.
     private UserService userService;
 
-    public LoginCommand() {
-        accountService = AccountServiceImpl.getInstance();
-        userService = UserServiceImpl.getInstance();
+    LoginCommand(AccountService accountService, UserService userService) {
+        this.accountService = accountService;
+        this.userService = userService;
+    }
+
+    private static class SingletonHolder {
+        private static final LoginCommand INSTANCE =
+                new LoginCommand(AccountServiceImpl.getInstance(), UserServiceImpl.getInstance());
+    }
+
+    public static LoginCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override
@@ -31,7 +40,7 @@ public class LoginCommand implements Command {
         int result = accountService.checkLoginAndPassword(login, password);
         User user = (User) request.getSession().getAttribute("user");
         if (result < 0 || user != null) {
-            return INDEX_JSP;
+            return LOGIN_JSP;
         } else if (result == 0) {
             user = userService.getUserByLogin(login);
             request.getSession().setAttribute("user", user);

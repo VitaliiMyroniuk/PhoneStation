@@ -29,10 +29,10 @@ public class UserServiceImpl implements UserService {
     private DaoFactory daoFactory;
 
     /**
-     * Constructor for creating empty {@code UserServiceImpl} object.
+     * Constructor for creating {@code UserServiceImpl} object.
      */
-    private UserServiceImpl() {
-        this.daoFactory = DaoFactory.getInstance();
+    UserServiceImpl(DaoFactory daoFactory) {
+        this.daoFactory = daoFactory;
     }
 
     /**
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
      * for the thread safe (Bill Pugh) singleton implementation.
      */
     private static class SingletonHolder {
-        private static final UserServiceImpl INSTANCE = new UserServiceImpl();
+        private static final UserServiceImpl INSTANCE = new UserServiceImpl(DaoFactory.getInstance());
     }
 
     /**

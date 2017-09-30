@@ -18,12 +18,21 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class SwitchOnServiceCommand implements Command {
-    private UserService userService;
+    private UserService userService;       // TODO refactor this dependencies
     private ServiceService serviceService;
 
-    public SwitchOnServiceCommand() {
-        userService = UserServiceImpl.getInstance();
-        serviceService = ServiceServiceImpl.getInstance();
+    SwitchOnServiceCommand(UserService userService, ServiceService serviceService) {
+        this.userService = userService;
+        this.serviceService = serviceService;
+    }
+
+    private static class SingletonHolder {
+        private static final SwitchOnServiceCommand INSTANCE =
+                new SwitchOnServiceCommand(UserServiceImpl.getInstance(), ServiceServiceImpl.getInstance());
+    }
+
+    public static SwitchOnServiceCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override

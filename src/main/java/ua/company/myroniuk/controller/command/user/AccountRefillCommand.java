@@ -19,13 +19,20 @@ public class AccountRefillCommand implements Command {
 
     private final String CVV_REGEX = "^[0-9]{3}$";
 
-    // TODO refactor this regex
-    private final String SUM_REGEX = "^[1-9][0-9]{0,3}|0\\.[0-9]{1,2}|[1-9]{1,4}\\.[0-9]{1,2}$";
+    private final String SUM_REGEX = "^([1-9][0-9]{0,3}|0)\\.[0-9]{1,2}$";
 
     private UserService userService;
 
-    public AccountRefillCommand() {
-        userService = UserServiceImpl.getInstance();
+    AccountRefillCommand(UserService userService) {
+        this.userService = userService;
+    }
+
+    private static class SingletonHolder {
+        private static final AccountRefillCommand INSTANCE = new AccountRefillCommand(UserServiceImpl.getInstance());
+    }
+
+    public static AccountRefillCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override

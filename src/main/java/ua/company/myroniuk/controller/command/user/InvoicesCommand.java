@@ -19,8 +19,16 @@ public class InvoicesCommand implements Command {
 
     private InvoiceService invoiceService;
 
-    public InvoicesCommand() {
-        invoiceService = InvoiceServiceImpl.getInstance();
+    InvoicesCommand(InvoiceService invoiceService) {
+        this.invoiceService = invoiceService;
+    }
+
+    private static class SingletonHolder {
+        private static final InvoicesCommand INSTANCE = new InvoicesCommand(InvoiceServiceImpl.getInstance());
+    }
+
+    public static InvoicesCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override

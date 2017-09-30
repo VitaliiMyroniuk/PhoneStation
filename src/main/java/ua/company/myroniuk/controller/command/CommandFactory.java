@@ -24,64 +24,64 @@ public class CommandFactory {
     public static Command createCommand(String uri) {
         switch (uri) {
             case "/phone_station/account_refill" :
-                command = new AccountRefillCommand();
+                command = AccountRefillCommand.getInstance();
                 break;
             case "/phone_station/block_user" :
-                command = new BlockUserCommand();
+                command = BlockUserCommand.getInstance();
                 break;
             case "/phone_station/debtors" :
-                command = new DebtorsCommand();
+                command = DebtorsCommand.getInstance();
                 break;
             case "/phone_station/delete_user" :
-                command = new DeleteUserCommand();
+                command = DeleteUserCommand.getInstance();
                 break;
             case "/phone_station/invoices" :
-                command = new InvoicesCommand();
+                command = InvoicesCommand.getInstance();
                 break;
             case "/phone_station/language" :
-                command = new LanguageCommand();
+                command = LanguageCommand.getInstance();
                 break;
             case "/phone_station/login" :
-                command = new LoginCommand();
+                command = LoginCommand.getInstance();
                 break;
             case "/phone_station/logout" :
-                command = new LogoutCommand();
+                command = LogoutCommand.getInstance();
                 break;
             case "/phone_station/new_users" :
-                command = new NewUsersCommand();
+                command = NewUsersCommand.getInstance();
                 break;
             case "/phone_station/pay_invoice" :
-                command = new PayInvoiceCommand();
+                command = PayInvoiceCommand.getInstance();
                 break;
             case "/phone_station/profile" :
-                command = new ProfileCommand();
+                command = ProfileCommand.getInstance();
                 break;
             case "/phone_station/register_user" :
-                command = new RegisterUserCommand();
+                command = RegisterUserCommand.getInstance();
                 break;
             case "/phone_station/registration" :
-                command = new RegistrationCommand();
+                command = RegistrationCommand.getInstance();
                 break;
             case "/phone_station/services" :
-                command = new ServicesCommand();
+                command = ServicesCommand.getInstance();
                 break;
             case "/phone_station/switch_off_service" :
-                command = new SwitchOffServiceCommand();
+                command = SwitchOffServiceCommand.getInstance();
                 break;
             case "/phone_station/switch_on_service" :
-                command = new SwitchOnServiceCommand();
+                command = SwitchOnServiceCommand.getInstance();
                 break;
             case "/phone_station/successful_registration" :
-                command = new SuccessfulRegistration();
+                command = SuccessfulRegistrationCommand.getInstance();
                 break;
             case "/phone_station/unblock_user" :
-                command = new UnblockUserCommand();
+                command = UnblockUserCommand.getInstance();
                 break;
             case "/phone_station/user_invoices" :
-                command = new UserInvoicesCommand();
+                command = UserInvoicesCommand.getInstance();
                 break;
             case "/phone_station/users" :
-                command = new UsersCommand();
+                command = UsersCommand.getInstance();
                 break;
         }
         return command;

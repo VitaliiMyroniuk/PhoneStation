@@ -9,10 +9,26 @@ import java.sql.SQLException;
  * @author Vitalii Myroniuk
  */
 public class JdbcDaoConnection implements DaoConnection {
+    /**
+     * Logger.
+     */
     private static final Logger LOGGER = Logger.getLogger(JdbcDaoConnection.class);
+
+    /**
+     * {@code java.sql.Connection} object.
+     */
     private Connection connection;
+
+    /**
+     * Variable determines if the current {@code JdbcDaoConnection} is used in transaction.
+     */
     private boolean isForTransaction = false;
 
+    /**
+     * Constructor for {@code JdbcDaoConnection} object.
+     *
+     * @param connection {@code java.sql.Connection} object.
+     */
     JdbcDaoConnection(Connection connection) {
         this.connection = connection;
     }
@@ -31,7 +47,6 @@ public class JdbcDaoConnection implements DaoConnection {
             LOGGER.error("Error during transaction beginning: ", e);
             throw new RuntimeException(e);
         }
-
     }
 
     @Override

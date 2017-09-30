@@ -1,8 +1,6 @@
 package ua.company.myroniuk.controller.filter;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.annotation.WebInitParam;
 import java.io.IOException;
 
 /**
@@ -11,11 +9,6 @@ import java.io.IOException;
  *
  * @author Vitalii Myroniuk
  */
-@WebFilter(urlPatterns = {"/*"},
-           initParams = {@WebInitParam(
-                   name = "encoding",
-                   value = "UTF-8",
-                   description = "Encoding parameter")})
 public class EncodingFilter implements Filter {
     /**
      * Encoding for the servlet request and response.

@@ -1,5 +1,6 @@
 package ua.company.myroniuk.controller.filter;
 
+import ua.company.myroniuk.model.entity.Role;
 import ua.company.myroniuk.model.entity.User;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -15,7 +16,6 @@ import java.util.Set;
  *
  * @author Vitalii Myroniuk
  */
-@WebFilter(urlPatterns={"/*"})
 public class SecurityFilter implements Filter {
     /**
      * Set of allowed uri's for all users.
@@ -76,11 +76,11 @@ public class SecurityFilter implements Filter {
                 generalURI.contains(uri);
         boolean isAllowedSubscriberAccess =
                 (user != null) &&
-                "SUBSCRIBER".equals(user.getAccount().getRole().toString()) &&
+                Role.SUBSCRIBER.equals(user.getAccount().getRole()) &&
                 subscriberURI.contains(uri);
         boolean isAllowedAdminAccess =
                 (user != null) &&
-                "ADMIN".equals(user.getAccount().getRole().toString()) &&
+                Role.ADMIN.equals(user.getAccount().getRole()) &&
                 adminURI.contains(uri);
         if (isAllowedGuestAccess || isAllowedSubscriberAccess || isAllowedAdminAccess) {
             request.setAttribute("uri", uri);

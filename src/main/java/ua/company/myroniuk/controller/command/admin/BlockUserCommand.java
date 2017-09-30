@@ -17,8 +17,16 @@ public class BlockUserCommand implements Command {
 
     private UserService userService;
 
-    public BlockUserCommand() {
-        userService = UserServiceImpl.getInstance();
+    BlockUserCommand(UserService userService) {
+        this.userService = userService;
+    }
+
+    private static class SingletonHolder {
+        private static final BlockUserCommand INSTANCE = new BlockUserCommand(UserServiceImpl.getInstance());
+    }
+
+    public static BlockUserCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override

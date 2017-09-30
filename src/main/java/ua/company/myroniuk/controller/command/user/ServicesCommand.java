@@ -16,10 +16,19 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class ServicesCommand implements Command {
+
     private ServiceService serviceService;
 
-    public ServicesCommand() {
-        serviceService = ServiceServiceImpl.getInstance();
+    ServicesCommand(ServiceService serviceService) {
+        this.serviceService = serviceService;
+    }
+
+    private static class SingletonHolder {
+        private static final ServicesCommand INSTANCE = new ServicesCommand(ServiceServiceImpl.getInstance());
+    }
+
+    public static ServicesCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override

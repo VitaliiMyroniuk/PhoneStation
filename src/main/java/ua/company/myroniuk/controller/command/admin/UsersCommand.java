@@ -18,8 +18,16 @@ public class UsersCommand implements Command {
 
     private UserService userService;
 
-    public UsersCommand() {
-        userService = UserServiceImpl.getInstance();
+    UsersCommand(UserService userService) {
+        this.userService = userService;
+    }
+
+    private static class SingletonHolder {
+        private static final UsersCommand INSTANCE = new UsersCommand(UserServiceImpl.getInstance());
+    }
+
+    public static UsersCommand getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     @Override
