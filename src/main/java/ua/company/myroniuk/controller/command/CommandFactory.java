@@ -26,6 +26,9 @@ public class CommandFactory {
             case "/phone_station/account_refill" :
                 command = AccountRefillCommand.getInstance();
                 break;
+            case "/phone_station/add_user" :
+                command = AddUserCommand.getInstance();
+                break;
             case "/phone_station/block_user" :
                 command = BlockUserCommand.getInstance();
                 break;
@@ -55,9 +58,6 @@ public class CommandFactory {
                 break;
             case "/phone_station/profile" :
                 command = ProfileCommand.getInstance();
-                break;
-            case "/phone_station/register_user" :
-                command = RegisterUserCommand.getInstance();
                 break;
             case "/phone_station/registration" :
                 command = RegistrationCommand.getInstance();

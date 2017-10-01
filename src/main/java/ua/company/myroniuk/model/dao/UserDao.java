@@ -14,7 +14,7 @@ public interface UserDao {
 
     boolean deleteUser(long id);
 
-    User getUserWithInvoicesById(long id);
+    User getUserWithUnpaidInvoicesById(long id);
 
     User getUserByLogin(String login);
 
@@ -33,4 +33,6 @@ public interface UserDao {
     boolean updateIsRegistered(long userId);
 
     boolean updateIsBlocked(long userId, boolean isBlocked);
+
+    User logIn(String login, String password);
 }

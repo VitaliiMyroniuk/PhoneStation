@@ -17,10 +17,6 @@ public class JdbcAccountDao implements AccountDao {
     private static final String GET_ACCOUNT_BY_LOGIN =
             "SELECT * FROM accounts WHERE login = ?";
 
-    private static final String GET_DATA_BY_LOGIN_AND_PASSWORD =
-            "SELECT role, is_registered FROM accounts " +
-            "INNER JOIN users ON accounts.id = account_id WHERE login = ? AND password = ?";
-
     private static final String DELETE_ACCOUNT =
             "DELETE FROM accounts where id = ?";
 
@@ -80,28 +76,6 @@ public class JdbcAccountDao implements AccountDao {
             LOGGER.error("Error during deleting the account: ", e);
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public int checkLoginAndPassword(String login, String password) {
-        try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_DATA_BY_LOGIN_AND_PASSWORD);
-        ) {
-            preparedStatement.setString(1, login);
-            preparedStatement.setString(2, password);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                if ("admin".equalsIgnoreCase(resultSet.getString("role"))) {
-                    return 1;
-                } else if (resultSet.getBoolean("is_registered")){
-                    return 0;
-                }
-            }
-        } catch (SQLException e) {
-            LOGGER.error("Error during checking login and password: ", e);
-            throw new RuntimeException(e);
-        }
-        return -1;
     }
 
     private Account createAccount(ResultSet resultSet) throws SQLException {

@@ -28,6 +28,7 @@
             <table class="my-table" border="1" cellspacing="0">
                 <thead>
                 <tr>
+                    <th>№</th>
                     <th><fmt:message key="admin.table.name" bundle="${rb}"/></th>
                     <th><fmt:message key="admin.table.middle_name" bundle="${rb}"/></th>
                     <th><fmt:message key="admin.table.surname" bundle="${rb}"/></th>
@@ -38,8 +39,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="user" items="${debtors}">
+                <c:forEach var="user" items="${debtors}" varStatus="status" begin="0" step="1">
                     <tr>
+                        <td><c:out value="${status.count}"/></td>
                         <td><c:out value="${user.name}"/></td>
                         <td><c:out value="${user.middleName}"/></td>
                         <td><c:out value="${user.surname}"/></td>

@@ -1,7 +1,6 @@
 package ua.company.myroniuk.controller.command.admin;
 
 import ua.company.myroniuk.controller.command.Command;
-import ua.company.myroniuk.model.entity.User;
 import ua.company.myroniuk.model.service.UserService;
 import ua.company.myroniuk.model.service.impl.UserServiceImpl;
 import javax.servlet.http.HttpServletRequest;
@@ -33,10 +32,6 @@ public class UnblockUserCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         long userId = Long.parseLong(request.getParameter("user_id"));
         userService.updateIsBlocked(userId, false);
-        User user = userService.getUserWithInvoicesById(userId);
-        request.setAttribute("subscriber", user);
-        int debt = userService.getDebt(user);
-        request.setAttribute("debt", debt);
         return "redirect:/phone_station/user_invoices?user_id=" + userId;
     }
 }

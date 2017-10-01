@@ -32,7 +32,7 @@ public class UserInvoicesCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         long userId = Long.parseLong(request.getParameter("user_id"));
-        User user = userService.getUserWithInvoicesById(userId);
+        User user = userService.getUserWithUnpaidInvoicesById(userId);
         int debt = userService.getDebt(user);
         request.setAttribute("subscriber", user);
         request.setAttribute("debt", debt);

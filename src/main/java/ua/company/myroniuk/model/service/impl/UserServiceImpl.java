@@ -6,7 +6,9 @@ import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.entity.Invoice;
 import ua.company.myroniuk.model.entity.Service;
 import ua.company.myroniuk.model.entity.User;
+import ua.company.myroniuk.model.exception.LoginExistsException;
 import ua.company.myroniuk.model.exception.NotEnoughMoneyException;
+import ua.company.myroniuk.model.exception.PhoneNumberExistsException;
 import ua.company.myroniuk.model.service.UserService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -53,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public long addUser(User user) {
+    public long addUser(User user) throws LoginExistsException, PhoneNumberExistsException {
         long userId;
         try (DaoConnection daoConnection = daoFactory.getDaoConnection();
         ) {
@@ -61,10 +63,18 @@ public class UserServiceImpl implements UserService {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             daoConnection.beginTransaction();
             Account account = user.getAccount();
+            String login = account.getLogin();
+            if (accountDao.getAccountByLogin(login) != null) {
+                throw new LoginExistsException();
+            }
+            String phoneNumber = user.getPhoneNumber();
+            if (userDao.getUserByPhoneNumber(phoneNumber) != null) {
+                throw new PhoneNumberExistsException();
+            }
             long accountId = accountDao.addAccount(account);
             account.setId(accountId);
             user.setAccount(account);
-            userId = userDao.addUser(user);
+            userId = userDao.addUser(user);     // TODO check this logic for return type
             daoConnection.commitTransaction();
         }
         return userId;
@@ -80,11 +90,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserWithInvoicesById(long id) {
+    public User getUserWithUnpaidInvoicesById(long id) {
         try (DaoConnection daoConnection = daoFactory.getDaoConnection();
         ) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
-            return userDao.getUserWithInvoicesById(id);
+            return userDao.getUserWithUnpaidInvoicesById(id);
         }
     }
 
@@ -94,15 +104,6 @@ public class UserServiceImpl implements UserService {
         ) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             return userDao.getUserByLogin(login);
-        }
-    }
-
-    @Override
-    public User getUserByPhoneNumber(String phoneNumber) {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
-        ) {
-            UserDao userDao = daoFactory.createUserDao(daoConnection);
-            return userDao.getUserByPhoneNumber(phoneNumber);
         }
     }
 
@@ -200,11 +201,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkPhoneNumber(String phoneNumber) {
+    public User logIn(String login, String password) {
         try (DaoConnection daoConnection = daoFactory.getDaoConnection();
         ) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
-            return userDao.getUserByPhoneNumber(phoneNumber) != null;
+            return userDao.logIn(login, password);
         }
     }
 
@@ -215,7 +216,7 @@ public class UserServiceImpl implements UserService {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             InvoiceDao invoiceDao = daoFactory.createInvoiceDao(daoConnection);
             daoConnection.beginTransaction();
-            User user = userDao.getUserWithInvoicesById(userId);
+            User user = userDao.getUserWithUnpaidInvoicesById(userId);
             Invoice invoice = invoiceDao.getInvoice(invoiceId);
             if (user.getBalance() < invoice.getPrice()) {
                 throw new NotEnoughMoneyException();

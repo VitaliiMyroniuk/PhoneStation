@@ -5,7 +5,6 @@ import ua.company.myroniuk.model.dao.DaoFactory;
 import ua.company.myroniuk.model.dao.InvoiceDao;
 import ua.company.myroniuk.model.entity.Invoice;
 import ua.company.myroniuk.model.service.InvoiceService;
-
 import java.util.List;
 
 /**

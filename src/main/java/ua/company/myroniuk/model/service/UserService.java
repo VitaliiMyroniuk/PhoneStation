@@ -1,8 +1,9 @@
 package ua.company.myroniuk.model.service;
 
 import ua.company.myroniuk.model.entity.User;
+import ua.company.myroniuk.model.exception.LoginExistsException;
 import ua.company.myroniuk.model.exception.NotEnoughMoneyException;
-
+import ua.company.myroniuk.model.exception.PhoneNumberExistsException;
 import java.util.List;
 
 /**
@@ -10,15 +11,13 @@ import java.util.List;
  */
 public interface UserService {
 
-    long addUser(User user);
+    long addUser(User user) throws LoginExistsException, PhoneNumberExistsException;
 
     User getUserById(long id);
 
-    User getUserWithInvoicesById(long id);
+    User getUserWithUnpaidInvoicesById(long id);
 
     User getUserByLogin(String login);
-
-    User getUserByPhoneNumber(String phoneNumber);
 
     List<User> getRegisteredUsers();
 
@@ -38,7 +37,7 @@ public interface UserService {
 
     boolean deleteUser(long userId);
 
-    boolean checkPhoneNumber(String phoneNumber);
+    User logIn(String login, String password);
 
     boolean payInvoice(long userId, long invoiceId) throws NotEnoughMoneyException;
 

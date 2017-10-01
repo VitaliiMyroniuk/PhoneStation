@@ -1,12 +1,13 @@
 package ua.company.myroniuk.controller.command.general;
 
+import org.apache.log4j.Logger;
 import ua.company.myroniuk.controller.command.Command;
 import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.entity.Role;
 import ua.company.myroniuk.model.entity.User;
-import ua.company.myroniuk.model.service.AccountService;
+import ua.company.myroniuk.model.exception.LoginExistsException;
+import ua.company.myroniuk.model.exception.PhoneNumberExistsException;
 import ua.company.myroniuk.model.service.UserService;
-import ua.company.myroniuk.model.service.impl.AccountServiceImpl;
 import ua.company.myroniuk.model.service.impl.UserServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,17 +20,19 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RegistrationCommand implements Command {
 
-    private final String NAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{1,15}$";
+    private static final Logger LOGGER = Logger.getLogger(RegistrationCommand.class);
 
-    private final String MIDDLE_NAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{0,15}$";
+    private static final String NAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{1,15}$";
 
-    private final String SURNAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{1,15}$";
+    private static final String MIDDLE_NAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{0,15}$";
 
-    private final String PHONE_NUMBER_REGEX = "^\\+[1-9]{1}[0-9]{11}$";
+    private static final String SURNAME_REGEX = "^[A-Za-zЄ-ЯҐа-їґ]{1,15}$";
 
-    private final String LOGIN_REGEX = "^[A-Za-zЄ-Яа-ї0-9._-]{1,15}$";
+    private static final String PHONE_NUMBER_REGEX = "^\\+[1-9]{1}[0-9]{11}$";
 
-    private final String PASSWORD_REGEX = "^[A-Za-zЄ-Яа-ї0-9~!@#$%^&*()-_=+/|.]{5,15}$";
+    private static final String LOGIN_REGEX = "^[A-Za-zЄ-Яа-ї0-9._-]{1,15}$";
+
+    private static final String PASSWORD_REGEX = "^[A-Za-zЄ-Яа-ї0-9~!@#$%^&*()-_=+/|.]{5,15}$";
 
     private UserService userService;
 
@@ -47,21 +50,33 @@ public class RegistrationCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        boolean isValid =
-                checkName(request) &
-                checkMiddleName(request) &
-                checkSurname(request) &
-                checkPhoneNumber(request) &
-                checkLogin(request) &
-                checkPassword(request) &
-                checkConfirmedPassword(request);
+        boolean isValid = checkInputData(request);
         if (isValid) {
             User user = createUser(request);
-            userService.addUser(user);
-            return "redirect:/phone_station/successful_registration";
+            try {
+                userService.addUser(user);
+                return "redirect:/phone_station/successful_registration";
+            } catch (PhoneNumberExistsException e) {
+                request.setAttribute("phone_number_is_valid", false);
+                LOGGER.error("Error during registration (phone number already exists): ", e);
+            } catch (LoginExistsException e) {
+                request.setAttribute("login_is_valid", false);
+                LOGGER.error("Error during registration (login already exists): ", e);
+            }
+            return REGISTRATION_JSP;
         } else {
             return REGISTRATION_JSP;
         }
+    }
+
+    private boolean checkInputData(HttpServletRequest request) {
+        return checkName(request) &
+               checkMiddleName(request) &
+               checkSurname(request) &
+               checkPhoneNumber(request) &
+               checkLogin(request) &
+               checkPassword(request) &
+               checkConfirmedPassword(request);
     }
 
     private boolean checkName(HttpServletRequest request) {
@@ -102,9 +117,7 @@ public class RegistrationCommand implements Command {
 
     private boolean checkPhoneNumber(HttpServletRequest request) {
         String phoneNumber = request.getParameter("phone_number");
-        UserService userService = UserServiceImpl.getInstance();
-        if (phoneNumber != null && phoneNumber.matches(PHONE_NUMBER_REGEX) &&
-                                   !userService.checkPhoneNumber(phoneNumber)) {
+        if (phoneNumber != null && phoneNumber.matches(PHONE_NUMBER_REGEX)) {
             request.setAttribute("phone_number", phoneNumber);
             request.setAttribute("phone_number_is_valid", true);
             return true;
@@ -115,10 +128,8 @@ public class RegistrationCommand implements Command {
     }
 
     private boolean checkLogin(HttpServletRequest request) {
-        AccountService accountService = AccountServiceImpl.getInstance();
         String login = request.getParameter("login");
-        if (login != null && login.matches(LOGIN_REGEX) &&
-                             !accountService.checkLogin(login)) {
+        if (login != null && login.matches(LOGIN_REGEX)) {
             request.setAttribute("login", login);
             request.setAttribute("login_is_valid", true);
             return true;

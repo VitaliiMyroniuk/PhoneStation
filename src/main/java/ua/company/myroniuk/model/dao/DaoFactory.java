@@ -21,10 +21,10 @@ public abstract class DaoFactory {
      */
     private static DaoFactory INSTANCE;
 
-    public static DaoFactory getInstance(){
-        if(INSTANCE == null){
-            synchronized (DaoFactory.class){
-                if(INSTANCE == null){
+    public static DaoFactory getInstance() {
+        if (INSTANCE == null) {
+            synchronized (DaoFactory.class) {
+                if (INSTANCE == null) {
                     try {
                         INSTANCE = (DaoFactory) Class.forName(FACTORY_CLASS_NAME).newInstance();
                     } catch (Exception e) {
@@ -38,8 +38,12 @@ public abstract class DaoFactory {
     }
 
     public abstract DaoConnection getDaoConnection();
+
     public abstract AccountDao createAccountDao(DaoConnection daoConnection);
+
     public abstract UserDao createUserDao(DaoConnection daoConnection);
+
     public abstract ServiceDao createServiceDao(DaoConnection daoConnection);
+
     public abstract InvoiceDao createInvoiceDao(DaoConnection daoConnection);
 }

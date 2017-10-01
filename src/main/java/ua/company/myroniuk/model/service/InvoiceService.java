@@ -1,7 +1,6 @@
 package ua.company.myroniuk.model.service;
 
 import ua.company.myroniuk.model.entity.Invoice;
-
 import java.util.List;
 
 /**
@@ -10,5 +9,4 @@ import java.util.List;
 public interface InvoiceService {
 
     List<Invoice> getInvoices(long userId);
-
 }

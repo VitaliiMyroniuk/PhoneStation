@@ -35,7 +35,7 @@ public class ServicesCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         User user = (User) request.getSession().getAttribute("user");
         long userId = user.getId();
-        List<Service> allServices = serviceService.getAllServices();
+        List<Service> allServices = serviceService.getAllServices();    //TODO try to refactor
         List<Service> userServices = serviceService.getUserServices(userId);
         request.setAttribute("all_services", allServices);
         request.setAttribute("user_services", userServices);

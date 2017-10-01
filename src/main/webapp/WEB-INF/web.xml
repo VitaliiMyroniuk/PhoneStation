@@ -63,6 +63,7 @@
     <servlet-mapping>
         <servlet-name>Controller</servlet-name>
         <url-pattern>/phone_station/account_refill</url-pattern>
+        <url-pattern>/phone_station/add_user</url-pattern>
         <url-pattern>/phone_station/block_user</url-pattern>
         <url-pattern>/phone_station/debtors</url-pattern>
         <url-pattern>/phone_station/delete_user</url-pattern>
@@ -73,7 +74,6 @@
         <url-pattern>/phone_station/new_users</url-pattern>
         <url-pattern>/phone_station/pay_invoice</url-pattern>
         <url-pattern>/phone_station/profile</url-pattern>
-        <url-pattern>/phone_station/register_user</url-pattern>
         <url-pattern>/phone_station/registration</url-pattern>
         <url-pattern>/phone_station/successful_registration</url-pattern>
         <url-pattern>/phone_station/services</url-pattern>

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface Command {
     String ACCOUNT_REFILL_JSP = "/WEB-INF/view/jsp/user/account_refill.jsp";
-    String ADMIN_PROFILE_JSP = "/WEB-INF/view/jsp/admin/profile.jsp";
+    String ADMIN_PROFILE_JSP = "/WEB-INF/view/jsp/admin/admin_profile.jsp";
     String DEBTORS_JSP = "/WEB-INF/view/jsp/admin/debtors.jsp";
     String INVOICES_JSP = "/WEB-INF/view/jsp/user/invoices.jsp";
     String LOGIN_JSP = "/WEB-INF/view/jsp/general/login.jsp";
@@ -19,7 +19,7 @@ public interface Command {
     String SERVICES_JSP = "/WEB-INF/view/jsp/user/services.jsp";
     String SUCCESSFUL_REGISTRATION_JSP = "/WEB-INF/view/jsp/general/successful_registration.jsp";
     String USER_INVOICES_JSP = "/WEB-INF/view/jsp/admin/user_invoices.jsp";
-    String USER_PROFILE_JSP = "/WEB-INF/view/jsp/user/profile.jsp";
+    String USER_PROFILE_JSP = "/WEB-INF/view/jsp/user/user_profile.jsp";
     String USERS_JSP = "/WEB-INF/view/jsp/admin/users.jsp";
 
     /**

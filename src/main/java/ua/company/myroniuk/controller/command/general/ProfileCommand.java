@@ -34,7 +34,7 @@ public class ProfileCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         User user = (User) request.getSession().getAttribute("user");
         Role role = user.getAccount().getRole();
-        boolean isAdmin = "ADMIN".equals(role.toString());
+        boolean isAdmin = Role.ADMIN.equals(role);
         if (isAdmin) {
             int[] userCountInfo = userService.getUserCountInfo();
             request.setAttribute("user_count_info", userCountInfo);

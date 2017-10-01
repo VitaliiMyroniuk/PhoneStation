@@ -35,7 +35,7 @@ public class InvoicesCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         User user = (User) request.getSession().getAttribute("user");
         long userId = user.getId();
-        List<Invoice> invoices = invoiceService.getInvoices(userId);  //TODO find out if this list should be thread safe?
+        List<Invoice> invoices = invoiceService.getInvoices(userId);
         request.setAttribute("invoices", invoices);
         return INVOICES_JSP;
     }

@@ -3,7 +3,6 @@ package ua.company.myroniuk.controller.filter;
 import ua.company.myroniuk.model.entity.Role;
 import ua.company.myroniuk.model.entity.User;
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -53,12 +52,12 @@ public class SecurityFilter implements Filter {
 
         // admin uri
         adminURI.addAll(generalURI);
+        adminURI.add("/phone_station/add_user");
         adminURI.add("/phone_station/block_user");
         adminURI.add("/phone_station/debtors");
         adminURI.add("/phone_station/delete_user");
         adminURI.add("/phone_station/new_users");
         adminURI.add("/phone_station/profile");
-        adminURI.add("/phone_station/register_user");
         adminURI.add("/phone_station/unblock_user");
         adminURI.add("/phone_station/user_invoices");
         adminURI.add("/phone_station/users");

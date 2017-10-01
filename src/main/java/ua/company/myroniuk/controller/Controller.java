@@ -32,7 +32,7 @@ public class Controller extends HttpServlet {
      * @throws ServletException if a specific servlet error occurs.
      * @throws IOException if an error occurs during the input or output.
      */
-    private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String uri = (String) request.getAttribute("uri");
         Command command = CommandFactory.createCommand(uri);
         String page = command.execute(request, response);

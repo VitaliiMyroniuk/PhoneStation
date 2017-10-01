@@ -24,23 +24,29 @@ public class JdbcUserDao implements UserDao {
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE users.id = ?";
 
-    private static final String GET_USER_WITH_INVOICES_BY_ID =
-            "SELECT * FROM users " +
-            "INNER JOIN accounts ON account_id = accounts.id " +
-            "INNER JOIN invoices ON users.id = user_id " +
-            "WHERE users.id = ? AND is_paid = 0";
-
     private static final String GET_USER_BY_LOGIN =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE login = ?";
+
+    private static final String GET_REGISTERED_USER_BY_LOGIN_AND_PASSWORD =
+            "SELECT * FROM users " +
+            "INNER JOIN accounts ON account_id = accounts.id " +
+            "WHERE login = ? AND password = ? AND is_registered = 1";
 
     private static final String GET_USER_BY_PHONE_NUMBER =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE phone_number = ?";
 
+    private static final String GET_USER_WITH_UNPAID_INVOICES_BY_ID =
+            "SELECT * FROM users " +
+            "INNER JOIN accounts ON account_id = accounts.id " +
+            "INNER JOIN invoices ON users.id = user_id " +
+            "WHERE users.id = ? AND is_paid = 0";
+
     private static final String GET_REGISTERED_USERS =
             "SELECT * FROM users " +
-            "INNER JOIN accounts ON account_id = accounts.id WHERE is_registered = 1";
+            "INNER JOIN accounts ON account_id = accounts.id " +
+            "WHERE is_registered = 1 AND role NOT LIKE 'ADMIN'";
 
     private static final String GET_UNREGISTERED_USERS =
             "SELECT * FROM users " +
@@ -130,10 +136,10 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public User getUserWithInvoicesById(long id) {
+    public User getUserWithUnpaidInvoicesById(long id) {
         User user = null;
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_USER_WITH_INVOICES_BY_ID);
+                     connection.prepareStatement(GET_USER_WITH_UNPAID_INVOICES_BY_ID);
         ) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -305,6 +311,24 @@ public class JdbcUserDao implements UserDao {
             LOGGER.error("Error during updating the user block status: ", e);
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public User logIn(String login, String password) {
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(GET_REGISTERED_USER_BY_LOGIN_AND_PASSWORD);
+        ) {
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return createUser(resultSet);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error during getting the registered user by login and password: ", e);
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 
     private Account createAccount(ResultSet resultSet) throws SQLException {
