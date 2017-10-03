@@ -59,8 +59,8 @@ public class JdbcUserDao implements UserDao {
             "WHERE is_paid = 0 GROUP BY user_id ORDER BY debt DESC";
 
     private static final String GET_USER_COUNT_INFO =
-            "SELECT * FROM (SELECT COUNT(*) AS all_users FROM users WHERE phone_number IS NOT NULL) t1" +
-            "INNER JOIN (SELECT COUNT(*) AS new_users FROM users WHERE is_registered = 0) t2" +
+            "SELECT * FROM (SELECT COUNT(*) AS all_users FROM users WHERE phone_number IS NOT NULL) t1 " +
+            "INNER JOIN (SELECT COUNT(*) AS new_users FROM users WHERE is_registered = 0) t2 " +
             "INNER JOIN (SELECT count(*) AS debtors FROM " +
                         "(SELECT * FROM invoices WHERE is_paid = 0 GROUP BY user_id) t " +
                         ") t3";
@@ -155,7 +155,7 @@ public class JdbcUserDao implements UserDao {
                 user.setInvoices(invoices);
             }
         } catch (SQLException e) {
-            LOGGER.error("Error during getting the user with invoices by id: ", e);
+            LOGGER.error("Error during getting the user with unpaid invoices by id: ", e);
             throw new RuntimeException(e);
         }
         return user;
