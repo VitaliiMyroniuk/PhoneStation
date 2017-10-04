@@ -18,7 +18,7 @@ public class DebtorsCommand implements Command {
 
     private UserService userService;
 
-    DebtorsCommand(UserService userService) {
+    private DebtorsCommand(UserService userService) {
         this.userService = userService;
     }
 

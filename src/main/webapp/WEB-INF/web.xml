@@ -62,29 +62,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Controller</servlet-name>
-
         <url-pattern>/phone_station/*</url-pattern>
-
-        <!--<url-pattern>/phone_station/account_refill</url-pattern>-->
-        <!--<url-pattern>/phone_station/add_user</url-pattern>-->
-        <!--<url-pattern>/phone_station/block_user</url-pattern>-->
-        <!--<url-pattern>/phone_station/debtors</url-pattern>-->
-        <!--<url-pattern>/phone_station/delete_user</url-pattern>-->
-        <!--<url-pattern>/phone_station/invoices</url-pattern>-->
-        <!--<url-pattern>/phone_station/language</url-pattern>-->
-        <!--<url-pattern>/phone_station/login</url-pattern>-->
-        <!--<url-pattern>/phone_station/logout</url-pattern>-->
-        <!--<url-pattern>/phone_station/new_users</url-pattern>-->
-        <!--<url-pattern>/phone_station/pay_invoice</url-pattern>-->
-        <!--<url-pattern>/phone_station/profile</url-pattern>-->
-        <!--<url-pattern>/phone_station/registration</url-pattern>-->
-        <!--<url-pattern>/phone_station/successful_registration</url-pattern>-->
-        <!--<url-pattern>/phone_station/services</url-pattern>-->
-        <!--<url-pattern>/phone_station/switch_off_service</url-pattern>-->
-        <!--<url-pattern>/phone_station/switch_on_service</url-pattern>-->
-        <!--<url-pattern>/phone_station/unblock_user</url-pattern>-->
-        <!--<url-pattern>/phone_station/user_invoices</url-pattern>-->
-        <!--<url-pattern>/phone_station/users</url-pattern>-->
     </servlet-mapping>
 
     <session-config>

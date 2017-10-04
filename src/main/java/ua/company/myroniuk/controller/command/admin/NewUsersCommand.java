@@ -18,7 +18,7 @@ public class NewUsersCommand implements Command {
 
     private UserService userService;
 
-    NewUsersCommand(UserService userService) {
+    private NewUsersCommand(UserService userService) {
         this.userService = userService;
     }
 

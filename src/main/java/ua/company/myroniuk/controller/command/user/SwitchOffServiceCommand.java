@@ -17,7 +17,7 @@ public class SwitchOffServiceCommand implements Command {
 
     private UserService userService;
 
-    SwitchOffServiceCommand(UserService userService) {
+    private SwitchOffServiceCommand(UserService userService) {
         this.userService = userService;
     }
 

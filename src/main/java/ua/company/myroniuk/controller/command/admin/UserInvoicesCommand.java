@@ -17,7 +17,7 @@ public class UserInvoicesCommand implements Command {
 
     private UserService userService;
 
-    UserInvoicesCommand(UserService userService) {
+    private UserInvoicesCommand(UserService userService) {
         this.userService = userService;
     }
 

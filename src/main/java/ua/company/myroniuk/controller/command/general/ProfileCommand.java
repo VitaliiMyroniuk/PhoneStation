@@ -18,7 +18,7 @@ public class ProfileCommand implements Command {
 
     private UserService userService;
 
-    ProfileCommand(UserService userService) {
+    private ProfileCommand(UserService userService) {
         this.userService = userService;
     }
 

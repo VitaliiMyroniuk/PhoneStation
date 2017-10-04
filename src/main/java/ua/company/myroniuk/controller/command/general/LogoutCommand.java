@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LogoutCommand implements Command {
 
-    LogoutCommand() {
+    private LogoutCommand() {
     }
 
     private static class SingletonHolder {

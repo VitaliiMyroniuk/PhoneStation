@@ -21,7 +21,7 @@ public class PayInvoiceCommand implements Command {
 
     private UserService userService = UserServiceImpl.getInstance();
 
-    PayInvoiceCommand(UserService userService) {
+    private PayInvoiceCommand(UserService userService) {
         this.userService = userService;
     }
 

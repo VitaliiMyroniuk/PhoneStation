@@ -36,7 +36,7 @@ public class RegistrationCommand implements Command {
 
     private UserService userService;
 
-    RegistrationCommand(UserService userService) {
+    private RegistrationCommand(UserService userService) {
         this.userService = userService;
     }
 

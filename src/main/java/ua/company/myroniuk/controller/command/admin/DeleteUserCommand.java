@@ -16,7 +16,7 @@ public class DeleteUserCommand implements Command {
 
     private UserService userService;
 
-    DeleteUserCommand(UserService userService) {
+    private DeleteUserCommand(UserService userService) {
         this.userService = userService;
     }
 

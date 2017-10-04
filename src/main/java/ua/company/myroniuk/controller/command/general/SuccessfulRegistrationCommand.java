@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SuccessfulRegistrationCommand implements Command {
 
-    SuccessfulRegistrationCommand() {
+    private SuccessfulRegistrationCommand() {
     }
 
     private static class SingletonHolder {

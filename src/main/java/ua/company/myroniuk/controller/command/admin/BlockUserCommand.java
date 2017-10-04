@@ -16,7 +16,7 @@ public class BlockUserCommand implements Command {
 
     private UserService userService;
 
-    BlockUserCommand(UserService userService) {
+    private BlockUserCommand(UserService userService) {
         this.userService = userService;
     }
 

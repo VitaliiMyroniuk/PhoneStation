@@ -19,7 +19,7 @@ public class ServicesCommand implements Command {
 
     private ServiceService serviceService;
 
-    ServicesCommand(ServiceService serviceService) {
+    private ServicesCommand(ServiceService serviceService) {
         this.serviceService = serviceService;
     }
 

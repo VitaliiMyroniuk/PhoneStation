@@ -16,7 +16,7 @@ public class AddUserCommand implements Command {
 
     private UserService userService;
 
-    AddUserCommand(UserService userService) {
+    private AddUserCommand(UserService userService) {
         this.userService = userService;
     }
 

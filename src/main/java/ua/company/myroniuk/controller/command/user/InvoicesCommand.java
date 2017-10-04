@@ -19,7 +19,7 @@ public class InvoicesCommand implements Command {
 
     private InvoiceService invoiceService;
 
-    InvoicesCommand(InvoiceService invoiceService) {
+    private InvoicesCommand(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
     }
 

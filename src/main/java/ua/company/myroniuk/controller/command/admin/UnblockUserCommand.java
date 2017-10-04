@@ -16,7 +16,7 @@ public class UnblockUserCommand implements Command {
 
     private UserService userService;
 
-    UnblockUserCommand(UserService userService) {
+    private UnblockUserCommand(UserService userService) {
         this.userService = userService;
     }
 

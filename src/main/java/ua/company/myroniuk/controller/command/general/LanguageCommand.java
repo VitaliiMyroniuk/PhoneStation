@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  */
 public class LanguageCommand implements Command {
 
-    LanguageCommand() {
+    private LanguageCommand() {
     }
 
     private static class SingletonHolder {

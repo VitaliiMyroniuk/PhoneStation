@@ -23,7 +23,7 @@ public class AccountRefillCommand implements Command {
 
     private UserService userService;
 
-    AccountRefillCommand(UserService userService) {
+    private AccountRefillCommand(UserService userService) {
         this.userService = userService;
     }
 

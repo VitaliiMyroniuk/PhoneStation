@@ -1,31 +1,33 @@
 package ua.company.myroniuk.model.service.impl;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import ua.company.myroniuk.model.dao.DaoConnection;
 import ua.company.myroniuk.model.dao.DaoFactory;
 import ua.company.myroniuk.model.dao.UserDao;
 import ua.company.myroniuk.model.entity.User;
-import ua.company.myroniuk.model.service.UserService;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
  * @author Vitalii Myroniuk
  */
+@RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTest {
+    @Mock
     private DaoFactory daoFactory;
-    private DaoConnection daoConnection;
-    private UserDao userDao;
-    private UserService userService;
 
-    @Before
-    public void init() {
-        daoFactory = mock(DaoFactory.class);
-        daoConnection = mock(DaoConnection.class);
-        userDao = mock(UserDao.class);
-        userService = new UserServiceImpl(daoFactory);
-    }
+    @Mock
+    private DaoConnection daoConnection;
+
+    @Mock
+    private UserDao userDao;
+
+    @InjectMocks
+    private UserServiceImpl userService;
 
     @Test
     public void getUserByLogin() throws Exception {

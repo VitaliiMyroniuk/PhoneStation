@@ -1,7 +1,10 @@
 package ua.company.myroniuk.controller.command.admin;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import ua.company.myroniuk.model.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,19 +14,19 @@ import static org.mockito.Mockito.*;
 /**
  * @author Vitalii Myroniuk
  */
+@RunWith(MockitoJUnitRunner.class)
 public class BlockUserCommandTest {
+    @Mock
     private HttpServletRequest request;
-    private HttpServletResponse response;
-    private UserService userService;
-    private BlockUserCommand blockUserCommand;
 
-    @Before
-    public void init() {
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
-        userService = mock(UserService.class);
-        blockUserCommand = new BlockUserCommand(userService);
-    }
+    @Mock
+    private HttpServletResponse response;
+
+    @Mock
+    private UserService userService;
+
+    @InjectMocks
+    private BlockUserCommand blockUserCommand;
 
     @Test
     public void execute() throws Exception {
