@@ -14,24 +14,12 @@ import java.util.regex.Pattern;
  * @author Vitalii Myroniuk
  */
 public class LanguageCommand implements Command {
-
-    private LanguageCommand() {
-    }
-
-    private static class SingletonHolder {
-        private static final LanguageCommand INSTANCE = new LanguageCommand();
-    }
-
-    public static LanguageCommand getInstance() {
-        return SingletonHolder.INSTANCE;
-    }
-
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         String locale = request.getParameter("locale");
         if ("uk_UA".equals(locale)) {
-            session.setAttribute("locale", locale);
+            session.setAttribute("locale", locale);  //TODO pay attention to this if else!
         } else if ("en_GB".equals(locale)) {
             session.setAttribute("locale", locale);
         }

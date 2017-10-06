@@ -13,19 +13,14 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class AddUserCommand implements Command {
-
     private UserService userService;
 
-    private AddUserCommand(UserService userService) {
+    public AddUserCommand() {
+        this.userService = UserServiceImpl.getInstance();
+    }
+
+    public AddUserCommand(UserService userService) {
         this.userService = userService;
-    }
-
-    private static class SingletonHolder {
-        private static final AddUserCommand INSTANCE = new AddUserCommand(UserServiceImpl.getInstance());
-    }
-
-    public static AddUserCommand getInstance() {
-        return SingletonHolder.INSTANCE;
     }
 
     @Override

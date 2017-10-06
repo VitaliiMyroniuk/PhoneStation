@@ -16,19 +16,14 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class InvoicesCommand implements Command {
-
     private InvoiceService invoiceService;
 
-    private InvoicesCommand(InvoiceService invoiceService) {
+    public InvoicesCommand() {
+        this.invoiceService = InvoiceServiceImpl.getInstance();
+    }
+
+    public InvoicesCommand(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
-    }
-
-    private static class SingletonHolder {
-        private static final InvoicesCommand INSTANCE = new InvoicesCommand(InvoiceServiceImpl.getInstance());
-    }
-
-    public static InvoicesCommand getInstance() {
-        return SingletonHolder.INSTANCE;
     }
 
     @Override

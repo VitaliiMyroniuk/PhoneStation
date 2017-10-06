@@ -19,33 +19,21 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class RegistrationCommand implements Command {
-
-    private static final Logger LOGGER = Logger.getLogger(RegistrationCommand.class);
-
     private static final String NAME_REGEX = "^[A-Za-zА-Яа-яІЇЄіїє]{1,15}$";
-
     private static final String MIDDLE_NAME_REGEX = "^[A-Za-zА-Яа-яІЇЄіїє]{0,15}$";
-
     private static final String SURNAME_REGEX = "^[A-Za-zА-Яа-яІЇЄіїє]{1,15}$";
-
     private static final String PHONE_NUMBER_REGEX = "^\\+[1-9]{1}[0-9]{11}$";
-
     private static final String LOGIN_REGEX = "^[A-Za-zА-Яа-яІЇЄіїє0-9._-]{1,15}$";
-
     private static final String PASSWORD_REGEX = "^[A-Za-zА-Яа-яІЇЄіїє0-9~!@#$%^&*()-_=+/|.]{5,15}$";
-
+    private static final Logger LOGGER = Logger.getLogger(RegistrationCommand.class);
     private UserService userService;
 
-    private RegistrationCommand(UserService userService) {
+    public RegistrationCommand() {
+        this.userService = UserServiceImpl.getInstance();
+    }
+
+    public RegistrationCommand(UserService userService) {
         this.userService = userService;
-    }
-
-    private static class SingletonHolder {
-        private static final RegistrationCommand INSTANCE = new RegistrationCommand(UserServiceImpl.getInstance());
-    }
-
-    public static RegistrationCommand getInstance() {
-        return SingletonHolder.INSTANCE;
     }
 
     @Override

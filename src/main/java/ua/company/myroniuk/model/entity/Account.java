@@ -9,27 +9,11 @@ import java.util.Objects;
  * @author Vitalii Myroniuk
  */
 public class Account {
-    /**
-     * Id of the account.
-     */
     private long id;
-
-    /**
-     * Login of the user.
-     */
     private String login;
-
-    /**
-     * Password of the user.
-     */
     private String password;
-
-    /**
-     * Role of the user.
-     */
     private Role role;
 
-    // Constructors.
     public Account() {
     }
 
@@ -40,7 +24,6 @@ public class Account {
         this.role = builder.role;
     }
 
-    // Getters and setters.
     public long getId() {
         return id;
     }
@@ -89,7 +72,6 @@ public class Account {
         return Objects.hash(login, password);
     }
 
-    // Builder.
     public static class Builder {
         private long id;
         private String login;

@@ -17,7 +17,7 @@ public interface AccountDao {
     long addAccount(Account account);
 
     /**
-     * The methods retrieves an {@code Account} object from the data base.
+     * The method retrieves an {@code Account} object with the given login from the data base.
      *
      * @param login the {@code login} of the {@code Account} object.
      * @return {@code Account} object retrieved from the data base.
@@ -25,7 +25,7 @@ public interface AccountDao {
     Account getAccountByLogin(String login);
 
     /**
-     * The method deletes the {@code Account} object from the data base.
+     * The method deletes the {@code Account} object with the given id from the data base.
      *
      * @param accountId id of the {@code Account} object that should be deleted.
      * @return true if the {@code Account} object is deleted.

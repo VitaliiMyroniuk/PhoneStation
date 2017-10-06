@@ -8,32 +8,12 @@ import java.util.Objects;
  * @author Vitalii Myroniuk
  */
 public class Service {
-    /**
-     * Id of the service.
-     */
     private long id;
-
-    /**
-     * Name of the service.
-     */
     private String name;
-
-    /**
-     * Description of the service.
-     */
     private String description;
-
-    /**
-     * Duration of the service (days quantity).
-     */
-    private int duration;
-
-    /**
-     * Price of the service.
-     */
+    private int duration;        // duration of the service (days count).
     private int price;
 
-    // Constructors.
     public Service() {
     }
 
@@ -45,7 +25,6 @@ public class Service {
         this.price = builder.price;
     }
 
-    // Getters and setters.
     public long getId() {
         return id;
     }
@@ -103,7 +82,6 @@ public class Service {
         return Objects.hash(name, description, duration, price);
     }
 
-    // Builder.
     public static class Builder {
         private long id;
         private String name;

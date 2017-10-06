@@ -13,19 +13,14 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class BlockUserCommand implements Command {
-
     private UserService userService;
 
-    private BlockUserCommand(UserService userService) {
+    public BlockUserCommand() {
+        this.userService = UserServiceImpl.getInstance();
+    }
+
+    public BlockUserCommand(UserService userService) {
         this.userService = userService;
-    }
-
-    private static class SingletonHolder {
-        private static final BlockUserCommand INSTANCE = new BlockUserCommand(UserServiceImpl.getInstance());
-    }
-
-    public static BlockUserCommand getInstance() {
-        return SingletonHolder.INSTANCE;
     }
 
     @Override

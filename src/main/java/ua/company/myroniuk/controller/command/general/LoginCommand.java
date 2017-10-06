@@ -14,19 +14,14 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class LoginCommand implements Command {
-
     private UserService userService;
 
-    private LoginCommand(UserService userService) {
+    public LoginCommand() {
+        this.userService = UserServiceImpl.getInstance();
+    }
+
+    public LoginCommand(UserService userService) {
         this.userService = userService;
-    }
-
-    private static class SingletonHolder {
-        private static final LoginCommand INSTANCE = new LoginCommand(UserServiceImpl.getInstance());
-    }
-
-    public static LoginCommand getInstance() {
-        return SingletonHolder.INSTANCE;
     }
 
     @Override

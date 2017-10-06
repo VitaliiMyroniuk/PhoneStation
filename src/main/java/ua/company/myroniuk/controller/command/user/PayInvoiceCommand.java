@@ -16,21 +16,15 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class PayInvoiceCommand implements Command {
-
     private static final Logger LOGGER = Logger.getLogger(PayInvoiceCommand.class);
+    private UserService userService;
 
-    private UserService userService = UserServiceImpl.getInstance();
+    public PayInvoiceCommand() {
+        this.userService = UserServiceImpl.getInstance();
+    }
 
-    private PayInvoiceCommand(UserService userService) {
+    public PayInvoiceCommand(UserService userService) {
         this.userService = userService;
-    }
-
-    private static class SingletonHolder {
-        private static final PayInvoiceCommand INSTANCE = new PayInvoiceCommand(UserServiceImpl.getInstance());
-    }
-
-    public static PayInvoiceCommand getInstance() {
-        return SingletonHolder.INSTANCE;
     }
 
     @Override

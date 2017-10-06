@@ -15,19 +15,14 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class ProfileCommand implements Command {
-
     private UserService userService;
 
-    private ProfileCommand(UserService userService) {
+    public ProfileCommand() {
+        this.userService = UserServiceImpl.getInstance();
+    }
+
+    public ProfileCommand(UserService userService) {
         this.userService = userService;
-    }
-
-    private static class SingletonHolder {
-        private static final ProfileCommand INSTANCE = new ProfileCommand(UserServiceImpl.getInstance());
-    }
-
-    public static ProfileCommand getInstance() {
-        return SingletonHolder.INSTANCE;
     }
 
     @Override

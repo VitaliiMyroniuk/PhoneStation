@@ -15,19 +15,14 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class NewUsersCommand implements Command {
-
     private UserService userService;
 
-    private NewUsersCommand(UserService userService) {
+    public NewUsersCommand() {
+        this.userService = UserServiceImpl.getInstance();
+    }
+
+    public NewUsersCommand(UserService userService) {
         this.userService = userService;
-    }
-
-    private static class SingletonHolder {
-        private static final NewUsersCommand INSTANCE = new NewUsersCommand(UserServiceImpl.getInstance());
-    }
-
-    public static NewUsersCommand getInstance() {
-        return SingletonHolder.INSTANCE;
     }
 
     @Override

@@ -9,32 +9,12 @@ import java.util.Objects;
  * @author Vitalii Myroniuk
  */
 public class Invoice {
-    /**
-     * Id of the invoice.
-     */
     private long id;
-
-    /**
-     * Date of the invoice issue.
-     */
-    private LocalDateTime dateTime;
-
-    /**
-     * Description of the invoice.
-     */
+    private LocalDateTime dateTime;    // date of the invoice issue.
     private String description;
-
-    /**
-     * Price specified in the invoice.
-     */
     private int price;
-
-    /**
-     * Status of the invoice payment.
-     */
     private boolean isPaid;
 
-    // Constructors.
     public Invoice() {
     }
 
@@ -46,7 +26,6 @@ public class Invoice {
         this.isPaid = builder.isPaid;
     }
 
-    // Getters and setters.
     public long getId() {
         return id;
     }

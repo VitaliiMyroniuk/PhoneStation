@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateFormatTag extends TagSupport {
     /**
-     * Logger.
+     * Logger object.
      */
     private static final Logger LOGGER = Logger.getLogger(DateFormatTag.class);
 

@@ -14,20 +14,14 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class SwitchOffServiceCommand implements Command {
-
     private UserService userService;
 
-    private SwitchOffServiceCommand(UserService userService) {
+    public SwitchOffServiceCommand() {
+        this.userService = UserServiceImpl.getInstance();
+    }
+
+    public SwitchOffServiceCommand(UserService userService) {
         this.userService = userService;
-    }
-
-    private static class SingletonHolder {
-        private static final SwitchOffServiceCommand INSTANCE =
-                new SwitchOffServiceCommand(UserServiceImpl.getInstance());
-    }
-
-    public static SwitchOffServiceCommand getInstance() {
-        return SingletonHolder.INSTANCE;
     }
 
     @Override

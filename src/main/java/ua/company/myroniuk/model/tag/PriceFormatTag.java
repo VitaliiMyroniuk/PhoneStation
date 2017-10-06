@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public class PriceFormatTag extends TagSupport {
     /**
-     * Logger.
+     * Logger object.
      */
     private static final Logger LOGGER = Logger.getLogger(PriceFormatTag.class);
 

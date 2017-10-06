@@ -14,19 +14,14 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class UserInvoicesCommand implements Command {
-
     private UserService userService;
 
-    private UserInvoicesCommand(UserService userService) {
+    public UserInvoicesCommand() {
+        this.userService = UserServiceImpl.getInstance();
+    }
+
+    public UserInvoicesCommand(UserService userService) {
         this.userService = userService;
-    }
-
-    private static class SingletonHolder {
-        private static final UserInvoicesCommand INSTANCE = new UserInvoicesCommand(UserServiceImpl.getInstance());
-    }
-
-    public static UserInvoicesCommand getInstance() {
-        return SingletonHolder.INSTANCE;
     }
 
     @Override

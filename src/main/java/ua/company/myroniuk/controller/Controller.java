@@ -2,6 +2,7 @@ package ua.company.myroniuk.controller;
 
 import ua.company.myroniuk.controller.command.Command;
 import ua.company.myroniuk.controller.command.CommandFactory;
+import ua.company.myroniuk.controller.command.Invoker;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,9 @@ import java.io.IOException;
  * @author Vitalii Myroniuk
  */
 public class Controller extends HttpServlet {
+    private static final CommandFactory commandFactory = new CommandFactory();
+    private static final Invoker invoker = new Invoker();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         process(request, response);
@@ -34,12 +38,13 @@ public class Controller extends HttpServlet {
      */
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String uri = (String) request.getAttribute("uri");
-        Command command = CommandFactory.getCommand(uri);
-        String page = command.execute(request, response);
-        if (page.startsWith("redirect:")) {
-            response.sendRedirect(page.replace("redirect:", ""));
+        Command command = commandFactory.getCommand(uri);
+        invoker.setCommand(command);
+        String path = invoker.execute(request, response);
+        if (path.startsWith("redirect:")) {
+            response.sendRedirect(path.replace("redirect:", ""));
         } else {
-            getServletContext().getRequestDispatcher(page).forward(request, response);
+            getServletContext().getRequestDispatcher(path).forward(request, response);
         }
     }
 }

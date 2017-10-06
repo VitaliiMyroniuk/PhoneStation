@@ -14,25 +14,17 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class AccountRefillCommand implements Command {
-
-    private final String CREDIT_CARD_NUMBER_REGEX = "^[1-9]{1}[0-9]{15}$";
-
-    private final String CVV_REGEX = "^[0-9]{3}$";
-
-    private final String SUM_REGEX = "^([1-9][0-9]{0,3}|0)\\.[0-9]{1,2}$";
-
+    private static final String CREDIT_CARD_NUMBER_REGEX = "^[1-9][0-9]{15}$";
+    private static final String CVV_REGEX = "^[0-9]{3}$";
+    private static final String SUM_REGEX = "^([1-9][0-9]{0,3}|0)(\\.[0-9]{1,2})?$";
     private UserService userService;
 
-    private AccountRefillCommand(UserService userService) {
+    public AccountRefillCommand() {
+        this.userService = UserServiceImpl.getInstance();
+    }
+
+    public AccountRefillCommand(UserService userService) {
         this.userService = userService;
-    }
-
-    private static class SingletonHolder {
-        private static final AccountRefillCommand INSTANCE = new AccountRefillCommand(UserServiceImpl.getInstance());
-    }
-
-    public static AccountRefillCommand getInstance() {
-        return SingletonHolder.INSTANCE;
     }
 
     @Override

@@ -9,62 +9,18 @@ import java.util.Objects;
  * @author Vitalii Myroniuk
  */
 public class User {
-    /**
-     * Id of the user.
-     */
     private long id;
-
-    /**
-     * Account of the user.
-     */
     private Account account;
-
-    /**
-     * Name of the user.
-     */
     private String name;
-
-    /**
-     * Middle name of the user.
-     */
     private String middleName;
-
-    /**
-     * Surname of the user.
-     */
     private String surname;
-
-    /**
-     * Phone number of the user.
-     */
     private String phoneNumber;
-
-    /**
-     * Balance of the user.
-     */
     private int balance;
-
-    /**
-     * List of active user services.
-     */
     private List<Service> services;
-
-    /**
-     * List of user invoices.
-     */
     private List<Invoice> invoices;
-
-    /**
-     * Status of the user registration.
-     */
     private boolean isRegistered;
-
-    /**
-     * Status of the user block.
-     */
     private boolean isBlocked;
 
-    // Constructors
     public User() {
     }
 
@@ -82,7 +38,6 @@ public class User {
         this.isBlocked = builder.isBlocked;
     }
 
-    // Getters and setters.
     public long getId() {
         return id;
     }
@@ -194,7 +149,6 @@ public class User {
         return Objects.hash(phoneNumber);
     }
 
-    // Builder.
     public static class Builder {
         private long id;
         private Account account;

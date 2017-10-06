@@ -11,18 +11,6 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class SuccessfulRegistrationCommand implements Command {
-
-    private SuccessfulRegistrationCommand() {
-    }
-
-    private static class SingletonHolder {
-        private static final SuccessfulRegistrationCommand INSTANCE = new SuccessfulRegistrationCommand();
-    }
-
-    public static SuccessfulRegistrationCommand getInstance() {
-        return SingletonHolder.INSTANCE;
-    }
-
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         return SUCCESSFUL_REGISTRATION_JSP;
