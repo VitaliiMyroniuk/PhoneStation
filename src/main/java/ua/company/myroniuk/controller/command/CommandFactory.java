@@ -17,6 +17,8 @@ public class CommandFactory {
      */
     private static final Map<String, Command> commands = new HashMap<>();
 
+    // TODO Is it ok to make static block and variable here?
+
     static {
         commands.put("/phone_station/account_refill", new AccountRefillCommand());
         commands.put("/phone_station/add_user", new AddUserCommand());

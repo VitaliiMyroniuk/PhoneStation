@@ -8,17 +8,14 @@ import ua.company.myroniuk.model.service.ServiceService;
 import java.util.List;
 
 /**
+ * The class represents the service for the {@code Service} object.
+ * It implements {@code ServiceService} interface.
+ *
  * @author Vitalii Myroniuk
  */
 public class ServiceServiceImpl implements ServiceService {
-    /**
-     * DaoFactory object.
-     */
     private DaoFactory daoFactory;
 
-    /**
-     * Constructor for creating empty {@code ServiceServiceImpl} object.
-     */
     private ServiceServiceImpl() {
         this.daoFactory = DaoFactory.getInstance();
     }
@@ -42,8 +39,7 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public List<Service> getAllServices() {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             ServiceDao serviceDao = daoFactory.createServiceDao(daoConnection);
             return serviceDao.getAllServices();
         }
@@ -51,8 +47,7 @@ public class ServiceServiceImpl implements ServiceService {
 
     @Override
     public List<Service> getUserServices(long userId) {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             ServiceDao serviceDao = daoFactory.createServiceDao(daoConnection);
             return serviceDao.getUserServices(userId);
         }

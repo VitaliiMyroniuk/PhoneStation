@@ -49,7 +49,7 @@ public interface InvoiceDao {
      * that corresponds the user with the given id.
      *
      * @param userId id of the user.
-     * @return true if the invoices are deleted from the data base.
+     * @return true if the invoices are deleted from the data base successfully.
      */
     boolean deleteInvoices(long userId);
 }

@@ -27,14 +27,14 @@ public interface ServiceDao {
     Service getService(long id);
 
     /**
-     * The method retrieves all {@code Services} objects from the data base.
+     * The method retrieves all {@code Service} objects from the data base.
      *
      * @return the list of all services available for activation.
      */
     List<Service> getAllServices();
 
     /**
-     * The method retrieves all {@code Services} objects from the data base
+     * The method retrieves all {@code Service} objects from the data base
      * that are activated for the user with the given id.
      *
      * @param userId id of the user.
@@ -48,7 +48,7 @@ public interface ServiceDao {
      *
      * @param userId id of the user.
      * @param serviceId id of the service to be inactivated.
-     * @return true if the given service is inactivated.
+     * @return true if the given service is inactivated successfully.
      */
     boolean deleteUserService(long userId, long serviceId);
 
@@ -57,7 +57,7 @@ public interface ServiceDao {
      * The corresponding entries in the auxiliary table between users and services are deleted.
      *
      * @param userId id of the user.
-     * @return true if the given services are inactivated.
+     * @return true if the given services are inactivated successfully.
      */
     boolean deleteUserServices(long userId);
 }

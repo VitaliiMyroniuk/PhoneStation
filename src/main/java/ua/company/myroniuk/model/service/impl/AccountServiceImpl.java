@@ -10,14 +10,8 @@ import ua.company.myroniuk.model.service.AccountService;
  * @author Vitalii Myroniuk
  */
 public class AccountServiceImpl implements AccountService {
-    /**
-     * DaoFactory object.
-     */
     private DaoFactory daoFactory;
 
-    /**
-     * Constructor for creating empty {@code AccountServiceImpl} object.
-     */
     private AccountServiceImpl() {
         this.daoFactory = DaoFactory.getInstance();
     }

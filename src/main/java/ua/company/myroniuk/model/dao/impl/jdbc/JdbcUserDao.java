@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The {@code JdbcUserDao} class is a JDBC implementation of the {@code UserDao} interface.
+ *
  * @author Vitalii Myroniuk
  */
 public class JdbcUserDao implements UserDao {
@@ -89,8 +91,7 @@ public class JdbcUserDao implements UserDao {
     public long addUser(User user) {
         long userId = -1;
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(ADD_USER, Statement.RETURN_GENERATED_KEYS)
-        ) {
+                     connection.prepareStatement(ADD_USER, Statement.RETURN_GENERATED_KEYS)) {
             setStatementParameters(preparedStatement, user);
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -106,41 +107,26 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public User getUserById(long id) {
+        User user = null;
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_USER_BY_ID);
-        ) {
+                     connection.prepareStatement(GET_USER_BY_ID)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return createUser(resultSet);
+                user = createUser(resultSet);
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the user by id: ", e);
             throw new RuntimeException(e);
         }
-        return null;
-    }
-
-    @Override
-    public boolean deleteUser(long id) {
-        try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(DELETE_USER);
-        ) {
-            preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            LOGGER.error("Error during deleting the user: ", e);
-            throw new RuntimeException(e);
-        }
+        return user;
     }
 
     @Override
     public User getUserWithUnpaidInvoicesById(long id) {
         User user = null;
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_USER_WITH_UNPAID_INVOICES_BY_ID);
-        ) {
+                     connection.prepareStatement(GET_USER_WITH_UNPAID_INVOICES_BY_ID)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Invoice> invoices = new ArrayList<>();
@@ -163,36 +149,36 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public User getUserByLogin(String login) {
+        User user = null;
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_USER_BY_LOGIN);
-        ) {
+                     connection.prepareStatement(GET_USER_BY_LOGIN)) {
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return createUser(resultSet);
+                user = createUser(resultSet);
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the user by login: ", e);
             throw new RuntimeException(e);
         }
-        return null;
+        return user;
     }
 
     @Override
     public User getUserByPhoneNumber(String phoneNumber) {
+        User user = null;
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_USER_BY_PHONE_NUMBER);
-        ) {
+                     connection.prepareStatement(GET_USER_BY_PHONE_NUMBER)) {
             preparedStatement.setString(1, phoneNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return createUser(resultSet);
+                user = createUser(resultSet);
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the user by phone number: ", e);
             throw new RuntimeException(e);
         }
-        return null;
+        return user;
     }
 
 
@@ -200,8 +186,7 @@ public class JdbcUserDao implements UserDao {
     public List<User> getRegisteredUsers() {
         List<User> users = new ArrayList<>();
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_REGISTERED_USERS);
-        ) {
+                     connection.prepareStatement(GET_REGISTERED_USERS)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = createUser(resultSet);
@@ -218,8 +203,7 @@ public class JdbcUserDao implements UserDao {
     public List<User> getUnregisteredUsers() {
         List<User> users = new ArrayList<>();
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_UNREGISTERED_USERS);
-        ) {
+                     connection.prepareStatement(GET_UNREGISTERED_USERS)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = createUser(resultSet);
@@ -236,8 +220,7 @@ public class JdbcUserDao implements UserDao {
     public List<User> getDebtors() {
         List<User> users = new ArrayList<>();
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_DEBTORS);
-        ) {
+                     connection.prepareStatement(GET_DEBTORS)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = createUser(resultSet);
@@ -254,8 +237,7 @@ public class JdbcUserDao implements UserDao {
     public int[] getUserCountInfo() {
         int[] userCountInfo = new int[3];
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_USER_COUNT_INFO);
-        ) {
+                     connection.prepareStatement(GET_USER_COUNT_INFO)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 userCountInfo[0] = resultSet.getInt("all_users");
@@ -270,12 +252,11 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public boolean updateBalance(long userId, int sum) {
+    public boolean updateBalance(long id, int sum) {
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(UPDATE_USER_BALANCE);
-        ) {
+                     connection.prepareStatement(UPDATE_USER_BALANCE)) {
             preparedStatement.setInt(1, sum);
-            preparedStatement.setLong(2, userId);
+            preparedStatement.setLong(2, id);
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -285,11 +266,10 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public boolean updateIsRegistered(long userId) {
+    public boolean updateIsRegistered(long id) {
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(UPDATE_IS_REGISTERED);
-        ) {
-            preparedStatement.setLong(1, userId);
+                     connection.prepareStatement(UPDATE_IS_REGISTERED)) {
+            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -299,12 +279,11 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public boolean updateIsBlocked(long userId, boolean isBlocked) {
+    public boolean updateIsBlocked(long id, boolean isBlocked) {
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(UPDATE_IS_BLOCKED);
-        ) {
+                     connection.prepareStatement(UPDATE_IS_BLOCKED)) {
             preparedStatement.setBoolean(1, isBlocked);
-            preparedStatement.setLong(2, userId);
+            preparedStatement.setLong(2, id);
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -314,21 +293,35 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public User logIn(String login, String password) {
+    public boolean deleteUser(long id) {
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_REGISTERED_USER_BY_LOGIN_AND_PASSWORD);
-        ) {
+                     connection.prepareStatement(DELETE_USER)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            LOGGER.error("Error during deleting the user: ", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Override
+    public User logIn(String login, String password) {
+        User user = null;
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(GET_REGISTERED_USER_BY_LOGIN_AND_PASSWORD)) {
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return createUser(resultSet);
+                user = createUser(resultSet);
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the registered user by login and password: ", e);
             throw new RuntimeException(e);
         }
-        return null;
+        return user;
     }
 
     private Account createAccount(ResultSet resultSet) throws SQLException {

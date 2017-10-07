@@ -8,19 +8,9 @@ import org.apache.log4j.Logger;
  * @author Vitalii Myroniuk
  */
 public abstract class DaoFactory {
-    /**
-     * Logger object.
-     */
-    private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
-
-    /**
-     * Factory class name. It should be change depending on which factory you use.
-     */
+    // Factory class name. It should be change depending on which factory you use.
     private static final String FACTORY_CLASS_NAME = "ua.company.myroniuk.model.dao.impl.jdbc.JdbcDaoFactory";
-
-    /**
-     * {@code DaoFactory} instance.
-     */
+    private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
     private static DaoFactory INSTANCE;
 
     /**

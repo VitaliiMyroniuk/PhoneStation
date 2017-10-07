@@ -14,27 +14,25 @@ import java.util.regex.Pattern;
  * @author Vitalii Myroniuk
  */
 public class LanguageCommand implements Command {
+    private static final String PAGE_PATH_REGEX = "^.*?/([A-Za-z0-9_]+)\\.jsp$";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         String locale = request.getParameter("locale");
-        if ("uk_UA".equals(locale)) {
-            session.setAttribute("locale", locale);  //TODO pay attention to this if else!
-        } else if ("en_GB".equals(locale)) {
-            session.setAttribute("locale", locale);
-        }
-        return "redirect:" + getOriginalURI(request);
+        session.setAttribute("locale", locale);
+        return "redirect:" + getURI(request);
     }
 
-    private String getOriginalURI(HttpServletRequest request) {
-        String requestURI = request.getParameter("requestURI");
+    private String getURI(HttpServletRequest request) {
+        String pagePath = request.getParameter("pagePath");
         String queryString = request.getParameter("queryString");
-        Pattern pattern = Pattern.compile("^.*?/([A-Za-z0-9_]+)\\.jsp$");
-        Matcher matcher = pattern.matcher(requestURI);
-        String originalURI = "/phone_station/error_404";
+        Pattern pattern = Pattern.compile(PAGE_PATH_REGEX);
+        Matcher matcher = pattern.matcher(pagePath);
+        String URI = "/phone_station/error_404";
         if (matcher.find()) {
-            originalURI = String.format("/phone_station/%s?%s", matcher.group(1), queryString);
+            URI = String.format("/phone_station/%s?%s", matcher.group(1), queryString);
         }
-        return originalURI;
+        return URI;
     }
 }

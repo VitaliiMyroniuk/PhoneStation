@@ -8,17 +8,14 @@ import ua.company.myroniuk.model.service.InvoiceService;
 import java.util.List;
 
 /**
+ * The class represents the service for the {@code Invoice} object.
+ * It implements {@code InvoiceService} interface.
+ *
  * @author Vitalii Myroniuk
  */
 public class InvoiceServiceImpl implements InvoiceService {
-    /**
-     * DaoFactory object.
-     */
     private DaoFactory daoFactory;
 
-    /**
-     * Constructor for creating empty {@code InvoiceServiceImpl} object.
-     */
     private InvoiceServiceImpl() {
         this.daoFactory = DaoFactory.getInstance();
     }
@@ -42,8 +39,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public List<Invoice> getInvoices(long userId) {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection();
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             InvoiceDao invoiceDao = daoFactory.createInvoiceDao(daoConnection);
             return invoiceDao.getInvoices(userId);
         }

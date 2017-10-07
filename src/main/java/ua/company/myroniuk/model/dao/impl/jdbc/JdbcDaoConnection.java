@@ -9,31 +9,14 @@ import java.sql.SQLException;
  * @author Vitalii Myroniuk
  */
 public class JdbcDaoConnection implements DaoConnection {
-    /**
-     * Logger.
-     */
     private static final Logger LOGGER = Logger.getLogger(JdbcDaoConnection.class);
-
-    /**
-     * {@code java.sql.Connection} object.
-     */
     private Connection connection;
+    private boolean isForTransaction = false; // variable determines if the current connection is used in transaction.
 
-    /**
-     * Variable determines if the current {@code JdbcDaoConnection} is used in transaction.
-     */
-    private boolean isForTransaction = false;
-
-    /**
-     * Constructor for {@code JdbcDaoConnection} object.
-     *
-     * @param connection {@code java.sql.Connection} object.
-     */
     JdbcDaoConnection(Connection connection) {
         this.connection = connection;
     }
 
-    // Getter.
     Connection getConnection() {
         return connection;
     }

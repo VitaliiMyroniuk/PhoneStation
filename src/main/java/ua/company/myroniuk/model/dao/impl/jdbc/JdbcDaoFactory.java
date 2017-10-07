@@ -12,14 +12,7 @@ import java.sql.SQLException;
  * @author Vitalii Myroniuk
  */
 public class JdbcDaoFactory extends DaoFactory {
-    /**
-     * Logger object.
-     */
     private static final Logger LOGGER = Logger.getLogger(JdbcDaoFactory.class);
-
-    /**
-     * {@code javax.sql.DataSource} object.
-     */
     private DataSource dataSource;
 
     public JdbcDaoFactory() {

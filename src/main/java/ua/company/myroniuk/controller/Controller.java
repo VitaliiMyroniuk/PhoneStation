@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class Controller extends HttpServlet {
     private static final CommandFactory commandFactory = new CommandFactory();
-    private static final Invoker invoker = new Invoker();
+    private static final Invoker invoker = new Invoker(); //TODO Is it ok to define these variables in such a way?
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -1,6 +1,5 @@
 package ua.company.myroniuk.model.service.impl;
 
-import org.apache.log4j.Logger;
 import ua.company.myroniuk.model.dao.*;
 import ua.company.myroniuk.model.entity.Account;
 import ua.company.myroniuk.model.entity.Invoice;
@@ -20,19 +19,8 @@ import java.util.List;
  * @author Vitalii Myroniuk
  */
 public class UserServiceImpl implements UserService {
-    /**
-     * Logger object.
-     */
-    private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
-
-    /**
-     * DaoFactory object.
-     */
     private DaoFactory daoFactory;
 
-    /**
-     * Constructor for creating {@code UserServiceImpl} object.
-     */
     private UserServiceImpl(DaoFactory daoFactory) {
         this.daoFactory = daoFactory;
     }
@@ -57,8 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public long addUser(User user) throws LoginExistsException, PhoneNumberExistsException {
         long userId;
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             AccountDao accountDao = daoFactory.createAccountDao(daoConnection);
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             daoConnection.beginTransaction();
@@ -74,7 +61,7 @@ public class UserServiceImpl implements UserService {
             long accountId = accountDao.addAccount(account);
             account.setId(accountId);
             user.setAccount(account);
-            userId = userDao.addUser(user);     // TODO check this logic for return type
+            userId = userDao.addUser(user);     // TODO check this logic for the return type
             daoConnection.commitTransaction();
         }
         return userId;
@@ -82,8 +69,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(long id) {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             return userDao.getUserById(id);
         }
@@ -91,8 +77,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserWithUnpaidInvoicesById(long id) {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             return userDao.getUserWithUnpaidInvoicesById(id);
         }
@@ -100,8 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByLogin(String login) {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             return userDao.getUserByLogin(login);
         }
@@ -109,8 +93,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getRegisteredUsers() {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             return userDao.getRegisteredUsers();
         }
@@ -118,8 +101,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUnregisteredUsers() {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             return userDao.getUnregisteredUsers();
         }
@@ -127,8 +109,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getDebtors() {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             return userDao.getDebtors();
         }
@@ -145,8 +126,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int[] getUserCountInfo() {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             return userDao.getUserCountInfo();
         }
@@ -155,8 +135,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateBalance(long userId, int sum) {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             return userDao.updateBalance(userId, sum);
         }
@@ -164,8 +143,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateIsRegistered(long userId) {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             return userDao.updateIsRegistered(userId);
         }
@@ -173,8 +151,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateIsBlocked(long userId, boolean isBlocked) {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             return userDao.updateIsBlocked(userId, isBlocked);
         }
@@ -182,8 +159,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean deleteUser(long userId) {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             AccountDao accountDao = daoFactory.createAccountDao(daoConnection);
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             ServiceDao serviceDao = daoFactory.createServiceDao(daoConnection);
@@ -202,8 +178,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User logIn(String login, String password) {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             return userDao.logIn(login, password);
         }
@@ -211,8 +186,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean payInvoice(long userId, long invoiceId) throws NotEnoughMoneyException {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
             InvoiceDao invoiceDao = daoFactory.createInvoiceDao(daoConnection);
             daoConnection.beginTransaction();
@@ -234,8 +208,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public long switchOnService(long userId, long serviceId) {
         long usersServicesId;
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             InvoiceDao invoiceDao = daoFactory.createInvoiceDao(daoConnection);
             ServiceDao serviceDao = daoFactory.createServiceDao(daoConnection);
             daoConnection.beginTransaction();
@@ -250,8 +223,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean switchOffService(long userId, long serviceId) {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()
-        ) {
+        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             ServiceDao serviceDao = daoFactory.createServiceDao(daoConnection);
             return serviceDao.deleteUserService(userId, serviceId);
         }

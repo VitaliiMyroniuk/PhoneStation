@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The {@code JdbcInvoiceDao} class is a JDBC implementation of the {@code InvoiceDao} interface.
+ *
  * @author Vitalii Myroniuk
  */
 public class JdbcInvoiceDao implements InvoiceDao {
@@ -25,7 +27,8 @@ public class JdbcInvoiceDao implements InvoiceDao {
     private static final String UPDATE_IS_PAID =
             "UPDATE invoices SET is_paid = ? WHERE id = ?";
 
-    private static final String DELETE_INVOICES = "DELETE FROM invoices WHERE user_id = ?";
+    private static final String DELETE_INVOICES =
+            "DELETE FROM invoices WHERE user_id = ?";
 
     private static final Logger LOGGER = Logger.getLogger(JdbcInvoiceDao.class);
 
@@ -39,8 +42,7 @@ public class JdbcInvoiceDao implements InvoiceDao {
     public long addInvoice(Invoice invoice, long userId) {
         long invoiceId = -1;
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(ADD_INVOICE, Statement.RETURN_GENERATED_KEYS);
-        ) {
+                     connection.prepareStatement(ADD_INVOICE, Statement.RETURN_GENERATED_KEYS)) {
             setStatementParameters(preparedStatement, userId, invoice);
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -58,8 +60,7 @@ public class JdbcInvoiceDao implements InvoiceDao {
     public Invoice getInvoice(long id) {
         Invoice invoice = null;
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_INVOICE_BY_ID);
-        ) {
+                     connection.prepareStatement(GET_INVOICE_BY_ID)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -76,8 +77,7 @@ public class JdbcInvoiceDao implements InvoiceDao {
     public List<Invoice> getInvoices(long userId) {
         List<Invoice> invoices = new ArrayList<>();
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_UNPAID_INVOICES_BY_USER_ID);
-        ) {
+                     connection.prepareStatement(GET_UNPAID_INVOICES_BY_USER_ID)) {
             preparedStatement.setLong(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -94,8 +94,7 @@ public class JdbcInvoiceDao implements InvoiceDao {
     @Override
     public boolean updateIsPaid(boolean isPaid, long id) {
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(UPDATE_IS_PAID);
-        ) {
+                     connection.prepareStatement(UPDATE_IS_PAID)) {
             preparedStatement.setBoolean(1, isPaid);
             preparedStatement.setLong(2, id);
             preparedStatement.executeUpdate();
@@ -109,8 +108,7 @@ public class JdbcInvoiceDao implements InvoiceDao {
     @Override
     public boolean deleteInvoices(long userId) {
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(DELETE_INVOICES);
-        ) {
+                     connection.prepareStatement(DELETE_INVOICES)) {
             preparedStatement.setLong(1, userId);
             preparedStatement.executeUpdate();
             return true;

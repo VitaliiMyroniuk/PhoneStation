@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The {@code JdbcServiceDao} class is a JDBC implementation of the {@code ServiceDao} interface.
+ *
  * @author Vitalii Myroniuk
  */
 public class JdbcServiceDao implements ServiceDao {
@@ -47,8 +49,7 @@ public class JdbcServiceDao implements ServiceDao {
     public long addUserService(Service service, long userId) {
         long userServicesId = -1;
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(ADD_USER_SERVICE, Statement.RETURN_GENERATED_KEYS)
-        ) {
+                     connection.prepareStatement(ADD_USER_SERVICE, Statement.RETURN_GENERATED_KEYS)) {
             setStatementParameters(preparedStatement, userId, service);
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -66,8 +67,7 @@ public class JdbcServiceDao implements ServiceDao {
     public Service getService(long id) {
         Service service = null;
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_SERVICE_BY_ID);
-        ) {
+                     connection.prepareStatement(GET_SERVICE_BY_ID)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -84,8 +84,7 @@ public class JdbcServiceDao implements ServiceDao {
     public List<Service> getAllServices() {
         List<Service> services = new ArrayList<>();
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_ALL_SERVICES);
-        ) {
+                     connection.prepareStatement(GET_ALL_SERVICES)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Service user = createService(resultSet);
@@ -102,8 +101,7 @@ public class JdbcServiceDao implements ServiceDao {
     public List<Service> getUserServices(long userId) {
         List<Service> services = new ArrayList<>();
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_USER_SERVICES);
-        ) {
+                     connection.prepareStatement(GET_USER_SERVICES)) {
             preparedStatement.setLong(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -120,8 +118,7 @@ public class JdbcServiceDao implements ServiceDao {
     @Override
     public boolean deleteUserService(long userId, long serviceId) {
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(DELETE_USER_SERVICE);
-        ) {
+                     connection.prepareStatement(DELETE_USER_SERVICE)) {
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, serviceId);
             preparedStatement.executeUpdate();
@@ -135,8 +132,7 @@ public class JdbcServiceDao implements ServiceDao {
     @Override
     public boolean deleteUserServices(long userId) {
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(DELETE_USER_SERVICES);
-        ) {
+                     connection.prepareStatement(DELETE_USER_SERVICES)) {
             preparedStatement.setLong(1, userId);
             preparedStatement.executeUpdate();
             return true;

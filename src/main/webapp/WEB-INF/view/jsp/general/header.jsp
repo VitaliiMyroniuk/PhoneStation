@@ -22,7 +22,7 @@
         </td>
         <td width="5%" align="right">
             <form action="/phone_station/language" method="POST">
-                <input type="hidden" name="requestURI" value="${pageContext.request.requestURI}">
+                <input type="hidden" name="pagePath" value="${pageContext.request.requestURI}">
                 <input type="hidden" name="queryString" value="${pageContext.request.queryString}">
                 <select name="locale" onchange="submit()">
                     <option value="en_GB" ${sessionScope.locale == 'en_GB' ? 'selected' : ''}>Eng</option>
