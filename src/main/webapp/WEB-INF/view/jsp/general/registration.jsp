@@ -18,7 +18,7 @@
 
     <div class="content-block" style="display: flex">
         <div class="registration-container">
-            <form action="/phone_station/registration" method="POST">
+            <form action="/phone_station/registration/" method="POST">
                 <table>
                     <tr>
                         <td colspan="2" align="center">

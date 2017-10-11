@@ -68,18 +68,18 @@ public class Service {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Service)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Service service = (Service) o;
         return id == service.id &&
-               duration == service.duration &&
-               price == service.price &&
-               Objects.equals(name, service.name) &&
-               Objects.equals(description, service.description);
+                duration == service.duration &&
+                price == service.price &&
+                Objects.equals(name, service.name) &&
+                Objects.equals(description, service.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, duration, price);
+        return Objects.hash(id, name, description, duration, price);
     }
 
     public static class Builder {

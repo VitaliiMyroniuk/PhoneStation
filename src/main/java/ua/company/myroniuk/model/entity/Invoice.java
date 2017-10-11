@@ -69,18 +69,18 @@ public class Invoice {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Invoice)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Invoice invoice = (Invoice) o;
         return id == invoice.id &&
-               price == invoice.price &&
-               isPaid == invoice.isPaid &&
-               Objects.equals(dateTime, invoice.dateTime) &&
-               Objects.equals(description, invoice.description);
+                price == invoice.price &&
+                isPaid == invoice.isPaid &&
+                Objects.equals(dateTime, invoice.dateTime) &&
+                Objects.equals(description, invoice.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dateTime, description, price, isPaid);
+        return Objects.hash(id, dateTime, description, price, isPaid);
     }
 
     public static class Builder {

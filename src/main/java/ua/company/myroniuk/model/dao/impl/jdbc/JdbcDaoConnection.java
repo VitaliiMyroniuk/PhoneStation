@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class JdbcDaoConnection implements DaoConnection {
     private static final Logger LOGGER = Logger.getLogger(JdbcDaoConnection.class);
     private Connection connection;
-    private boolean isForTransaction = false; // variable determines if the current connection is used in transaction.
+    private boolean isForTransaction = false; // variable determines if the connection is used in transaction.
 
     JdbcDaoConnection(Connection connection) {
         this.connection = connection;

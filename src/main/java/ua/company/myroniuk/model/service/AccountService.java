@@ -1,7 +1,7 @@
 package ua.company.myroniuk.model.service;
 
 /**
- * The {@code AccountService} interface provides methods for {@code Account} object.
+ * The interface describes the behavior of the {@code AccountService} object.
  *
  * @author Vitalii Myroniuk
  */

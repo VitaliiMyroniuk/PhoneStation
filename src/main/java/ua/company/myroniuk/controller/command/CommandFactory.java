@@ -11,28 +11,26 @@ import java.util.Map;
  *
  * @author Vitalii Myroniuk
  */
-public class CommandFactory {
-    /**
-     * Hash map of all available commands.
-     */
+public class CommandFactory { // TODO Is it ok to make static block and variable here?
     private static final Map<String, Command> commands = new HashMap<>();
 
-    // TODO Is it ok to make static block and variable here?
-
     static {
-        commands.put("/phone_station/account_refill", new AccountRefillCommand());
+        commands.put("/phone_station/account_refill", new AccountRefillPageCommand());
+        commands.put("/phone_station/account_refill/", new AccountRefillCommand());
         commands.put("/phone_station/add_user", new AddUserCommand());
         commands.put("/phone_station/block_user", new BlockUserCommand());
         commands.put("/phone_station/debtors", new DebtorsCommand());
         commands.put("/phone_station/delete_user", new DeleteUserCommand());
         commands.put("/phone_station/invoices", new InvoicesCommand());
         commands.put("/phone_station/language", new LanguageCommand());
-        commands.put("/phone_station/login", new LoginCommand());
+        commands.put("/phone_station/login", new LoginPageCommand());
+        commands.put("/phone_station/login/", new LoginCommand());
         commands.put("/phone_station/logout", new LogoutCommand());
         commands.put("/phone_station/new_users", new NewUsersCommand());
         commands.put("/phone_station/pay_invoice", new PayInvoiceCommand());
         commands.put("/phone_station/profile", new ProfileCommand());
-        commands.put("/phone_station/registration", new RegistrationCommand());
+        commands.put("/phone_station/registration", new RegistrationPageCommand());
+        commands.put("/phone_station/registration/", new RegistrationCommand());
         commands.put("/phone_station/services", new ServicesCommand());
         commands.put("/phone_station/switch_off_service", new SwitchOffServiceCommand());
         commands.put("/phone_station/switch_on_service", new SwitchOnServiceCommand());

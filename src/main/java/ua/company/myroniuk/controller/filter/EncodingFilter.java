@@ -10,9 +10,6 @@ import java.io.IOException;
  * @author Vitalii Myroniuk
  */
 public class EncodingFilter implements Filter {
-    /**
-     * Encoding for the servlet request and response.
-     */
     private String encoding;
 
     @Override

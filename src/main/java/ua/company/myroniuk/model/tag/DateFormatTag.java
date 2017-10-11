@@ -14,22 +14,10 @@ import java.time.format.DateTimeFormatter;
  * @author Vitalii Myroniuk
  */
 public class DateFormatTag extends TagSupport {
-    /**
-     * Logger object.
-     */
     private static final Logger LOGGER = Logger.getLogger(DateFormatTag.class);
-
-    /**
-     * Local date and time.
-     */
     private LocalDateTime dateTime;
-
-    /**
-     * Locale.
-     */
     private String locale;
 
-    // Setters.
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
@@ -38,9 +26,6 @@ public class DateFormatTag extends TagSupport {
         this.locale = locale;
     }
 
-    /**
-     * The method formats a date depending on locale attribute.
-     */
     @Override
     public int doStartTag() throws JspException {
         DateTimeFormatter dateTimeFormatter;

@@ -129,24 +129,25 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return id == user.id &&
-               balance == user.balance &&
-               isRegistered == user.isRegistered &&
-               isBlocked == user.isBlocked &&
-               Objects.equals(account, user.account) &&
-               Objects.equals(name, user.name) &&
-               Objects.equals(middleName, user.middleName) &&
-               Objects.equals(surname, user.surname) &&
-               Objects.equals(phoneNumber, user.phoneNumber) &&
-               Objects.equals(services, user.services) &&
-               Objects.equals(invoices, user.invoices);
+                balance == user.balance &&
+                isRegistered == user.isRegistered &&
+                isBlocked == user.isBlocked &&
+                Objects.equals(account, user.account) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(middleName, user.middleName) &&
+                Objects.equals(surname, user.surname) &&
+                Objects.equals(phoneNumber, user.phoneNumber) &&
+                Objects.equals(services, user.services) &&
+                Objects.equals(invoices, user.invoices);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(phoneNumber);
+        return Objects.hash(id, account, name, middleName, surname, phoneNumber,
+                            balance, services, invoices, isRegistered, isBlocked);
     }
 
     public static class Builder {

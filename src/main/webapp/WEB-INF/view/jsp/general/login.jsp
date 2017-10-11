@@ -19,7 +19,7 @@
 
     <div class="content-block" style="display: flex">
         <div class="login-container">
-            <form action="/phone_station/login" method="POST">
+            <form action="/phone_station/login/" method="POST">
                 <input type="hidden" name="query" value="login"/>
                 <table>
                     <tr>

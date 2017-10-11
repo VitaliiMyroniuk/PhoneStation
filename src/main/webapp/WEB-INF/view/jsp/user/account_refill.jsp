@@ -24,7 +24,7 @@
         <div class="main">
             <h3><fmt:message key="user.account.refill" bundle="${rb}"/></h3>
             <br>
-            <form action="/phone_station/account_refill" method="POST">
+            <form action="/phone_station/account_refill/" method="POST">
                 <table>
                     <tr>
                         <td><fmt:message key="user.account.refill.credit.card" bundle="${rb}"/> &nbsp </td>

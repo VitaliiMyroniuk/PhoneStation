@@ -11,7 +11,7 @@ public abstract class DaoFactory {
     // Factory class name. It should be change depending on which factory you use.
     private static final String FACTORY_CLASS_NAME = "ua.company.myroniuk.model.dao.impl.jdbc.JdbcDaoFactory";
     private static final Logger LOGGER = Logger.getLogger(DaoFactory.class);
-    private static DaoFactory INSTANCE;
+    private static volatile DaoFactory instance;
 
     /**
      * The methods provides creating or getting already created {@code DaoFactory} object.
@@ -19,11 +19,11 @@ public abstract class DaoFactory {
      * @return {@code DaoFactory} object.
      */
     public static DaoFactory getInstance() {
-        if (INSTANCE == null) {
+        if (instance == null) {
             synchronized (DaoFactory.class) {
-                if (INSTANCE == null) {
+                if (instance == null) {
                     try {
-                        INSTANCE = (DaoFactory) Class.forName(FACTORY_CLASS_NAME).newInstance();
+                        instance = (DaoFactory) Class.forName(FACTORY_CLASS_NAME).newInstance();
                     } catch (Exception e) {
                         LOGGER.error("Error in getting the instance of DaoFactory: ", e);
                         throw new RuntimeException(e);
@@ -31,7 +31,7 @@ public abstract class DaoFactory {
                 }
             }
         }
-        return INSTANCE;
+        return instance;
     }
 
     /**

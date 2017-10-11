@@ -59,7 +59,7 @@ public class Account {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Account)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Account account = (Account) o;
         return id == account.id &&
                 Objects.equals(login, account.login) &&
@@ -69,7 +69,7 @@ public class Account {
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, password);
+        return Objects.hash(id, login, password, role);
     }
 
     public static class Builder {

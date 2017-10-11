@@ -16,19 +16,8 @@ import java.util.Set;
  * @author Vitalii Myroniuk
  */
 public class SecurityFilter implements Filter {
-    /**
-     * Set of allowed uri's for all users.
-     */
     private Set<String> generalURI = new HashSet<>();
-
-    /**
-     * Set of allowed uri's for the subscriber.
-     */
     private Set<String> subscriberURI = new HashSet<>();
-
-    /**
-     * Set of allowed uri's for the admin.
-     */
     private Set<String> adminURI = new HashSet<>();
 
     @Override
@@ -36,13 +25,16 @@ public class SecurityFilter implements Filter {
         // general uri
         generalURI.add("/phone_station/language");
         generalURI.add("/phone_station/login");
+        generalURI.add("/phone_station/login/");
         generalURI.add("/phone_station/logout");
         generalURI.add("/phone_station/registration");
+        generalURI.add("/phone_station/registration/");
         generalURI.add("/phone_station/successful_registration");
 
         // subscriber uri
         subscriberURI.addAll(generalURI);
         subscriberURI.add("/phone_station/account_refill");
+        subscriberURI.add("/phone_station/account_refill/");
         subscriberURI.add("/phone_station/invoices");
         subscriberURI.add("/phone_station/pay_invoice");
         subscriberURI.add("/phone_station/profile");
