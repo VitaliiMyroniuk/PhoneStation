@@ -7,4 +7,8 @@ package ua.company.myroniuk.model.exception;
  * @author Vitalii Myroniuk
  */
 public class NotEnoughMoneyException extends Exception {
+    @Override
+    public synchronized Throwable fillInStackTrace() {
+        return this;
+    }
 }

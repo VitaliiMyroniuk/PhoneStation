@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Vitalii Myroniuk
  */
 public class AccountRefillCommand implements Command {
-    private static final String CREDIT_CARD_NUMBER_REGEX = "^[1-9][0-9]{15}$";
+    private static final String CREDIT_CARD_NUMBER_REGEX = "^[0-9]{16}$";
     private static final String CVV_REGEX = "^[0-9]{3}$";
     private static final String SUM_REGEX = "^([1-9][0-9]{0,3}|0)(\\.[0-9]{1,2})?$";
     private UserService userService;
@@ -70,7 +70,7 @@ public class AccountRefillCommand implements Command {
 
     private boolean checkSum(HttpServletRequest request) {
         String sum = request.getParameter("sum");
-        if (sum != null && sum.matches(SUM_REGEX)) {
+        if (sum != null && sum.matches(SUM_REGEX) && getSum(request) > 0) {
             request.setAttribute("sum", sum);
             request.setAttribute("sum_is_valid", true);
             return true;

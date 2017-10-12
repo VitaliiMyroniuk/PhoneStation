@@ -28,7 +28,7 @@ CREATE TABLE `accounts` (
   `password` varchar(45) NOT NULL,
   `role` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
-INSERT INTO `accounts` VALUES (1,'admin','admin','ADMIN'),(2,'ivanov','ivanov','SUBSCRIBER'),(3,'petrov','petrov','SUBSCRIBER'),(4,'sydorov','sydorov','SUBSCRIBER'),(14,'borysov','borysov','SUBSCRIBER'),(16,'tarasov','tarasov','SUBSCRIBER'),(17,'bogdanov','bogdanov','SUBSCRIBER'),(18,'denysov','denysov','SUBSCRIBER');
+INSERT INTO `accounts` VALUES (1,'admin','admin','ADMIN'),(2,'ivanov','ivanov','SUBSCRIBER'),(3,'petrov','petrov','SUBSCRIBER'),(4,'semenov','semenov','SUBSCRIBER'),(14,'borysov','borysov','SUBSCRIBER'),(16,'tarasov','tarasov','SUBSCRIBER'),(17,'bogdanov','bogdanov','SUBSCRIBER'),(18,'denysov','denysov','SUBSCRIBER');
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,7 +58,7 @@ CREATE TABLE `invoices` (
   PRIMARY KEY (`id`,`user_id`),
   KEY `fk_invoices_abonents1_idx` (`user_id`),
   CONSTRAINT `fk_invoices_abonents1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `invoices` (
 
 LOCK TABLES `invoices` WRITE;
 /*!40000 ALTER TABLE `invoices` DISABLE KEYS */;
-INSERT INTO `invoices` VALUES (48,2,'2017-09-25 17:28:46','Invoice for a service Melody',1000,1),(49,2,'2017-10-01 12:47:10','Invoice for a service Standard',3500,1),(50,2,'2017-09-30 12:19:41','Invoice for a service Melody',1000,1),(51,3,'2017-09-26 08:29:16','Invoice for a service Melody',1000,1),(52,3,'2017-09-26 09:01:21','Invoice for a service VIP',15000,1),(53,16,'2017-09-25 19:32:42','Invoice for a service Melody',1000,0),(54,16,'2017-09-25 19:32:45','Invoice for a service International',4000,0),(55,16,'2017-09-25 19:32:48','Invoice for a service Standard',3500,0),(56,3,'2017-09-26 09:00:56','Invoice for a service Melody',1000,1),(57,3,'2017-10-01 12:36:52','Invoice for a service Melody',1000,1),(58,3,'2017-09-26 09:06:33','Invoice for a service VIP',15000,0),(59,18,'2017-09-26 14:08:34','Invoice for a service Melody',1000,1),(60,18,'2017-09-26 14:09:27','Invoice for a service VIP',15000,1),(61,2,'2017-10-01 12:47:24','Invoice for a service Melody',1000,1),(62,3,'2017-10-01 12:37:01','Invoice for a service Melody',1000,0),(63,2,'2017-10-01 12:47:16','Invoice for a service Standard',3500,0),(64,2,'2017-10-01 16:57:51','Invoice for a service Melody',1000,1),(65,2,'2017-10-01 16:57:19','Invoice for a service Melody',1000,0),(66,4,'2017-10-04 21:36:27','Invoice for a service International',4000,1),(67,4,'2017-10-04 21:37:00','Invoice for a service International',4000,1);
+INSERT INTO `invoices` VALUES (48,2,'2017-09-25 17:28:46','Invoice for a service Melody',1000,1),(49,2,'2017-10-01 12:47:10','Invoice for a service Standard',3500,1),(50,2,'2017-09-30 12:19:41','Invoice for a service Melody',1000,1),(51,3,'2017-09-26 08:29:16','Invoice for a service Melody',1000,1),(52,3,'2017-09-26 09:01:21','Invoice for a service VIP',15000,1),(53,16,'2017-09-25 19:32:42','Invoice for a service Melody',1000,0),(54,16,'2017-09-25 19:32:45','Invoice for a service International',4000,0),(55,16,'2017-09-25 19:32:48','Invoice for a service Standard',3500,0),(56,3,'2017-09-26 09:00:56','Invoice for a service Melody',1000,1),(57,3,'2017-10-01 12:36:52','Invoice for a service Melody',1000,1),(58,3,'2017-09-26 09:06:33','Invoice for a service VIP',15000,0),(59,18,'2017-09-26 14:08:34','Invoice for a service Melody',1000,1),(60,18,'2017-09-26 14:09:27','Invoice for a service VIP',15000,1),(61,2,'2017-10-01 12:47:24','Invoice for a service Melody',1000,1),(62,3,'2017-10-01 12:37:01','Invoice for a service Melody',1000,0),(63,2,'2017-10-01 12:47:16','Invoice for a service Standard',3500,0),(64,2,'2017-10-01 16:57:51','Invoice for a service Melody',1000,1),(65,2,'2017-10-01 16:57:19','Invoice for a service Melody',1000,0),(66,4,'2017-10-04 21:36:27','Invoice for a service International',4000,1),(67,4,'2017-10-04 21:37:00','Invoice for a service International',4000,1),(68,4,'2017-10-09 07:20:07','Invoice for a service Standart+',5000,0);
 /*!40000 ALTER TABLE `invoices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,12 +113,12 @@ CREATE TABLE `users` (
   `surname` varchar(45) NOT NULL,
   `phone_number` varchar(45) DEFAULT NULL,
   `balance` int(11) DEFAULT NULL,
-  `is_registered` tinyint(1) NOT NULL,
+  `is_registered` tinyint(1) DEFAULT NULL,
   `is_blocked` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`,`account_id`),
   KEY `fk_abonents_users1_idx` (`account_id`),
   CONSTRAINT `fk_abonents_users1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,7 +127,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,1,'Vitalii','','Myroniuk',NULL,NULL,1,NULL),(2,2,'Іван','Іванович','Іванов','+380441111111',2805,1,0),(3,3,'Петро','Петрович','Петров','+380442222222',225,1,0),(4,4,'Семен','Семенович','Семенов','+380443333333',2000,1,0),(14,14,'Борис','Борисович','Борисов','+380444444444',0,0,0),(16,16,'Тарас','Тарасович','Тарасов','+380445555555',0,1,0),(17,17,'Богдан','Богданович','Богданов','+380446666666',0,0,0),(18,18,'Денис','Денисович','Денисов','+380447777777',11000,1,0);
+INSERT INTO `users` VALUES (1,1,'Vitalii','','Myroniuk',NULL,NULL,NULL,NULL),(2,2,'Іван','Іванович','Іванов','+380441111111',2805,1,0),(3,3,'Петро','Петрович','Петров','+380442222222',225,1,0),(4,4,'Семен','Семенович','Семенов','+380443333333',2000,1,0),(14,14,'Борис','Борисович','Борисов','+380444444444',0,0,0),(16,16,'Тарас','Тарасович','Тарасов','+380445555555',0,1,0),(17,17,'Богдан','Богданович','Богданов','+380446666666',0,0,0),(18,18,'Денис','Денисович','Денисов','+380447777777',11000,1,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +149,7 @@ CREATE TABLE `users_services` (
   KEY `fk_abonents_has_services_abonents1_idx` (`user_id`),
   CONSTRAINT `fk_abonents_has_services_abonents1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_abonents_has_services_services1` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -158,7 +158,7 @@ CREATE TABLE `users_services` (
 
 LOCK TABLES `users_services` WRITE;
 /*!40000 ALTER TABLE `users_services` DISABLE KEYS */;
-INSERT INTO `users_services` VALUES (45,16,1,'2017-09-25','2018-09-25'),(46,16,4,'2017-09-25','2017-09-26'),(47,16,2,'2017-09-25','2017-10-25'),(50,3,5,'2017-09-26','2017-10-26'),(51,18,1,'2017-09-26','2018-09-26'),(52,18,5,'2017-09-26','2017-10-26'),(54,3,1,'2017-10-01','2018-10-01'),(55,2,2,'2017-10-01','2017-10-31'),(57,2,1,'2017-10-01','2018-10-01'),(59,4,4,'2017-10-05','2017-10-06');
+INSERT INTO `users_services` VALUES (45,16,1,'2017-09-25','2018-09-25'),(46,16,4,'2017-09-25','2017-09-26'),(47,16,2,'2017-09-25','2017-10-25'),(50,3,5,'2017-09-26','2017-10-26'),(51,18,1,'2017-09-26','2018-09-26'),(52,18,5,'2017-09-26','2017-10-26'),(54,3,1,'2017-10-01','2018-10-01'),(55,2,2,'2017-10-01','2017-10-31'),(57,2,1,'2017-10-01','2018-10-01'),(59,4,4,'2017-10-05','2017-10-06'),(60,4,3,'2017-10-09','2017-11-08');
 /*!40000 ALTER TABLE `users_services` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -171,4 +171,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-05 23:35:41
+-- Dump completed on 2017-10-12 17:48:00

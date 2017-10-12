@@ -29,7 +29,7 @@ public class BlockUserCommandTest {
     private BlockUserCommand blockUserCommand;
 
     @Test
-    public void execute() throws Exception {
+    public void checkSuccessfulUserBlocking() {
         when(request.getParameter("user_id")).thenReturn("1");
         String path = blockUserCommand.execute(request, response);
         verify(request).getParameter("user_id");

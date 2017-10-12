@@ -30,12 +30,24 @@ public class UserServiceImplTest {
     private UserServiceImpl userService;
 
     @Test
-    public void getUserByLogin() throws Exception {
+    public void getUserByLogin() {
         User user = new User();
         when(daoFactory.getDaoConnection()).thenReturn(daoConnection);
         when(daoFactory.createUserDao(anyObject())).thenReturn(userDao);
         when(userDao.getUserByLogin("someLogin")).thenReturn(user);
         User resultUser = userService.getUserByLogin("someLogin");
+        verify(daoFactory).getDaoConnection();
+        verify(daoFactory).createUserDao(daoConnection);
+        assertEquals(user, resultUser);
+    }
+
+    @Test
+    public void checkSuccessfulLogIn() {
+        User user = new User();
+        when(daoFactory.getDaoConnection()).thenReturn(daoConnection);
+        when(daoFactory.createUserDao(anyObject())).thenReturn(userDao);
+        when(userDao.logIn("someLogin", "somePassword")).thenReturn(user);
+        User resultUser = userService.logIn("someLogin", "somePassword");
         verify(daoFactory).getDaoConnection();
         verify(daoFactory).createUserDao(daoConnection);
         assertEquals(user, resultUser);
