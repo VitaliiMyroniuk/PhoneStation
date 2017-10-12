@@ -30,10 +30,10 @@ public class JdbcUserDao implements UserDao {
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE login = ?";
 
-    private static final String GET_REGISTERED_USER_BY_LOGIN_AND_PASSWORD =
+    private static final String GET_USER_BY_LOGIN_AND_PASSWORD =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id " +
-            "WHERE login = ? AND password = ? AND is_registered = 1";
+            "WHERE login = ? AND password = ?";
 
     private static final String GET_USER_BY_PHONE_NUMBER =
             "SELECT * FROM users " +
@@ -48,11 +48,12 @@ public class JdbcUserDao implements UserDao {
     private static final String GET_REGISTERED_USERS =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id " +
-            "WHERE is_registered = 1 AND role NOT LIKE 'ADMIN'";
+            "WHERE is_registered = 1";
 
     private static final String GET_UNREGISTERED_USERS =
             "SELECT * FROM users " +
-            "INNER JOIN accounts ON account_id = accounts.id WHERE is_registered = 0";
+            "INNER JOIN accounts ON account_id = accounts.id " +
+            "WHERE is_registered = 0";
 
     private static final String GET_DEBTORS =
             "SELECT *, sum(price) AS debt FROM users " +
@@ -61,7 +62,7 @@ public class JdbcUserDao implements UserDao {
             "WHERE is_paid = 0 GROUP BY user_id ORDER BY debt DESC";
 
     private static final String GET_USER_COUNT_INFO =
-            "SELECT * FROM (SELECT COUNT(*) AS all_users FROM users WHERE phone_number IS NOT NULL) t1 " +
+            "SELECT * FROM (SELECT COUNT(*) AS users FROM users WHERE is_registered = 1) t1 " +
             "INNER JOIN (SELECT COUNT(*) AS new_users FROM users WHERE is_registered = 0) t2 " +
             "INNER JOIN (SELECT count(*) AS debtors FROM " +
                         "(SELECT * FROM invoices WHERE is_paid = 0 GROUP BY user_id) t " +
@@ -240,7 +241,7 @@ public class JdbcUserDao implements UserDao {
                      connection.prepareStatement(GET_USER_COUNT_INFO)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                userCountInfo[0] = resultSet.getInt("all_users");
+                userCountInfo[0] = resultSet.getInt("users");
                 userCountInfo[1] = resultSet.getInt("new_users");
                 userCountInfo[2] = resultSet.getInt("debtors");
             }
@@ -310,7 +311,7 @@ public class JdbcUserDao implements UserDao {
     public User logIn(String login, String password) {
         User user = null;
         try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_REGISTERED_USER_BY_LOGIN_AND_PASSWORD)) {
+                     connection.prepareStatement(GET_USER_BY_LOGIN_AND_PASSWORD)) {
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();

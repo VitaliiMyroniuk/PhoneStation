@@ -1,6 +1,7 @@
 package ua.company.myroniuk.controller.command.general;
 
 import ua.company.myroniuk.controller.command.Command;
+import ua.company.myroniuk.model.entity.Role;
 import ua.company.myroniuk.model.entity.User;
 import ua.company.myroniuk.model.service.UserService;
 import ua.company.myroniuk.model.service.impl.UserServiceImpl;
@@ -26,17 +27,17 @@ public class LoginCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        User sessionUser = (User) request.getSession().getAttribute("user");
-        if (sessionUser != null) {
-            return "redirect:/phone_station/profile";
-        }
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         User user = userService.logIn(login, password);
-        if (user == null) {
+        if (user == null || Role.SUBSCRIBER.equals(user.getAccount().getRole()) && !user.isRegistered()) {
             return LOGIN_JSP;
+        } else if (Role.ADMIN.equals(user.getAccount().getRole())) {
+            request.getSession().setAttribute("user", user);
+            return "redirect:/phone_station/admin_profile";
+        } else {
+            request.getSession().setAttribute("user", user);
+            return "redirect:/phone_station/user_profile";
         }
-        request.getSession().setAttribute("user", user);
-        return "redirect:/phone_station/profile";
     }
 }

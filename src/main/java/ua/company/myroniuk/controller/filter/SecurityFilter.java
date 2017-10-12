@@ -37,22 +37,22 @@ public class SecurityFilter implements Filter {
         subscriberURI.add("/phone_station/account_refill/");
         subscriberURI.add("/phone_station/invoices");
         subscriberURI.add("/phone_station/pay_invoice");
-        subscriberURI.add("/phone_station/profile");
         subscriberURI.add("/phone_station/services");
         subscriberURI.add("/phone_station/switch_off_service");
         subscriberURI.add("/phone_station/switch_on_service");
+        subscriberURI.add("/phone_station/user_profile");
 
         // admin uri
         adminURI.addAll(generalURI);
         adminURI.add("/phone_station/add_user");
+        adminURI.add("/phone_station/admin_profile");
         adminURI.add("/phone_station/block_user");
         adminURI.add("/phone_station/debtors");
         adminURI.add("/phone_station/delete_user");
         adminURI.add("/phone_station/new_users");
-        adminURI.add("/phone_station/profile");
         adminURI.add("/phone_station/unblock_user");
-        adminURI.add("/phone_station/user_invoices");
         adminURI.add("/phone_station/users");
+        adminURI.add("/phone_station/user_invoices");
     }
 
     @Override

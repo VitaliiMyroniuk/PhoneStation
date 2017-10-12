@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
@@ -8,8 +8,13 @@
     <tr>
         <td width="90%" align="left">
             <c:choose>
-                <c:when test="${not empty sessionScope.user}">
-                    <a href="/phone_station/profile">
+                <c:when test="${sessionScope.user.account.role == 'ADMIN'}">
+                    <a href="/phone_station/admin_profile">
+                        <fmt:message key="header.phone.station" bundle="${rb}"/>
+                    </a>
+                </c:when>
+                <c:when test="${sessionScope.user.account.role == 'SUBSCRIBER'}">
+                    <a href="/phone_station/user_profile">
                         <fmt:message key="header.phone.station" bundle="${rb}"/>
                     </a>
                 </c:when>
