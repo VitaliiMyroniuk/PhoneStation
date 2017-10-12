@@ -2,7 +2,6 @@ package ua.company.myroniuk.controller;
 
 import ua.company.myroniuk.controller.command.Command;
 import ua.company.myroniuk.controller.command.CommandFactory;
-import ua.company.myroniuk.controller.command.Invoker;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +14,6 @@ import java.io.IOException;
  * @author Vitalii Myroniuk
  */
 public class Controller extends HttpServlet {
-    private static final CommandFactory commandFactory = new CommandFactory();
-    private static final Invoker invoker = new Invoker(); //TODO Is it ok to define these variables in such a way?
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         process(request, response);
@@ -38,9 +34,8 @@ public class Controller extends HttpServlet {
      */
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String uri = (String) request.getAttribute("uri");
-        Command command = commandFactory.getCommand(uri);
-        invoker.setCommand(command);
-        String path = invoker.execute(request, response);
+        Command command = CommandFactory.getInstance().getCommand(uri);
+        String path = command.execute(request, response);
         if (path.startsWith("redirect:")) {
             response.sendRedirect(path.replace("redirect:", ""));
         } else {

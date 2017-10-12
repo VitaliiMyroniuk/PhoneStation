@@ -5,6 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * {@code RedirectionFilter} is the class that describes redirection filter.
+ * It provides the redirection from the welcome page to the login page.
+ *
  * @author Vitalii Myroniuk
  */
 public class RedirectionFilter implements Filter {

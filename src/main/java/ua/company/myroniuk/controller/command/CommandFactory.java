@@ -11,10 +11,10 @@ import java.util.Map;
  *
  * @author Vitalii Myroniuk
  */
-public class CommandFactory { // TODO Is it ok to make static block and variable here?
-    private static final Map<String, Command> commands = new HashMap<>();
+public class CommandFactory {
+    private final Map<String, Command> commands = new HashMap<>();
 
-    static {
+    private CommandFactory() {
         commands.put("/phone_station/account_refill", new AccountRefillPageCommand());
         commands.put("/phone_station/account_refill/", new AccountRefillCommand());
         commands.put("/phone_station/add_user", new AddUserCommand());
@@ -39,6 +39,23 @@ public class CommandFactory { // TODO Is it ok to make static block and variable
         commands.put("/phone_station/users", new UsersCommand());
         commands.put("/phone_station/user_invoices", new UserInvoicesCommand());
         commands.put("/phone_station/user_profile", new UserProfileCommand());
+    }
+
+    /**
+     * The class {@code SingletonHolder} is the auxiliary static nested class
+     * for the thread safe (Bill Pugh) singleton implementation.
+     */
+    private static class SingletonHolder {
+        private static final CommandFactory INSTANCE = new CommandFactory();
+    }
+
+    /**
+     * The methods provides creating or getting already created {@code CommandFactory} object.
+     *
+     * @return {@code CommandFactory} object.
+     */
+    public static CommandFactory getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
     /**
