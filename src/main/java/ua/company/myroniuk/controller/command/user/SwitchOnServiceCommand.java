@@ -30,6 +30,6 @@ public class SwitchOnServiceCommand implements Command {
         long userId = user.getId();
         long serviceId = Long.parseLong(request.getParameter("service_id"));
         userService.switchOnService(userId, serviceId);
-        return "redirect:/phone_station/services";
+        return REDIRECT_TO_SERVICES_JSP;
     }
 }

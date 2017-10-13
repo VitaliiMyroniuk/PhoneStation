@@ -27,6 +27,6 @@ public class UnblockUserCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         long userId = Long.parseLong(request.getParameter("user_id"));
         userService.updateIsBlocked(userId, false);
-        return "redirect:/phone_station/user_invoices?user_id=" + userId;
+        return REDIRECT_TO_USER_INVOICES_JSP + userId;
     }
 }

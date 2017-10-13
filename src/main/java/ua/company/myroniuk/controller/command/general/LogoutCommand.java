@@ -14,6 +14,6 @@ public class LogoutCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().invalidate();
-        return "redirect:/phone_station/login";
+        return REDIRECT_TO_LOGIN_JSP;
     }
 }

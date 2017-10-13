@@ -27,6 +27,6 @@ public class DeleteUserCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         long userId = Long.parseLong(request.getParameter("user_id"));
         userService.deleteUser(userId);
-        return "redirect:/phone_station/new_users";
+        return REDIRECT_TO_NEW_USERS_JSP;
     }
 }

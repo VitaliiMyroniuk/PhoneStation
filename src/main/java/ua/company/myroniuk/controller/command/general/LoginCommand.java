@@ -34,10 +34,10 @@ public class LoginCommand implements Command {
             return LOGIN_JSP;
         } else if (Role.ADMIN.equals(user.getAccount().getRole())) {
             request.getSession().setAttribute("user", user);
-            return "redirect:/phone_station/admin_profile";
+            return REDIRECT_TO_ADMIN_PROFILE_JSP;
         } else {
             request.getSession().setAttribute("user", user);
-            return "redirect:/phone_station/user_profile";
+            return REDIRECT_TO_USER_PROFILE_JSP;
         }
     }
 }

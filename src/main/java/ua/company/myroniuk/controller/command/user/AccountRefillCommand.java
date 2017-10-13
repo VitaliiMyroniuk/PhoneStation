@@ -38,7 +38,7 @@ public class AccountRefillCommand implements Command {
             long userId = user.getId();
             int sum = getSum(request);
             userService.updateBalance(userId, sum);
-            return "redirect:/phone_station/profile";
+            return REDIRECT_TO_USER_PROFILE_JSP;
         } else {
             return ACCOUNT_REFILL_JSP;
         }

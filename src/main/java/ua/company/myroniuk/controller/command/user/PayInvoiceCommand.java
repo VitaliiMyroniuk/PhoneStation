@@ -36,8 +36,8 @@ public class PayInvoiceCommand implements Command {
             userService.payInvoice(userId, invoiceId);
         } catch (NotEnoughMoneyException e) {
             LOGGER.error("Error during invoice payment (not enough money): ", e);
-            return "redirect:/phone_station/invoices?not_enough_money=true";
+            return REDIRECT_TO_INVOICES_JSP + "?not_enough_money=true";
         }
-        return "redirect:/phone_station/invoices";
+        return REDIRECT_TO_INVOICES_JSP;
     }
 }

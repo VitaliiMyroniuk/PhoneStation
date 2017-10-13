@@ -43,7 +43,7 @@ public class RegistrationCommand implements Command {
             User user = createUser(request);
             try {
                 userService.addUser(user);
-                return "redirect:/phone_station/successful_registration";
+                return REDIRECT_TO_SUCCESSFUL_REGISTRATION_JSP;
             } catch (PhoneNumberExistsException e) {
                 request.setAttribute("phone_number_is_valid", false);
                 LOGGER.error("Error during registration (phone number already exists): ", e);
