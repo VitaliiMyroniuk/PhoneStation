@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static ua.company.myroniuk.controller.command.Command.*;
 
 /**
  * @author Vitalii Myroniuk
@@ -34,6 +35,6 @@ public class BlockUserCommandTest {
         String path = blockUserCommand.execute(request, response);
         verify(request).getParameter("user_id");
         verify(userService).updateIsBlocked(1, true);
-        assertEquals(path, "redirect:/phone_station/user_invoices?user_id=1");
+        assertEquals(path, REDIRECT_TO_USER_INVOICES_JSP + 1);
     }
 }
