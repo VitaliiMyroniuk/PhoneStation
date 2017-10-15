@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
             long accountId = accountDao.addAccount(account);
             account.setId(accountId);
             user.setAccount(account);
-            userId = userDao.addUser(user);     // TODO check this logic for the return type
+            userId = userDao.addUser(user);
             daoConnection.commitTransaction();
         }
         return userId;

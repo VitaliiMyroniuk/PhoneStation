@@ -32,6 +32,7 @@
                     <th><fmt:message key="admin.table.middle_name" bundle="${rb}"/></th>
                     <th><fmt:message key="admin.table.surname" bundle="${rb}"/></th>
                     <th><fmt:message key="admin.table.phone.number" bundle="${rb}"/></th>
+                    <th><fmt:message key="admin.table.delete" bundle="${rb}"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -42,6 +43,11 @@
                         <td><c:out value="${user.middleName}"/></td>
                         <td><c:out value="${user.surname}"/></td>
                         <td><c:out value="${user.phoneNumber}"/></td>
+                        <td>
+                            <a href="/phone_station/delete_user?user_id=${user.id}">
+                                <fmt:message key="admin.table.delete.user" bundle="${rb}"/>
+                            </a>
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>

@@ -21,6 +21,7 @@ public class CommandFactory {
         commands.put("/phone_station/admin_profile", new AdminProfileCommand());
         commands.put("/phone_station/block_user", new BlockUserCommand());
         commands.put("/phone_station/debtors", new DebtorsCommand());
+        commands.put("/phone_station/delete_new_user", new DeleteNewUserCommand());
         commands.put("/phone_station/delete_user", new DeleteUserCommand());
         commands.put("/phone_station/invoices", new InvoicesCommand());
         commands.put("/phone_station/language", new LanguageCommand());

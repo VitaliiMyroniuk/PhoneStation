@@ -48,6 +48,7 @@ public class SecurityFilter implements Filter {
         adminURI.add("/phone_station/admin_profile");
         adminURI.add("/phone_station/block_user");
         adminURI.add("/phone_station/debtors");
+        adminURI.add("/phone_station/delete_new_user");
         adminURI.add("/phone_station/delete_user");
         adminURI.add("/phone_station/new_users");
         adminURI.add("/phone_station/unblock_user");

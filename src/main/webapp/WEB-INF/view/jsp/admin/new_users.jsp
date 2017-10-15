@@ -50,7 +50,7 @@
                             </a>
                         </td>
                         <td>
-                            <a href="/phone_station/delete_user?user_id=${user.id}">
+                            <a href="/phone_station/delete_new_user?user_id=${user.id}">
                                 <fmt:message key="admin.table.delete.user" bundle="${rb}"/>
                             </a>
                         </td>

@@ -30,6 +30,7 @@ public interface Command {
     String REDIRECT_TO_SERVICES_JSP = "redirect:/phone_station/services";
     String REDIRECT_TO_SUCCESSFUL_REGISTRATION_JSP = "redirect:/phone_station/successful_registration";
     String REDIRECT_TO_NEW_USERS_JSP = "redirect:/phone_station/new_users";
+    String REDIRECT_TO_USERS_JSP = "redirect:/phone_station/users";
     String REDIRECT_TO_USER_INVOICES_JSP = "redirect:/phone_station/user_invoices?user_id=";
     String REDIRECT_TO_USER_PROFILE_JSP = "redirect:/phone_station/user_profile";
 
