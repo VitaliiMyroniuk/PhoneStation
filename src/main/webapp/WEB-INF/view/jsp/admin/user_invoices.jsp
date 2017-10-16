@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
-<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setLocale value="${cookie.containsKey('locale') ? cookie['locale'].value : 'en-EN'}"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
 <html>

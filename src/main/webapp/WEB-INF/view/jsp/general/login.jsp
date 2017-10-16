@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="locale" value="${not empty sessionScope.locale ? sessionScope.locale : 'en_GB'}" scope="session"/>
-<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setLocale value="${cookie.containsKey('locale') ? cookie['locale'].value : 'en-EN'}"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
 <html>

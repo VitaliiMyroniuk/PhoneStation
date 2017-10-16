@@ -1,9 +1,10 @@
 package ua.company.myroniuk.controller.command.general;
 
 import ua.company.myroniuk.controller.command.Command;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,9 +19,10 @@ public class LanguageCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
         String locale = request.getParameter("locale");
-        session.setAttribute("locale", locale);
+        Cookie cookie = new Cookie("locale", locale);
+        cookie.setMaxAge(60 * 60 * 24);    // 24 hours
+        response.addCookie(cookie);
         return "redirect:" + getURI(request);
     }
 

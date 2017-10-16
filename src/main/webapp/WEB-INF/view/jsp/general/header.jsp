@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setLocale value="${cookie.containsKey('locale') ? cookie['locale'].value : 'en-EN'}"/>
 <fmt:setBundle basename="locale" var="rb"/>
 
 <table width="100%">
@@ -30,8 +30,8 @@
                 <input type="hidden" name="pagePath" value="${pageContext.request.requestURI}">
                 <input type="hidden" name="queryString" value="${pageContext.request.queryString}">
                 <select name="locale" onchange="submit()">
-                    <option value="en_GB" ${sessionScope.locale == 'en_GB' ? 'selected' : ''}>Eng</option>
-                    <option value="uk_UA" ${sessionScope.locale == 'uk_UA' ? 'selected' : ''}>Укр</option>
+                    <option value="en_GB" ${cookie['locale'].value == 'en_GB' ? 'selected' : ''}>Eng</option>
+                    <option value="uk_UA" ${cookie['locale'].value == 'uk_UA' ? 'selected' : ''}>Укр</option>
                 </select>
             </form>
         </td>
