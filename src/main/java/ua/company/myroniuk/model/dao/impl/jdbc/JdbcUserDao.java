@@ -182,7 +182,6 @@ public class JdbcUserDao implements UserDao {
         return user;
     }
 
-
     @Override
     public List<User> getRegisteredUsers() {
         List<User> users = new ArrayList<>();
@@ -305,7 +304,6 @@ public class JdbcUserDao implements UserDao {
             throw new RuntimeException(e);
         }
     }
-
 
     @Override
     public User logIn(String login, String password) {

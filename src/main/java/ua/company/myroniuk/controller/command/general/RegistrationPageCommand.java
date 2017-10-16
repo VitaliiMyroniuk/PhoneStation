@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * The class describes the {@code Command} interface implementation.
+ * It contains the method for getting registration page.
+ *
  * @author Vitalii Myroniuk
  */
 public class RegistrationPageCommand implements Command {

@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * The class describes the {@code Command} interface implementation.
+ * It contains the method for getting user profile page.
+ *
  * @author Vitalii Myroniuk
  */
 public class UserProfileCommand implements Command {
