@@ -22,36 +22,53 @@
         </div>
 
         <div class="main">
-            <h3><fmt:message key="admin.users" bundle="${rb}"/></h3>
-            <br>
-            <table class="my-table" border="1" cellspacing="0">
-                <thead>
-                <tr>
-                    <th>№</th>
-                    <th><fmt:message key="admin.table.name" bundle="${rb}"/></th>
-                    <th><fmt:message key="admin.table.middle_name" bundle="${rb}"/></th>
-                    <th><fmt:message key="admin.table.surname" bundle="${rb}"/></th>
-                    <th><fmt:message key="admin.table.phone.number" bundle="${rb}"/></th>
-                    <th><fmt:message key="admin.table.delete" bundle="${rb}"/></th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="user" items="${users}" varStatus="status" begin="0" step="1">
+            <div style="height: 520px">
+                <h3><fmt:message key="admin.users" bundle="${rb}"/></h3>
+                <br>
+                <table class="my-table" border="1" cellspacing="0">
+                    <thead>
                     <tr>
-                        <td><c:out value="${status.count}"/></td>
-                        <td><c:out value="${user.name}"/></td>
-                        <td><c:out value="${user.middleName}"/></td>
-                        <td><c:out value="${user.surname}"/></td>
-                        <td><c:out value="${user.phoneNumber}"/></td>
-                        <td>
-                            <a href="/phone_station/delete_user?user_id=${user.id}">
-                                <fmt:message key="admin.table.delete.user" bundle="${rb}"/>
-                            </a>
-                        </td>
+                        <th>№</th>
+                        <th><fmt:message key="admin.table.name" bundle="${rb}"/></th>
+                        <th><fmt:message key="admin.table.middle_name" bundle="${rb}"/></th>
+                        <th><fmt:message key="admin.table.surname" bundle="${rb}"/></th>
+                        <th><fmt:message key="admin.table.phone.number" bundle="${rb}"/></th>
+                        <th><fmt:message key="admin.table.delete" bundle="${rb}"/></th>
                     </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="user" items="${users}" varStatus="status" begin="0" step="1">
+                        <tr>
+                            <td><c:out value="${status.count + from}"/></td>
+                            <td><c:out value="${user.name}"/></td>
+                            <td><c:out value="${user.middleName}"/></td>
+                            <td><c:out value="${user.surname}"/></td>
+                            <td><c:out value="${user.phoneNumber}"/></td>
+                            <td>
+                                <a href="/phone_station/delete_user?user_id=${user.id}">
+                                    <fmt:message key="admin.table.delete.user" bundle="${rb}"/>
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+
+            <div align="center">
+                <tr>
+                    <c:forEach begin="1" end="${numberOfPages}" var="i">
+                        <c:choose>
+                            <c:when test="${currentPage eq i}">
+                                <td><text style="color: red">${i}</text></td>
+                            </c:when>
+                            <c:otherwise>
+                                <td><a href="/phone_station/users?page=${i}">${i}</a></td>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </tr>
+            </div>
         </div>
     </div>
 

@@ -48,7 +48,7 @@ public class JdbcUserDao implements UserDao {
     private static final String GET_REGISTERED_USERS =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id " +
-            "WHERE is_registered = 1";
+            "WHERE is_registered = 1 LIMIT ?, ?";
 
     private static final String GET_UNREGISTERED_USERS =
             "SELECT * FROM users " +
@@ -182,12 +182,13 @@ public class JdbcUserDao implements UserDao {
         return user;
     }
 
-
     @Override
-    public List<User> getRegisteredUsers() {
+    public List<User> getRegisteredUsers(int from, int count) {
         List<User> users = new ArrayList<>();
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement(GET_REGISTERED_USERS)) {
+            preparedStatement.setInt(1, from);
+            preparedStatement.setInt(2, count);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = createUser(resultSet);

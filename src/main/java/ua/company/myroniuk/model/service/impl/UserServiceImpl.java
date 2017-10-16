@@ -92,10 +92,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getRegisteredUsers() {
+    public List<User> getRegisteredUsers(int from, int count) {
         try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);
-            return userDao.getRegisteredUsers();
+            return userDao.getRegisteredUsers(from, count);
         }
     }
 

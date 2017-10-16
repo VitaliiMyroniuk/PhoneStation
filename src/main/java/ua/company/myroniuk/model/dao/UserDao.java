@@ -55,13 +55,15 @@ public interface UserDao {
     User getUserWithUnpaidInvoicesById(long id);
 
     /**
-     * The method retrieves the list of all registered users from the data base.
+     * The method retrieves the list of registered users from the data base.
      * For every user a corresponding [@code Account} object is retrieved as well
      * but the list of his active services and list of his unpaid invoices are not retrieved.
      *
+     * @param from position from which we start to retrieve the users from the data base.
+     * @param count number of users that we are going to retrieve from the data base.
      * @return the list of all registered users retrieved from the data base.
      */
-    List<User> getRegisteredUsers();
+    List<User> getRegisteredUsers(int from, int count);
 
     /**
      * The method retrieves the list of all unregistered users from the data base.

@@ -27,8 +27,19 @@ public class UsersCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        List<User> users = userService.getRegisteredUsers();
+        int page = 1;
+        int recordsPerPage = 2;
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+        int from = (page - 1) * recordsPerPage;
+        List<User> users = userService.getRegisteredUsers(from , recordsPerPage);
+        int countOfRegisteredUsers = userService.getUserCountInfo()[0];
+        int numberOfPages = (int) Math.ceil(1.0 * countOfRegisteredUsers / recordsPerPage);
         request.setAttribute("users", users);
+        request.setAttribute("from", from);
+        request.setAttribute("numberOfPages", numberOfPages);
+        request.setAttribute("currentPage", page);
         return USERS_JSP;
     }
 }
