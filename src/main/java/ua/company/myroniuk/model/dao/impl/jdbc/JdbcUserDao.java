@@ -26,14 +26,10 @@ public class JdbcUserDao implements UserDao {
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id WHERE users.id = ?";
 
-    private static final String GET_USER_BY_LOGIN =
-            "SELECT * FROM users " +
-            "INNER JOIN accounts ON account_id = accounts.id WHERE login = ?";
-
     private static final String GET_USER_BY_LOGIN_AND_PASSWORD =
             "SELECT * FROM users " +
             "INNER JOIN accounts ON account_id = accounts.id " +
-            "WHERE login = ? AND password = ?";
+            "WHERE BINARY login = ? AND BINARY password = ?";
 
     private static final String GET_USER_BY_PHONE_NUMBER =
             "SELECT * FROM users " +
@@ -143,23 +139,6 @@ public class JdbcUserDao implements UserDao {
             }
         } catch (SQLException e) {
             LOGGER.error("Error during getting the user with unpaid invoices by id: ", e);
-            throw new RuntimeException(e);
-        }
-        return user;
-    }
-
-    @Override
-    public User getUserByLogin(String login) {
-        User user = null;
-        try (PreparedStatement preparedStatement =
-                     connection.prepareStatement(GET_USER_BY_LOGIN)) {
-            preparedStatement.setString(1, login);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                user = createUser(resultSet);
-            }
-        } catch (SQLException e) {
-            LOGGER.error("Error during getting the user by login: ", e);
             throw new RuntimeException(e);
         }
         return user;

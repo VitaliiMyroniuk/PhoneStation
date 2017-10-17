@@ -84,14 +84,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByLogin(String login) {
-        try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
-            UserDao userDao = daoFactory.createUserDao(daoConnection);
-            return userDao.getUserByLogin(login);
-        }
-    }
-
-    @Override
     public List<User> getRegisteredUsers() {
         try (DaoConnection daoConnection = daoFactory.getDaoConnection()) {
             UserDao userDao = daoFactory.createUserDao(daoConnection);

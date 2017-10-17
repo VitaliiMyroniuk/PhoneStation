@@ -30,12 +30,12 @@ public class UserServiceImplTest {
     private UserServiceImpl userService;
 
     @Test
-    public void getUserByLogin() {
+    public void getUserById() {
         User user = new User();
         when(daoFactory.getDaoConnection()).thenReturn(daoConnection);
         when(daoFactory.createUserDao(anyObject())).thenReturn(userDao);
-        when(userDao.getUserByLogin("someLogin")).thenReturn(user);
-        User resultUser = userService.getUserByLogin("someLogin");
+        when(userDao.getUserById(1)).thenReturn(user);
+        User resultUser = userService.getUserById(1);
         verify(daoFactory).getDaoConnection();
         verify(daoFactory).createUserDao(daoConnection);
         assertEquals(user, resultUser);

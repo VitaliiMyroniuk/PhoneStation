@@ -17,7 +17,7 @@ public class JdbcAccountDao implements AccountDao {
             "INSERT INTO accounts (login, password, role) VALUES (?, ?, ?)";
 
     private static final String GET_ACCOUNT_BY_LOGIN =
-            "SELECT * FROM accounts WHERE login = ?";
+            "SELECT * FROM accounts WHERE BINARY login = ?";
 
     private static final String DELETE_ACCOUNT =
             "DELETE FROM accounts where id = ?";

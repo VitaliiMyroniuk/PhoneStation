@@ -30,15 +30,6 @@ public interface UserDao {
      * The method retrieves the {@code User} object with his account from the data base.
      * The list of his active services and list of his unpaid invoices are not retrieved.
      *
-     * @param login the login of the user to be retrieved from the data base.
-     * @return {@code User} object retrieved from the data base.
-     */
-    User getUserByLogin(String login);
-
-    /**
-     * The method retrieves the {@code User} object with his account from the data base.
-     * The list of his active services and list of his unpaid invoices are not retrieved.
-     *
      * @param phoneNumber the phone number of the user to be retrieved from the data base.
      * @return {@code User} object retrieved from the data base.
      */

@@ -36,15 +36,6 @@ public interface UserService {
 
     /**
      * The method retrieves the {@code User} object with his account from the data base.
-     * The list of his active services and list of his unpaid invoices are not retrieved.
-     *
-     * @param login the login of the user to be retrieved from the data base.
-     * @return {@code User} object retrieved from the data base.
-     */
-    User getUserByLogin(String login);
-
-    /**
-     * The method retrieves the {@code User} object with his account from the data base.
      * A list of unpaid invoices of this user is retrieved as well.
      * A list of active services of this user is not retrieved.
      *
