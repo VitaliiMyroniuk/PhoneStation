@@ -44,7 +44,6 @@ public interface UserService {
      */
     User getUserWithUnpaidInvoicesById(long id);
 
-
     /**
      * The method retrieves the list of all registered users from the data base.
      * For every user a corresponding [@code Account} object is retrieved as well
